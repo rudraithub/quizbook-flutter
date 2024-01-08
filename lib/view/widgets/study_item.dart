@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rudra_it_hub/model/study_model.dart';
+import 'package:rudra_it_hub/view/screens/chapter_screen.dart';
 
 class StudyItem extends StatelessWidget {
   const StudyItem({super.key, required this.model});
@@ -69,7 +70,7 @@ class StudyItem extends StatelessWidget {
                             InkWell(
                               onTap: (){
                                 print("${model.sub[index].subName} Std ${model.std}" );
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChapterScreen(),));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChapterScreen(std: model.std,subject: model.sub[index].subName,)))    ;
                               },
                               child: ClipRRect(
                                 

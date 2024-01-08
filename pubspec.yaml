@@ -36,6 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   get: ^4.6.6
+  http: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,10 @@ flutter:
     - assets/images/vigyan.jpg
     - assets/images/vigyan2.jpg
     - assets/images/samajik.jpg
+    - assets/images/normal_number_bg.png
+    - assets/images/logo.png
+    - assets/images/time_icon.png
+    - assets/images/question_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

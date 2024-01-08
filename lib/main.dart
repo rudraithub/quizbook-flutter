@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/controller/study_detail_controller.dart';
 
-void main()async {
-WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp ]);
+import 'package:rudra_it_hub/view/screens/std_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
@@ -49,6 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
           elevation: 2,
           shadowColor: Colors.grey,
         ),
-        body: const StudyModelController());
+        body: const StudyScreen());
   }
 }
