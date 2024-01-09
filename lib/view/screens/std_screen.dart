@@ -46,6 +46,7 @@ class _StudyScreenState extends State<StudyScreen> {
             itemCount: provider.stdList.length,
             itemBuilder: (context, index) {
               return StudyItem(model: provider.stdList[index]);
+              
             },
           );
         }

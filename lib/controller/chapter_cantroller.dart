@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
-import 'package:rudra_it_hub/model/study_model.dart';
+
 import 'package:rudra_it_hub/services/remote_services.dart';
 
 class ChpaterProvider extends GetxController {
@@ -12,19 +12,18 @@ class ChpaterProvider extends GetxController {
     fatchChepter();
     super.onInit();
   }
-  void fatchChepter ()async{
-    
-  try {
-    isLoading(true);
-    var products = await  RemoteServices.fatchChepter();
 
-  if (products.data.isNotEmpty) {
-    stdList.value = products;    
-    print('cnt Dddd');
-  }
-  } finally{
-    isLoading(false);
-  }
- 
+  void fatchChepter() async {
+    try {
+      isLoading(true);
+      var products = await RemoteServices.fatchChepter();
+
+      if (products.data.isNotEmpty) {
+        stdList.value = products;
+        print('cnt Dddd');
+      }
+    } finally {
+      isLoading(false);
+    }
   }
 }
