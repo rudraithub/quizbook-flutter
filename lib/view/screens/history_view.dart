@@ -8,8 +8,8 @@ class History extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
     double screenWidth = getScreenWidth(context);
-    return   Scaffold(
-      body:  Padding(
+    return Scaffold(
+      body: Padding(
         padding: const EdgeInsets.only(top: 0, left: 2),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,19 +42,18 @@ class History extends StatelessWidget {
               height: screenHeight * 0.009,
             ),
             SizedBox(
-              // width: screenWidth / 5,
+                // width: screenWidth / 5,
                 child: Text(
-                  'model.sub[index].subName',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: screenHeight * 0.02,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ))
+              'model.sub[index]',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: screenHeight * 0.02,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ))
           ],
         ),
       ),
     );
   }
 }
-
