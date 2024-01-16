@@ -14,3 +14,10 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+
+# Copy Project
+1- Copy project https url in github
+2- Open VS code -> Clone github Repository -> Clone from github -> Select as repository        destinantion -> paste project url
+3- Once the project is open run this code in terminal: "Flutter pub get"
