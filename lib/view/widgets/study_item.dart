@@ -78,8 +78,8 @@ class StudyItem extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                print(
-                                    "${model.sub[index].subName} Std ${model.std}");
+                                // print(
+                                //     "${model.sub[index].subName} Std ${model.std}");
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
                                           std: model.std,

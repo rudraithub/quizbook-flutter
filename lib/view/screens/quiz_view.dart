@@ -44,7 +44,7 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
     double screenWidth = getScreenWidth(context);
-    print('this is height = $screenHeight');
+
     // final question = _questionController.questions[questionIndex];
     bool isLastQuestion =
         questionIndex == _questionController.questions.length - 1;
@@ -58,8 +58,10 @@ class _QuizScreenState extends State<QuizScreen> {
         title: Obx(
           () => Column(
             children: [
-              Obx(() => Marquee(
-                        text: _questionController
+              Obx(() =>
+          // Marquee
+              Text(
+                         _questionController
                             .questions[questionIndex].question,
                         style: TextStyle(
                             color: whiteColor, fontSize: screenHeight * 0.030),
@@ -125,7 +127,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 ? CommonButton(
                     onPress: () {
                       if (selectedAnswerIndex != null) {
-                        print(score.toString());
+
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (_) => CongratulationScreen(
