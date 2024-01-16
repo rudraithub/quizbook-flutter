@@ -22,6 +22,9 @@ class ChpaterProvider extends GetxController {
         stdList.value = products;
         print('cnt Dddd');
       }
+      else{
+        // stdList.value = stu
+      }
     } finally {
       isLoading(false);
     }

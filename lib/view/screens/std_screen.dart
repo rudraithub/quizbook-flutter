@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:rudra_it_hub/controller/subject_provider.dart';
+import 'package:rudra_it_hub/controller/subject_controller.dart';
 
 import 'package:rudra_it_hub/model/study_model.dart';
 import 'package:rudra_it_hub/view/widgets/study_item.dart';
@@ -37,7 +37,21 @@ class _StudyScreenState extends State<StudyScreen> {
     //   },
     // );
     // }
-    return Obx(
+    return Scaffold(
+
+appBar:AppBar(
+  title: Text(
+    "શ્રેણીઓ",
+    textAlign: TextAlign.center,
+    style: const TextStyle(fontWeight: FontWeight.bold),
+  ),
+  centerTitle: true,
+  backgroundColor: Colors.white,
+  elevation: 2,
+  shadowColor: Colors.grey,
+),
+
+     body :  Obx(
       () {
         if (provider.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -51,7 +65,7 @@ class _StudyScreenState extends State<StudyScreen> {
           );
         }
       },
-    );
+    ));
   }
 }
 

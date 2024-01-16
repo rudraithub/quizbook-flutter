@@ -37,6 +37,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.6
   http: ^1.1.2
+  shared_preferences: ^2.2.2
+  intl: ^0.19.0
+  image_picker: ^1.0.7
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  cloud_firestore: ^4.14.0
+  marquee: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -62,26 +69,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/forms_bro.png
-    - assets/images/image23.jpeg
-    - assets/images/english.jpg
-    - assets/images/english2.jpg
-    - assets/images/english3.jpg
-    - assets/images/ganit.jpg
-    - assets/images/gujrati2.jpg
-    - assets/images/gurati3.jpg
-    - assets/images/hindi.jpg
-    - assets/images/image.jpg
-    - assets/images/samajik.jpg
-    - assets/images/samajik2.jpg
-    - assets/images/std6_gujrati.jpg
-    - assets/images/vigyan.jpg
-    - assets/images/vigyan2.jpg
-    - assets/images/samajik.jpg
-    - assets/images/normal_number_bg.png
-    - assets/images/logo.png
-    - assets/images/time_icon.png
-    - assets/images/question_icon.png
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
