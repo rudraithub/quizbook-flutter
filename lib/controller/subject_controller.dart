@@ -21,9 +21,9 @@ class SubjectProvider extends GetxController {
   if (products.isNotEmpty) {
     stdList.value = products;    
   }
-  else{
-    stdList.value = stud;
-  }
+  // else{
+  //   stdList.value = stud;
+  // }
   } finally{
     isLoading(false);
   }

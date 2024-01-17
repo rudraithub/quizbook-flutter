@@ -53,9 +53,9 @@ class Utility {
         fieldLabelText: 'Please select date',
         helpText: 'Help text',
         keyboardType: TextInputType.number,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2023, 01, 01),
-        lastDate: DateTime(2025, 01, 01),
+        initialDate: DateTime(2004 , 02 ,15),
+        firstDate: DateTime(1990, 01, 01),
+        lastDate: DateTime(2015, 01, 01),
       );
       if (selectedDate != null) {
         final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);

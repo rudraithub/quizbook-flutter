@@ -56,11 +56,14 @@ appBar:AppBar(
         if (provider.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         } else {
+          // if(provider.stdList.isEmpty){
+          //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
+          // }
           return ListView.builder(
             itemCount: provider.stdList.length,
             itemBuilder: (context, index) {
               return StudyItem(model: provider.stdList[index]);
-              
+
             },
           );
         }

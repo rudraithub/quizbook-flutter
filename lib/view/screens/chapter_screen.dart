@@ -1,24 +1,44 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/controller/chapter_cantroller.dart';
+
+import 'package:rudra_it_hub/controller/chapter_controller.dart';
 import 'package:rudra_it_hub/utils/constans.dart';
 import 'package:rudra_it_hub/view/screens/quiz_view.dart';
 
-final ChpaterProvider chProvider = Get.put(ChpaterProvider());
+ChapterController chProvider = ChapterController();
 
-class ChapterScreen extends StatelessWidget {
-  const ChapterScreen({super.key, required this.subject, required this.std});
+class ChapterScreen extends StatefulWidget {
+  ChapterScreen(
+      {super.key,
+      required this.subId,
+      required this.stdId,
+      required this.subject,
+      required this.std});
 
   final String subject;
+  final int subId;
+  final int stdId;
   final String std;
+  @override
+  State<ChapterScreen> createState() {
+    return _ChapterScreenState();
+  }
+}
+
+class _ChapterScreenState extends State<ChapterScreen> {
+  @override
+  void initState() {
+    chProvider.fatchChepter(widget.stdId, widget.subId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
           appBar: AppBar(
-
             title: Text(
-              "$std : ${subject.toUpperCase()}",
+              "${widget.std} : ${widget.subject.toUpperCase()}",
               style: TextStyle(fontSize: getScreenHeight(context) * 0.035),
             ),
           ),
@@ -34,16 +54,24 @@ class ChapterScreen extends StatelessWidget {
                 );
               } else {
                 return InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreen(),));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => QuizScreen(
+                              stdId: widget.stdId,
+                              subId: widget.subId,
+                              chapterId: item.chapterid,
+                            ),
+                          ));
                     },
-                    child : CustomItem(
-                  logoIndex: item.chapterno.toString(),
-                  chName: item.content,
-                  teacherName: item.teacher,
-                  questionNo: item.que,
-                  min: item.minute,
-                ));
+                    child: CustomItem(
+                      logoIndex: item.chapterno.toString(),
+                      chName: item.content,
+                      teacherName: item.teacher,
+                      questionNo: item.que,
+                      min: item.minute,
+                    ));
               }
             },
           ),

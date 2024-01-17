@@ -4,22 +4,22 @@
 
 import 'dart:convert';
 
-User userFromJson(String str) => User.fromJson(json.decode(str));
+User2 userFromJson(String str) => User2.fromJson(json.decode(str));
 
-String userToJson(User data) => json.encode(data.toJson());
+String userToJson(User2 data) => json.encode(data.toJson());
 
-class User {
+class User2 {
   int status;
   UserData data;
   String message;
 
-  User({
+  User2({
     required this.status,
     required this.data,
     required this.message,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User2.fromJson(Map<String, dynamic> json) => User2(
     status: json["status"],
     data: UserData.fromJson(json["data"]),
     message: json["message"],
@@ -38,7 +38,7 @@ class UserData {
   String lastName;
   String email;
   String gender;
-  DateTime dob;
+  String dob;
   String mobileNumber;
   List<Profession> profession;
   int userId;
@@ -63,7 +63,7 @@ class UserData {
     lastName: json["lastName"],
     email: json["email"],
     gender: json["gender"],
-    dob: DateTime.parse(json["DOB"]),
+    dob: json["DOB"],
     mobileNumber: json["mobileNumber"],
     profession: List<Profession>.from(json["profession"].map((x) => Profession.fromJson(x))),
     userId: json["user_id"],
@@ -76,7 +76,7 @@ class UserData {
     "lastName": lastName,
     "email": email,
     "gender": gender,
-    "DOB": dob.toIso8601String(),
+    "DOB": dob,
     "mobileNumber": mobileNumber,
     "profession": List<dynamic>.from(profession.map((x) => x.toJson())),
     "user_id": userId,

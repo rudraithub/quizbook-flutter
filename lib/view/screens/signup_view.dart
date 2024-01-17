@@ -15,8 +15,18 @@ import 'package:rudra_it_hub/view/widgets/common_button.dart';
 import 'package:rudra_it_hub/view/widgets/common_textfiled.dart';
 
 class SignUpScreen extends StatelessWidget {
-  SignUpScreen(
-      {super.key,  this.isBackArrow = false ,this.isProfile = false,this.firstName = '' , this.lastName = '' , this.email = '',  });
+  SignUpScreen({
+    super.key,
+    this.isBackArrow = false,
+    this.date = '',
+    this.desi = '',
+    this.gender = '',
+    this.mobileNo = "",
+    this.isProfile = false,
+    this.firstName = '',
+    this.lastName = '',
+    this.email = '',
+  });
 
   final _key = GlobalKey<FormState>();
 
@@ -25,10 +35,13 @@ class SignUpScreen extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String email;
+  final String mobileNo;
+  final String gender;
+  final String date;
+  final String desi;
+  // final DateTime dateTime;
+
   // final String /;
-
-
-
 
   final SignUpController _controller = Get.put(SignUpController());
 
@@ -55,20 +68,25 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(isProfile){ // Here
-      _firstNameController.text = firstName.isEmpty ? ''  : firstName;
-      _lastNameController.text = lastName.isEmpty ? ''  : lastName;
-      _emailController.text = email.isEmpty ? ''  : email;
+    if (isProfile) {
+      // Here
+      _firstNameController.text = firstName.isEmpty ? '' : firstName;
+      _lastNameController.text = lastName.isEmpty ? '' : lastName;
+      _emailController.text = email.isEmpty ? '' : email;
+      _mobileController.text = mobileNo.isEmpty ? '' : mobileNo;
+      selectedGender.value = gender.isEmpty ? '' : gender;
+      selectedDesignation.value  = desi.isEmpty ? '' : desi;
+      _controller.chnageBirthDate(date);
     }
 
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
+      appBar:  PreferredSize(
+        preferredSize:const Size.fromHeight(60.0),
         child: CommonAppBarScreen(
           title: 'Update Profile',
           backgroundColor: whiteColor, // Customize the color here
           centerTitle: true,
-          isBackArrow: true,
+          isBackArrow: isBackArrow,
         ),
       ),
       body: SafeArea(
@@ -88,19 +106,19 @@ class SignUpScreen extends StatelessWidget {
                       child: Obx(() {
                         return (photoController.selectedImage.value == null)
                             ? CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey,
-                          child: Image.asset(changeProfile),
-                        )
+                                radius: 50,
+                                backgroundColor: Colors.grey,
+                                child: Image.asset(changeProfile),
+                              )
                             : CircleAvatar(
-                          radius: 50,
-                          backgroundImage: FileImage(
-                              photoController.selectedImage.value!),
-                        );
+                                radius: 50,
+                                backgroundImage: FileImage(
+                                    photoController.selectedImage.value!),
+                              );
                       }),
                     ),
                     CommonTextFormField(
-                      autoFocus: true,
+
                       controller: _firstNameController,
                       label: 'First Name',
                       errorMessage: 'Enter Your First Name',
@@ -146,48 +164,45 @@ class SignUpScreen extends StatelessWidget {
                         Center(
                           child: SizedBox(
                             width: (MediaQuery.of(context).size.width / 2 - 10),
-                            child:
-                               Obx(
-                                    () => DropdownButtonFormField<String>(
-                                  value: selectedGender.value.isEmpty
-                                      ? null
-                                      : selectedGender.value,
-                                  decoration: const InputDecoration(
-                                      labelText: 'Gender',
-                                      labelStyle: TextStyle(
-                                          color: greyColor, fontSize: 14)
+                            child: Obx(
+                              () => DropdownButtonFormField<String>(
+                                value: selectedGender.value.isEmpty
+                                    ? null
+                                    : selectedGender.value,
+                                decoration: const InputDecoration(
+                                    labelText: 'Gender',
+                                    labelStyle: TextStyle(
+                                        color: greyColor, fontSize: 14)
                                     // Add other styling properties here if needed
-                                  ),
-                                  hint: const Text(
-                                    "Select gender",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  onChanged: (value) {
-                                    selectedGender(value);
-                                    genderErrorMessage('');
-                                  },
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please select a gender";
-                                    }
-                                    return null;
-                                  },
-                                  items: ['Male', 'Female', 'Other']
-                                      .map<DropdownMenuItem<String>>(
-                                        (String value) =>
-                                        DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style:
-                                            const TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                  )
-                                      .toList(),
+                                    ),
+                                hint: const Text(
+                                  "Select gender",
+                                  style: TextStyle(fontSize: 14),
                                 ),
+                                onChanged: (value) {
+                                  selectedGender(value);
+                                  genderErrorMessage('');
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please select a gender";
+                                  }
+                                  return null;
+                                },
+                                items: ['Male', 'Female', 'Other']
+                                    .map<DropdownMenuItem<String>>(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(fontSize: 15),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
                               ),
-
+                            ),
                           ),
                         ),
                         Obx(() {
@@ -208,24 +223,23 @@ class SignUpScreen extends StatelessWidget {
                           width: 5,
                         ),
                         Flexible(
-                          child: Expanded(
-                            child: SizedBox(
+                          child: SizedBox(
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 3),
                                 child:
-                                //  CommonTextFormField(
-                                //   controller: _pickDAte,
-                                //   errorMessage: "Please Select The Date ",
-                                //   onTap: Utility.showDatePickerDialog(),
-                                // )
-                                InkWell(
+                                    //  CommonTextFormField(
+                                    //   controller: _pickDAte,
+                                    //   errorMessage: "Please Select The Date ",
+                                    //   onTap: Utility.showDatePickerDialog(),
+                                    // )
+                                    InkWell(
                                   onTap: () {
                                     Utility.showDatePickerDialog()
                                         .then((pickedDate) {
                                       if (pickedDate != null) {
+
                                         _controller.chnageBirthDate(
-                                            "${pickedDate.toLocal()}"
-                                                .split(' ')[0]);
+                                            "${pickedDate.day.toString().padLeft(2,'0')}-${pickedDate.month.toString().padLeft(2,'0')}-${pickedDate.year.toString()}" );
                                         selectedDate = pickedDate;
                                       }
                                     });
@@ -236,24 +250,24 @@ class SignUpScreen extends StatelessWidget {
                                           labelStyle: TextStyle(
                                               color: greyColor, fontSize: 14)),
                                       child: Obx(() => Text(
-                                        _controller.selectedBirthDate.value,
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                            overflow: TextOverflow.clip),
-                                      ))),
+                                            _controller.selectedBirthDate.value,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                overflow: TextOverflow.clip),
+                                          ))),
                                 ),
                               ),
                             ),
-                          ),
+
                         ),
                       ],
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1,
                       child: Obx(
-                            () => DropdownButtonFormField<String>(
+                        () => DropdownButtonFormField<String>(
                           padding: EdgeInsets.zero,
                           value: selectedDesignation.value.isEmpty
                               ? null
@@ -261,9 +275,9 @@ class SignUpScreen extends StatelessWidget {
                           decoration: const InputDecoration(
                               labelText: 'Select Designation',
                               labelStyle:
-                              TextStyle(color: greyColor, fontSize: 14)
-                            // Add other styling properties here if needed
-                          ),
+                                  TextStyle(color: greyColor, fontSize: 14)
+                              // Add other styling properties here if needed
+                              ),
                           onChanged: (value) {
                             selectedDesignation(value);
                             desErrorMsg('');
@@ -274,16 +288,16 @@ class SignUpScreen extends StatelessWidget {
                             }
                             return null;
                           },
-                          items: ["Teacher", "Engineer", "Principal"]
+                          items: ["student", "teacher", "admin"]
                               .map<DropdownMenuItem<String>>(
                                 (String value) => DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(fontSize: 15),
-                              ),
-                            ),
-                          )
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              )
                               .toList(),
                         ),
                       ),
@@ -295,7 +309,7 @@ class SignUpScreen extends StatelessWidget {
                           child: Text(
                             desErrorMsg.value,
                             style:
-                            const TextStyle(color: redColor, fontSize: 13),
+                                const TextStyle(color: redColor, fontSize: 13),
                           ),
                         );
                       } else {
@@ -310,16 +324,13 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: CommonButton(
-
           onPress: () async {
             int professionId = 1;
-            if (selectedDesignation.value == 'Teacher') {
-              professionId =1;
-            }
-            else if (selectedDesignation.value == 'Engineer'){
-              professionId ==2;
-            }
-            else{
+            if (selectedDesignation.value == 'student') {
+              professionId = 1;
+            } else if (selectedDesignation.value == 'teacher') {
+              professionId == 2;
+            } else {
               professionId = 3;
             }
             if (_key.currentState!.validate()) {
@@ -340,7 +351,8 @@ class SignUpScreen extends StatelessWidget {
                     selectedGender.toString(),
                     selectedDate,
                     _mobileController.text,
-                    professionId ,context);
+                    professionId,
+                    context);
 
                 // print("This is mo no" + _mobileController.text.toString());
                 // Get.offAll(AppbarBottomBarScreen());

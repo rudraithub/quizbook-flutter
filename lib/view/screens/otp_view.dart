@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rudra_it_hub/controller/otp_cantroller.dart';
 import 'package:rudra_it_hub/view/screens/dashboard_view.dart';
 import 'package:rudra_it_hub/view/screens/std_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,12 +15,14 @@ class OTPScreen extends StatelessWidget {
   // ignore: unused_field
 
   final _key = GlobalKey<FormState>();
+  OTPController otpController = OTPController();
 
   final TextEditingController _otpController = TextEditingController();
 
   final String verificationId;
+  final String moNumber;
 
-  OTPScreen({super.key, required this.verificationId});
+  OTPScreen({super.key, required this.verificationId, required this.moNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -64,28 +67,8 @@ class OTPScreen extends StatelessWidget {
               const SizedBox(height: 20),
               CommonButton(
                   onPress: () async {
-                    try {
-                      PhoneAuthCredential credential =
-                          await PhoneAuthProvider.credential(
-                              verificationId: verificationId,
-                              smsCode: _otpController.text.toString());
-                      FirebaseAuth.instance
-                          .signInWithCredential(credential)
-                          .then((value) async {
-                        print('Success full');
-
-                        var prefrence = await SharedPreferences.getInstance();
-                        await prefrence.setBool(Preferences.userLogin, true);
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AppbarBottomBarScreen(),
-                            ),
-                            (route) => false);
-                      });
-                    } catch (e) {
-                      print(e.toString());
-                    }
+                    otpController.verifyOTP(
+                        verificationId, _otpController, moNumber, context);
                   },
                   title: "Verify OTP")
             ],

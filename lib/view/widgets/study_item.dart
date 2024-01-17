@@ -70,6 +70,7 @@ class StudyItem extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: model.sub.length,
                     itemBuilder: (context, index) {
+
                       return Padding(
                         padding: const EdgeInsets.only(top: 0, left: 2),
                         child: Column(
@@ -80,8 +81,14 @@ class StudyItem extends StatelessWidget {
                               onTap: () {
                                 // print(
                                 //     "${model.sub[index].subName} Std ${model.std}");
+                                print("this is std id  " + model.stdId.toString() );
+                                print("this is sub id  "+ model.sub[index].subId.toString() );
+
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
+                                      stdId: model.stdId,
+                                          subId: model.sub[index].subId,
+
                                           std: model.std,
                                           subject: model.sub[index].subName,
                                         )));
@@ -93,10 +100,11 @@ class StudyItem extends StatelessWidget {
                                   child: Image.network(
                                     // Add dummy Url because the api url not working
 
-                                    'https://picsum.photos/200/300',
+                                    model.sub[index].imageUrl,
+
                                     height: screenHeight * 0.12,
                                     width: screenHeight * 0.12,
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.fitWidth,
                                   )),
                             ),
                             SizedBox(

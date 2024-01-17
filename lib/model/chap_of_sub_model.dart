@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-Chapter welcomeFromJson(String str) => Chapter.fromJson(json.decode(str));
+Chapter chapterFromJson(String str) => Chapter.fromJson(json.decode(str));
 
-String welcomeToJson(Chapter data) => json.encode(data.toJson());
+String chapterToJson(Chapter data) => json.encode(data.toJson());
 
 class Chapter {
     int status;

@@ -121,29 +121,11 @@ class LoginScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
+                  loginController.LogInUser(context , _mobileController);
                   // print(_mobileController.text.toString());
                   loginController.ChangeLoading(true);
                   // loginController.LogInUser(context, _mobileController);
-                  try {
-                    await FirebaseAuth.instance.verifyPhoneNumber(
-                        verificationCompleted: (PhoneAuthCredential credential) {},
-                        verificationFailed: (FirebaseAuthException ex) {
-                         loginController.ChangeLoading(false);
-                        },
-                        codeSent: (String verificationId, int? resendtToken) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    OTPScreen(verificationId: verificationId, ),
-                              ));
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {},
-                        phoneNumber: '+91${_mobileController.text.toString()}');
-                  } catch (e) {
-                   loginController.ChangeLoading(true);
-                    print("This is Exeption $e");
-                  }
+
                 }
               },
               child: loginController.isLoading.value

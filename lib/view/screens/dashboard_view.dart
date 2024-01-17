@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rudra_it_hub/utils/constans.dart';
 import 'package:rudra_it_hub/view/screens/history_view.dart';
 
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
@@ -49,6 +50,10 @@ class AppbarBottomBarScreen extends StatelessWidget {
                 isProfile: true,
                 lastName: 'Makwana',
                 email: 'mp959183@gmail.com',
+                mobileNo: '9484779764',
+                gender: 'Male',
+                desi: "student",
+                date: "15-02-2004",
               );
           }),
       bottomNavigationBar: Obx(
@@ -57,7 +62,7 @@ class AppbarBottomBarScreen extends StatelessWidget {
           unselectedItemColor: Colors.grey,
           selectedItemColor: Colors.blue[800],
           showSelectedLabels: true,
-          iconSize: 40,
+          iconSize: getScreenHeight(context) * 0.050,
           currentIndex: _controller.currentIndex.value,
           onTap: _controller.onTabTapped,
           items: const [

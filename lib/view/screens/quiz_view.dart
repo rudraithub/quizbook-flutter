@@ -13,7 +13,11 @@ import '../../utils/constans.dart';
 // import '/screens/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  const QuizScreen({super.key, required this.stdId , required this.subId , required this.chapterId});
+  final int stdId;
+  final int subId;
+  final int chapterId;
+
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -24,6 +28,14 @@ class _QuizScreenState extends State<QuizScreen> {
   int questionIndex = 0;
   int score = 0;
   final QuestionController _questionController = QuestionController();
+  @override
+  void initState() {
+    _questionController.getQusetionList(widget.chapterId, widget.subId,widget.stdId, context);
+    setState(() {
+
+    });
+    super.initState();
+  }
 
   void pickAnswer(int value) {
     selectedAnswerIndex = value;
@@ -47,7 +59,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
     // final question = _questionController.questions[questionIndex];
     bool isLastQuestion =
-        questionIndex == _questionController.questions.length - 1;
+        questionIndex == _questionController.questons2.length ;
     return Scaffold(
       appBar: AppBar(
         // leading: null,
@@ -62,7 +74,7 @@ class _QuizScreenState extends State<QuizScreen> {
           // Marquee
               Text(
                          _questionController
-                            .questions[questionIndex].question,
+                            .questons2[questionIndex].question,
                         style: TextStyle(
                             color: whiteColor, fontSize: screenHeight * 0.030),
                       )

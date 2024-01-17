@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
+import 'package:rudra_it_hub/view/screens/history_view.dart';
+import 'package:rudra_it_hub/view/screens/login_view.dart';
 import 'package:rudra_it_hub/view/screens/quiz_view.dart';
 import 'package:rudra_it_hub/view/screens/std_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white60),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home:  SplashScreen(),
     );
   }
 }
