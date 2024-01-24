@@ -123,7 +123,8 @@ print(formattedDate);
       final User2 user =  userFromJson(responseString.body);
       // print(response.body);
       return user;
-    } else {
+    }
+    else {
       return User2(
           status: 0,
           data: UserData(
@@ -145,7 +146,7 @@ print(formattedDate);
       String moNo, BuildContext context) async {
     final Map<String, String> body = {"mobileNumber": "7513444577"};
     final Map<String, String> head = {'Content-Type': 'application/json'};
-    const uri = 'http://192.168.1.19:3000/user/varify';
+    const uri = 'http://192.168.1.22:3000/user/varify';
     try {
       // print(body);
       // var response = await http.post(Uri.parse(uri),

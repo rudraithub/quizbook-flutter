@@ -15,7 +15,6 @@ class OTPController extends GetxController{
     await PhoneAuthProvider.credential(
         verificationId: verificationId,
         smsCode: _otpController.text.toString());
-
     try {
       FirebaseAuth.instance
           .signInWithCredential(credential)
@@ -38,7 +37,7 @@ class OTPController extends GetxController{
 
         print(users.data.id); print(users.data.userId.toString());
 
-        Navigator.pushAndRemoveUntil(
+        var pushAndRemoveUntil = Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => AppbarBottomBarScreen(),
