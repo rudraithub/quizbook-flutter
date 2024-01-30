@@ -10,7 +10,6 @@ import 'package:rudra_it_hub/view/screens/std_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -36,7 +35,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white60),
         useMaterial3: true,
       ),
-      home:  SplashScreen(),
+      home: SplashScreen(),
+      // SplashScreen
     );
   }
 }
