@@ -7,6 +7,7 @@ import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/model/question2_model.dart';
 import 'package:rudra_it_hub/services/remote_services.dart';
 
+import '../model/question_api_data.dart';
 import '../model/question_model.dart';
 
 class QuestionController extends GetxController {
@@ -39,6 +40,8 @@ class QuestionController extends GetxController {
     ),
   ].obs;
 
+  Rx<QuestionApiData>? apiQuestions;
+
   RxInt selectedOptionIndex = (-1).obs;
 
   bool isOptionCorrect(int index) {
@@ -68,16 +71,17 @@ class QuestionController extends GetxController {
     }
   }
 
-  void getQusetionList(
-      int chapterId, subId, stdId, BuildContext context) async {
+  void getQusetionList(int chapterId, subId, stdId, BuildContext context) async {
     var isLoading = true.obs;
     // Rx<Chapter> stdList = Chapter(status: 0, data: [], message:'').obs;
 
     try {
       isLoading(true);
-      var products = await RemoteServices.getQuestionList(
-          stdId, subId, chapterId, context);
-      products = questons2.value;
+      // var products = await RemoteServices.getQuestionList(stdId, subId, chapterId, context);
+      var products = await RemoteServices.getQuestionList(stdId: stdId, subId: subId, chapterId: chapterId, context: context);
+      // products = questons2.value;
+      apiQuestions = products.obs;
+      products = products;
       print(questons2[0].question);
       // print(products.toString());
       // if (products.data.isNotEmpty) {

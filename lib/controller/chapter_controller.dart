@@ -7,6 +7,7 @@ import '../services/remote_services.dart';
 class ChapterController extends GetxController{
   var isLoading = true.obs;
   Rx<Chapter> stdList = Chapter(status: 0, data: [], message:'').obs;
+
   @override
 
   void fatchChepter(int stdId , int subId) async {
@@ -14,9 +15,10 @@ class ChapterController extends GetxController{
       isLoading(true);
       var products = await RemoteServices.fatchChepter(stdId, subId);
 
+      print("fatchChepterfatchChepterfatchChepter ${products.data}");
       if (products.data.isNotEmpty) {
-        stdList.value = products;
 
+        stdList.value = products;
       }
       else{
         // stdList.value = stu
@@ -25,5 +27,4 @@ class ChapterController extends GetxController{
       isLoading(false);
     }
   }
-
 }

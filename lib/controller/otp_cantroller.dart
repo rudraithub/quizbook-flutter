@@ -1,13 +1,20 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:rudra_it_hub/appurl/all_url.dart';
 import 'package:rudra_it_hub/model/user.dart';
 import 'package:rudra_it_hub/services/remote_services.dart';
+import 'package:rudra_it_hub/utils/prefrence_helper.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/login_model_alpesh.dart';
 import '../utils/prefrences.dart';
 import '../view/screens/dashboard_view.dart';
+import '../view/widgets/common_snackbar.dart';
 
 class OTPController extends GetxController{
   Future<void> verifyOTP(String verificationId , TextEditingController _otpController , String  moNumber, BuildContext context)async{
@@ -15,34 +22,47 @@ class OTPController extends GetxController{
     await PhoneAuthProvider.credential(
         verificationId: verificationId,
         smsCode: _otpController.text.toString());
+
     try {
       FirebaseAuth.instance
           .signInWithCredential(credential)
           .catchError((onError) async {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Please enter currect otp",
-                style: TextStyle(fontSize: 15)),
-            duration: Duration(seconds: 2),
-          ),
-        );
+        commonSnackBar(context: context, msg: 'Please enter currect otp');
       }).then((value) async {
-        var prefrence = await SharedPreferences.getInstance();
-        await prefrence.setBool(Preferences.userLogin, true);
 
-        User2 users =await RemoteServices.fatchUserDetails(moNumber);
+        LogInModel users = LogInModel();
 
-        prefrence.setString(Preferences.id, users.data.id);
-        prefrence.setInt(Preferences.userID, users.data.userId);
+        final Map<String, dynamic> reqebody = {
+          "mobileNumber": moNumber,
+        };
+        final Map<String, String> headers = {'Content-Type': 'application/json'};
+        // const uri = 'http://192.168.1.22:3000/users/login';
+        const uri = '$baseUrl$loginUrl';
+        var response = await http.post(Uri.parse(uri),
+            headers: headers, body: jsonEncode(reqebody));
 
-        print(users.data.id); print(users.data.userId.toString());
+        try {
+          if (response.statusCode == 200) {
+            LogInModel users =  logInModelFromJson(response.body);
+            var sharedPreferences = await SharedPreferences.getInstance();
+            SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper(sharedPreferences);
+            sharedPreferencesHelper.putBool(Preferences.userLogin, true);
+            await sharedPreferencesHelper.putString(Preferences.userFullDetails, jsonEncode(users));
 
-        var pushAndRemoveUntil = Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AppbarBottomBarScreen(),
-            ),
-                (route) => false);
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AppbarBottomBarScreen(logInModel: users,),
+                ),
+                    (route) => false);
+          } else {
+            commonSnackBar(context: context, msg: "catch ${response.body}");
+            // LogInModel users =  LogInModel();
+          }
+        } catch (e) {
+          commonSnackBar(context: context, msg: "catch ${e.toString()}");
+          // return LogInModel();
+        }
       });
     } catch (e) {
       print('error');

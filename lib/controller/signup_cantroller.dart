@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 
-
 class SignUpController extends GetxController {
   final RxString selectedGender = 'Select Gender'.obs;
   final RxString selectedBirthDate = 'Select Date'.obs;
@@ -35,6 +34,4 @@ class SignUpController extends GetxController {
   }
 
 //----------------------------------
-
-
 }
