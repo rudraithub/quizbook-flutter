@@ -30,11 +30,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white60),
         useMaterial3: true,
       ),
-      // home: AppbarBottomBarScreen(),
-      home: const SplashScreen(),
-      // home: const QuizScreen(stdId: 4, subId: 1, chapterId: 1),
+      home:  const SplashScreen(),
     );
   }
 }
- // WidgetsFlutterBinding.ensureInitialized();
-  // await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

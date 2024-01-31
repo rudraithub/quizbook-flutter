@@ -22,7 +22,9 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body:
-          // SingleChildScrollView(
+
+
+      // SingleChildScrollView(
           // child:
           Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,6 +123,7 @@ class LoginScreen extends StatelessWidget {
                   loginController.LogInUser(context, _mobileController);
                   // print(_mobileController.text.toString());
                   loginController.ChangeLoading(true);
+                  FocusScope.of(context).unfocus();
                   // loginController.LogInUser(context, _mobileController);
                 }
               },
