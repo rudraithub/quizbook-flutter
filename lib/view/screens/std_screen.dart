@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,8 +7,6 @@ import 'package:rudra_it_hub/controller/subject_controller.dart';
 
 import 'package:rudra_it_hub/model/study_model.dart';
 import 'package:rudra_it_hub/view/widgets/study_item.dart';
-
-import '../../services/remote_services.dart';
 
 class StudyScreen extends StatefulWidget {
   const StudyScreen({
@@ -24,7 +24,6 @@ class _StudyScreenState extends State<StudyScreen> {
 
   final SubjectProvider provider = Get.put(SubjectProvider());
 
-
   // Future<void> fetchData() async {
   //   // Simulate an asynchronous operation (e.g., API call)
   //   // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
@@ -36,8 +35,6 @@ class _StudyScreenState extends State<StudyScreen> {
 
   @override
   void initState() {
-
-
     super.initState();
   }
 
@@ -54,39 +51,35 @@ class _StudyScreenState extends State<StudyScreen> {
     // );
     // }
     return Scaffold(
-
-appBar:AppBar(
-  title: const Text(
-    "Standards",
-    textAlign: TextAlign.center,
-    style: TextStyle(fontWeight: FontWeight.bold),
-  ),
-  centerTitle: true,
-  backgroundColor: Colors.white,
-  elevation: 2,
-  shadowColor: Colors.grey,
-),
-
-     body :  Obx(
-      () {
-
-        if (provider.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          // if(provider.stdList.isEmpty){
-          //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
-          // }
-          print("std screen in ${provider.stdList}");
-          return ListView.builder(
-            itemCount: provider.stdList.length,
-            itemBuilder: (context, index) {
-              return StudyItem(model: provider.stdList[index]);
-
-            },
-          );
-        }
-      },
-    ));
+        appBar: AppBar(
+          title: const Text(
+            "Standards",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: Colors.grey,
+        ),
+        body: Obx(
+          () {
+            if (provider.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              // if(provider.stdList.isEmpty){
+              //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
+              // }
+              print("std screen in ${provider.stdList}");
+              return ListView.builder(
+                itemCount: provider.stdList.length,
+                itemBuilder: (context, index) {
+                  return StudyItem(model: provider.stdList[index]);
+                },
+              );
+            }
+          },
+        ));
   }
 }
 

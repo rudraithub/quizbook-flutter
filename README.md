@@ -1,23 +1,32 @@
-# rudra_it_hub
+# QuizBook Flutter Mobile Application
+QuizBook Flutter Project
 
-A new Flutter project.
+## Project Setup
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Sofotware version 
+1. flutter : `3.16.9`
 
 
+### Start Developoment
 
-# Copy Project
-1- Copy project https url in github
-2- Open VS code -> Clone github Repository -> Clone from github -> Select as repository        destinantion -> paste project url
-3- Once the project is open run this code in terminal: "Flutter pub get"
+1. Terminal/VS Code Setup
+
+2. Clone this repository
+```bash
+cd ~/code/
+git clone git@github.com:rudraithub/quizbook-flutter.git
+cd quizbook-flutter
+code . 
+```
+
+3. Change your code as per requirement
+
+4. Validated code build is successful
+
+```bash
+flutter --version
+flutter pub get
+flutter run
+flutter analyze
+```
+

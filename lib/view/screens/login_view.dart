@@ -1,14 +1,11 @@
-// ignore_for_file: avoid_print, file_names
+// ignore_for_file: avoid_print, file_names, must_be_immutable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/login_controller.dart';
 import 'package:rudra_it_hub/utils/constans.dart';
-import 'package:rudra_it_hub/view/screens/otp_view.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
-import 'package:rudra_it_hub/view/screens/std_screen.dart';
-import 'package:rudra_it_hub/view/widgets/common_button.dart';
+
 import 'package:rudra_it_hub/view/widgets/common_textfiled.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -73,9 +70,7 @@ class LoginScreen extends StatelessWidget {
                 errorMessage: 'Please enter valid Number',
                 inputType: TextInputType.number,
                 formatter: [mobileLengthFormatter, mobileLengthFormatter],
-                onTap: () {
-
-                },
+                onTap: () {},
                 isMobileNumber: true,
                 // isReadOnly: false,
               ),
@@ -123,19 +118,19 @@ class LoginScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
-                  loginController.LogInUser(context , _mobileController);
+                  loginController.LogInUser(context, _mobileController);
                   // print(_mobileController.text.toString());
                   loginController.ChangeLoading(true);
                   // loginController.LogInUser(context, _mobileController);
-
                 }
               },
               child: loginController.isLoading.value
                   ? const Padding(
                       padding: EdgeInsets.only(top: 5, bottom: 5),
                       child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white) , strokeWidth: 3,),
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        strokeWidth: 3,
+                      ),
                     )
                   : const Text(
                       'Send OTP',

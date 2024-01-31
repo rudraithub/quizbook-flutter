@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:rudra_it_hub/appurl/all_url.dart';
 import 'package:rudra_it_hub/controller/quiz_controller.dart';
 import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
-import 'package:rudra_it_hub/model/question2_model.dart';
 import 'package:rudra_it_hub/model/study_model.dart';
-import 'package:rudra_it_hub/model/user.dart';
+
 import 'package:rudra_it_hub/view/widgets/common_snackbar.dart';
 
 import '../model/login_model_alpesh.dart';
@@ -18,7 +19,7 @@ class RemoteServices {
   static var client = http.Client();
   QuestionController questionController = QuestionController();
   // LoginController loginController = LoginController();
-  final TextEditingController _mobileController = TextEditingController();
+  // final TextEditingController _mobileController = TextEditingController();
 
   static Future<Chapter> fatchChepter(int stdId, int subId) async {
     try {
@@ -255,44 +256,45 @@ class RemoteServices {
   }
 }
 
-var apiDataStatic = {
-  "message": "Success!",
-  "status": 200,
-  "data": [
-    {
-      "queid": 1,
-      "chapterid": 1,
-      "stdid": 4,
-      "subid": 1,
-      "question_no": 1,
-      "rightAns": 0,
-      "question": "If A = {1, 2, 3} and B = {3, 4, 5}, what is A ∪ B?",
-      "Option": [
-        "A: {1, 2, 3, 4, 5}",
-        "B: {1, 2}",
-        "C: {3, 4, 5}",
-        "D: {1, 2, 3}"
-      ]
-    },
-    {
-      "queid": 2,
-      "chapterid": 1,
-      "stdid": 4,
-      "subid": 1,
-      "question_no": 1,
-      "rightAns": 2,
-      "question": "What is the HCF of 12, 18 and 30?",
-      "Option": ["A: 2", "B: 3", "C: 6", "D: 4"]
-    },
-    {
-      "queid": 3,
-      "chapterid": 1,
-      "stdid": 4,
-      "subid": 1,
-      "question_no": 1,
-      "rightAns": 2,
-      "question": "If a^2 - b^2 = 16 and ab = 8, what is the value of a + b?",
-      "Option": ["A: 4", "B: 8", "C: 12", "D: 16"]
-    }
-  ]
-};
+
+// var apiDataStatic = {
+//   "message": "Success!",
+//   "status": 200,
+//   "data": [
+//     {
+//       "queid": 1,
+//       "chapterid": 1,
+//       "stdid": 4,
+//       "subid": 1,
+//       "question_no": 1,
+//       "rightAns": 0,
+//       "question": "If A = {1, 2, 3} and B = {3, 4, 5}, what is A ∪ B?",
+//       "Option": [
+//         "A: {1, 2, 3, 4, 5}",
+//         "B: {1, 2}",
+//         "C: {3, 4, 5}",
+//         "D: {1, 2, 3}"
+//       ]
+//     },
+//     {
+//       "queid": 2,
+//       "chapterid": 1,
+//       "stdid": 4,
+//       "subid": 1,
+//       "question_no": 1,
+//       "rightAns": 2,
+//       "question": "What is the HCF of 12, 18 and 30?",
+//       "Option": ["A: 2", "B: 3", "C: 6", "D: 4"]
+//     },
+//     {
+//       "queid": 3,
+//       "chapterid": 1,
+//       "stdid": 4,
+//       "subid": 1,
+//       "question_no": 1,
+//       "rightAns": 2,
+//       "question": "If a^2 - b^2 = 16 and ab = 8, what is the value of a + b?",
+//       "Option": ["A: 4", "B: 8", "C: 12", "D: 16"]
+//     }
+//   ]
+// };

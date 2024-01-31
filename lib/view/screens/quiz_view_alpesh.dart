@@ -8,13 +8,13 @@ import '../widgets/common_snackbar.dart';
 import 'congratulation_view.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen(
-      {super.key,
-      required this.stdId,
-      required this.subId,
-      required this.chapterId,
-      required this.titleName,
-      });
+  const QuizScreen({
+    super.key,
+    required this.stdId,
+    required this.subId,
+    required this.chapterId,
+    required this.titleName,
+  });
   final int stdId;
   final int subId;
   final int chapterId;
@@ -35,7 +35,11 @@ class _QuizScreenState extends State<QuizScreen> {
     // Simulate an asynchronous operation (e.g., API call)
     // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
     // QuestionApiData tm = await RemoteServices.getQuestionList(4, 1, 1, context);
-    QuestionApiData tm = await RemoteServices.getQuestionList(stdId: widget.stdId, subId: widget.subId, chapterId: widget.chapterId, context: context);
+    QuestionApiData tm = await RemoteServices.getQuestionList(
+        stdId: widget.stdId,
+        subId: widget.subId,
+        chapterId: widget.chapterId,
+        context: context);
     setState(() {
       apiQuestion = tm;
       print("fetchData is ${apiQuestion!.data![0].option}");
@@ -105,7 +109,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 child: Column(
                   children: [
                     Text(
-                      widget.titleName ?? '',
+                      widget.titleName,
                       style: const TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
@@ -123,21 +127,22 @@ class _QuizScreenState extends State<QuizScreen> {
                   : ListView.builder(
                       shrinkWrap: true,
                       // itemCount: _questionController.questions[questionIndex].options.length,
-                      itemCount: apiQuestion?.data?[questionIndex].option?.length ?? 0,
+                      itemCount:
+                          apiQuestion?.data?[questionIndex].option?.length ?? 0,
                       itemBuilder: (context, index) {
-                        print("index data $index >> ${apiQuestion?.data?[questionIndex].option?[index]}");
+                        print(
+                            "index data $index >> ${apiQuestion?.data?[questionIndex].option?[index]}");
                         return Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: InkWell(
                               onTap: selectedAnswerIndex == null
-                                  ? () => pickAnswer(
-                                      index,
-                                      selectedAnswerIndex,
+                                  ? () => pickAnswer(index, selectedAnswerIndex,
                                       apiQuestion!.data![questionIndex].queid!)
                                   : null,
                               child: AnswerCard(
                                 currentIndex: index,
-                                question: apiQuestion?.data?[questionIndex].option?[index] ??
+                                question: apiQuestion
+                                        ?.data?[questionIndex].option?[index] ??
                                     '',
                                 isSelected: selectedAnswerIndex == index,
                                 selectedAnswerIndex: selectedAnswerIndex,

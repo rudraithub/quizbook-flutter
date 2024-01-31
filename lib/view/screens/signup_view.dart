@@ -16,7 +16,6 @@ import 'package:rudra_it_hub/view/widgets/common_button.dart';
 import 'package:rudra_it_hub/view/widgets/common_textfiled.dart';
 
 import '../widgets/common_snackbar.dart';
-import 'dashboard_view.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({
@@ -67,7 +66,7 @@ class SignUpScreen extends StatelessWidget {
   final RxString genderErrorMessage = RxString('');
 
   final RxString desErrorMsg = RxString('');
-   String btnText = 'Next';
+  String btnText = 'Next';
   // final AppbarBottombarController _controller1 =
   //     Get.put(AppbarBottombarController());
 
@@ -75,7 +74,7 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isProfile) {
       // Here
-      btnText  = "Update";
+      btnText = "Update";
       _firstNameController.text = firstName.isEmpty ? '' : firstName;
       _lastNameController.text = lastName.isEmpty ? '' : lastName;
       _emailController.text = email.isEmpty ? '' : email;
@@ -196,13 +195,18 @@ class SignUpScreen extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                items: ['male', 'female', 'other'].map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
+                                items: ['male', 'female', 'other']
+                                    .map<DropdownMenuItem<String>>(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(
                                           value,
                                           style: const TextStyle(fontSize: 15),
                                         ),
-                                      ),).toList(),
+                                      ),
+                                    )
+                                    .toList(),
                               ),
                             ),
                           ),
@@ -336,10 +340,8 @@ class SignUpScreen extends StatelessWidget {
             if (_key.currentState!.validate()) {
               //  _controller.verifyOtp();
               if (_controller.selectedBirthDate.value == 'Select Date') {
-
                 commonSnackBar(context: context, msg: "Please select date");
-              }
-              else {
+              } else {
                 bool status = await RemoteServices.signUpApi(
                     _firstNameController.text,
                     _lastNameController.text,
@@ -350,7 +352,7 @@ class SignUpScreen extends StatelessWidget {
                     professionId,
                     context);
 
-                if(status == true){
+                if (status == true) {
                   Get.offAll(LoginScreen());
                 }
               }

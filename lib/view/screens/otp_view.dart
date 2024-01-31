@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:rudra_it_hub/controller/otp_cantroller.dart';
-import 'package:rudra_it_hub/view/screens/dashboard_view.dart';
-import 'package:rudra_it_hub/view/screens/std_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/constans.dart';
-import '../../utils/prefrences.dart';
 import '../widgets/common_appbar.dart';
 import '../widgets/common_button.dart';
 import '../widgets/common_textfiled.dart';

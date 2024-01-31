@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -5,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/appurl/all_url.dart';
-import 'package:rudra_it_hub/services/remote_services.dart';
+
 import '../view/screens/otp_view.dart';
 import '../view/widgets/common_snackbar.dart';
 
@@ -17,22 +19,19 @@ class LoginController extends GetxController {
 
   Future<void> LogInUser(
       BuildContext context, TextEditingController _mobileController) async {
-
-
     const uri = '$baseUrl$userVerifyUrl';
     try {
       var headers = <String, String>{};
       headers['Content-Type'] = 'application/json';
 
-
-      var body = <String, dynamic>{"mobileNumber": _mobileController.text.toString()};
-
+      var body = <String, dynamic>{
+        "mobileNumber": _mobileController.text.toString()
+      };
 
       var encodedBody = jsonEncode(body);
 
-
       var response =
-      await http.post(Uri.parse(uri), headers: headers, body: encodedBody);
+          await http.post(Uri.parse(uri), headers: headers, body: encodedBody);
 
       if (response.statusCode == 200) {
         final responseString = response;
@@ -44,9 +43,9 @@ class LoginController extends GetxController {
               verificationFailed: (FirebaseAuthException ex) {
                 ChangeLoading(false);
                 commonSnackBar(context: context, msg: ex.toString());
-
               },
               codeSent: (String verificationId, int? resendtToken) {
+                ChangeLoading(false);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -57,7 +56,6 @@ class LoginController extends GetxController {
                     ));
               },
               codeAutoRetrievalTimeout: (String verificationId) {},
-
               phoneNumber: '+91${_mobileController.text.toString()}');
         } catch (e) {
           ChangeLoading(false);
@@ -69,8 +67,6 @@ class LoginController extends GetxController {
         ChangeLoading(false);
 
         commonSnackBar(context: context, msg: error['message']);
-
-
       }
     } catch (e) {
       commonSnackBar(context: context, msg: e.toString());

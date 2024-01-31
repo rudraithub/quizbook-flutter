@@ -1,16 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
-import 'package:rudra_it_hub/view/screens/dashboard_view.dart';
-import 'package:rudra_it_hub/view/screens/history_result_screen.dart';
-import 'package:rudra_it_hub/view/screens/history_view.dart';
-import 'package:rudra_it_hub/view/screens/login_view.dart';
-import 'package:rudra_it_hub/view/screens/quiz_view.dart';
-import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
-import 'package:rudra_it_hub/view/screens/std_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
