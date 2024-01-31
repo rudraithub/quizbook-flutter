@@ -21,13 +21,15 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # - name: Code Scanning
-      #   uses: github/codeql-action@v2
-      #   with:
-      #     languages: dart
+      - name: Code Scanning
+        uses: github/codeql-action@v2
+        with:
+          languages: dart
+        continue-on-error: true
 
-      # - name: Lint Check
-      #   run: flutter analyze
+      - name: Lint Check
+        run: flutter analyze
+        continue-on-error: true
 
   build-apk:
     needs: code-scan
@@ -45,14 +47,6 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-
-      # - name: Code Scanning
-      #   uses: github/codeql-action@v2
-      #   with:
-      #     languages: dart
-
-      # - name: Lint Check
-      #   run: flutter analyze
 
       - name: Build Flutter App
         run: flutter build apk
