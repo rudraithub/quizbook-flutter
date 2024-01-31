@@ -1,8 +1,8 @@
-name: Flutter CI
+name: Flutter App Build & Release
 
 on:
-  pull_request:
-    branches: [main]
+  push:
+    branches: [ main ]
 
 jobs:
   code-scan:
@@ -63,3 +63,4 @@ jobs:
         with:
           name: quizbook-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+

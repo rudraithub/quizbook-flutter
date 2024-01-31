@@ -1,0 +1,66 @@
+name: Flutter CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  code-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.9"
+          channel: "stable"
+      - run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # - name: Code Scanning
+      #   uses: github/codeql-action@v2
+      #   with:
+      #     languages: dart
+
+      # - name: Lint Check
+      #   run: flutter analyze
+
+  build-apk:
+    needs: code-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.9"
+          channel: "stable"
+      - run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # - name: Code Scanning
+      #   uses: github/codeql-action@v2
+      #   with:
+      #     languages: dart
+
+      # - name: Lint Check
+      #   run: flutter analyze
+
+      - name: Build Flutter App
+        run: flutter build apk
+
+      - name: Archive APK File
+        if:  always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: quizbook-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
