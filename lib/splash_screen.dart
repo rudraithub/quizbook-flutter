@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/utils/constans.dart';
@@ -10,6 +12,9 @@ import 'package:rudra_it_hub/view/screens/std_screen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'model/login_model_alpesh.dart';
+
+String? userBearerToken;
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -23,13 +28,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
       Future.delayed(const Duration(seconds: 2), () {
-        bool loginStatus =
-        SharedPreferencesHelper(prefs).getBool(Preferences.userLogin);
+        bool loginStatus = SharedPreferencesHelper(prefs).getBool(Preferences.userLogin);
+
+
         if (loginStatus == true) {
-          print("true");
-          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => AppbarBottomBarScreen(),));
+
+          LogInModel userData = logInModelFromJson(SharedPreferencesHelper(prefs).getString(Preferences.userFullDetails));
+          userBearerToken = userData.token;
+          print("userBearerToken $userBearerToken");
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => AppbarBottomBarScreen(logInModel: userData),));
         } else {
-          print('false');
           // Get.to(LoginScreen());
           Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginScreen(),));
         }

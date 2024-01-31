@@ -87,11 +87,9 @@ class StudyItem extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
                                       stdId: model.stdId,
-                                          subId: model.sub[index].subId,
-
-                                          std: model.std,
-                                          subject: model.sub[index].subName,
-                                        )));
+                                      subId: model.sub[index].subId,
+                                      std: model.std,
+                                      subject: model.sub[index].subName,)));
                               },
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),

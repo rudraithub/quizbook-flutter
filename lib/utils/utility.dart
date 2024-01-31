@@ -43,7 +43,6 @@ class Utility {
     DateTime? selectedDate;
     try {
       selectedDate = await showDatePicker(
-
         context: Get.context!,
         errorFormatText: 'Error occurred',
         cancelText: 'Close',
@@ -53,7 +52,7 @@ class Utility {
         fieldLabelText: 'Please select date',
         helpText: 'Help text',
         keyboardType: TextInputType.number,
-        initialDate: DateTime(2004 , 02 ,15),
+        initialDate: DateTime(2004, 02, 15),
         firstDate: DateTime(1990, 01, 01),
         lastDate: DateTime(2015, 01, 01),
       );
@@ -61,10 +60,7 @@ class Utility {
         final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
         print(formattedDate);
         return selectedDate;
-      }
-      else{
-
-      }
+      } else {}
       print(selectedDate.toString());
     } catch (e) {
       print(e.toString());
@@ -74,12 +70,9 @@ class Utility {
 
   static bool isEmailValid(String email) {
     return RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(email);
   }
 }
 
-const baseUrl = 'http://192.168.1.23:3000/users/';
-const signUpUrl = 'http://192.168.1.23:3000/std';
-const loginUrl = 'login';
-const std = 'std';
+

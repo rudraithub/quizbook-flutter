@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
 import 'dart:convert';
 
 Chapter chapterFromJson(String str) => Chapter.fromJson(json.decode(str));

@@ -53,7 +53,7 @@ class SharedPreferencesHelper {
   // put string
   Future<bool> putString(String key, String value) {
     if (_prefs == null) return Future.value(false);
-    return _prefs!.setString(key, value);
+    return _prefs.setString(key, value);
   }
 
   // get string list

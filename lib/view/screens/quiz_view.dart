@@ -2,28 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marquee/marquee.dart';
 import 'package:rudra_it_hub/view/screens/congratulation_view.dart';
 import 'package:rudra_it_hub/view/widgets/answer_card.dart';
 import 'package:rudra_it_hub/view/widgets/common_button.dart';
 
 import '../../controller/quiz_controller.dart';
 import '../../utils/constans.dart';
+import '../widgets/common_snackbar.dart';
 
 // import '/screens/result_screen.dart';
 
-class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.stdId , required this.subId , required this.chapterId});
+class QuizScreen1 extends StatefulWidget {
+  const QuizScreen1({super.key, required this.stdId , required this.subId , required this.chapterId});
   final int stdId;
   final int subId;
   final int chapterId;
 
 
   @override
-  State<QuizScreen> createState() => _QuizScreenState();
+  State<QuizScreen1> createState() => _QuizScreen1State();
 }
 
-class _QuizScreenState extends State<QuizScreen> {
+class _QuizScreen1State extends State<QuizScreen1> {
   int? selectedAnswerIndex;
   int questionIndex = 0;
   int score = 0;
@@ -58,8 +58,7 @@ class _QuizScreenState extends State<QuizScreen> {
     double screenWidth = getScreenWidth(context);
 
     // final question = _questionController.questions[questionIndex];
-    bool isLastQuestion =
-        questionIndex == _questionController.questons2.length ;
+    bool isLastQuestion = questionIndex == _questionController.questons2.length ;
     return Scaffold(
       appBar: AppBar(
         // leading: null,
@@ -107,8 +106,8 @@ class _QuizScreenState extends State<QuizScreen> {
             Obx(
               () => ListView.builder(
                 shrinkWrap: true,
-                itemCount:
-                    _questionController.questions[questionIndex].options.length,
+                // itemCount: _questionController.questions[questionIndex].options.length,
+                itemCount: _questionController.apiQuestions?.value.data?.length ?? 0,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 5),
@@ -119,12 +118,10 @@ class _QuizScreenState extends State<QuizScreen> {
                       child: Obx(
                         () => AnswerCard(
                           currentIndex: index,
-                          question: _questionController
-                              .questions[questionIndex].options[index],
+                          question: _questionController.apiQuestions!.value.data?[index].question ?? '',
                           isSelected: selectedAnswerIndex == index,
                           selectedAnswerIndex: selectedAnswerIndex,
-                          correctAnswerIndex: _questionController
-                              .questions[questionIndex].trueAnswer,
+                          correctAnswerIndex: _questionController.apiQuestions!.value.data?[index].rightAns,
                         ),
                       ),
                     ),
@@ -150,7 +147,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                         );
                       } else {
-                        null;
+                        commonSnackBar(context: context, msg: "Please select question");
                       }
                     },
                     title: 'Finish',
@@ -163,7 +160,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         selectedAnswerIndex = null;
                         goToNextQuestion;
                       } else {
-                        null;
+                        commonSnackBar(context: context, msg: "Please select question");
                       }
                       //  selectedAnswerIndex != null ? goToNextQuestion  : null;
                       // void goToNextQuestion() {

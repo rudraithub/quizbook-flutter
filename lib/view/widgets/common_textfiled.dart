@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -121,7 +120,7 @@ class CommonTextFormField extends StatelessWidget {
           )
               :const SizedBox.shrink()),
       validator: (newVal) {
-        print(newVal);
+
         if (isMobileNumber) {
           if (newVal!.isEmpty || newVal.length < 10) {
             return errorMessage;

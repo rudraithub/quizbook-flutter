@@ -73,7 +73,9 @@ class LoginScreen extends StatelessWidget {
                 errorMessage: 'Please enter valid Number',
                 inputType: TextInputType.number,
                 formatter: [mobileLengthFormatter, mobileLengthFormatter],
-                onTap: () {},
+                onTap: () {
+
+                },
                 isMobileNumber: true,
                 // isReadOnly: false,
               ),
