@@ -1,8 +1,8 @@
-name: CodeQL analysis
+name: Flutter CI
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   analyze:
@@ -11,10 +11,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.7.7'
+          channel: 'stable'
+      - run: flutter --version
+
+
 # name: Flutter CI
 
 # on:
-#     pull_request: 
+#     pull_request:
 # #   push:
 # #     branches:
 # #       - main
