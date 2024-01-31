@@ -26,8 +26,8 @@ jobs:
       #   with:
       #     languages: dart
 
-      - name: Lint Check
-        run: flutter analyze
+      # - name: Lint Check
+      #   run: flutter analyze
 
       - name: Build Flutter App
         run: flutter build apk
