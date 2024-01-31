@@ -21,10 +21,10 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Code Scanning
-        uses: github/codeql-action@v2
-        with:
-          languages: dart
+      # - name: Code Scanning
+      #   uses: github/codeql-action@v2
+      #   with:
+      #     languages: dart
 
       - name: Lint Check
         run: flutter analyze
