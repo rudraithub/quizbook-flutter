@@ -23,8 +23,7 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body:
 
-
-      // SingleChildScrollView(
+          // SingleChildScrollView(
           // child:
           Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +119,7 @@ class LoginScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
-                  loginController.LogInUser(context, _mobileController);
+                  loginController.logInUser(context, _mobileController);
                   // print(_mobileController.text.toString());
                   loginController.ChangeLoading(true);
                   FocusScope.of(context).unfocus();

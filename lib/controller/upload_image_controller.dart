@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/view/widgets/common_snackbar.dart';
+import 'package:rudra_it_hub/view/widgets/common_snack_bar.dart';
 
-import '../appurl/all_url.dart';
+import '../appUrl/all_url.dart';
 import '../splash_screen.dart';
 
 class PhotoController extends GetxController {
@@ -20,7 +20,9 @@ class PhotoController extends GetxController {
 
     if (pickedFile != null) {final picker = ImagePicker();
     selectedImage.value = File(pickedFile.path);
-    uploadImage(context);
+   if(context.mounted){
+     uploadImage(context);
+   }
     }
   }
 
@@ -45,11 +47,15 @@ class PhotoController extends GetxController {
       headers: headers
     );
     if(response.statusCode == 200) {
-      commonSnackBar(context: context, msg: "Profile Upload successfully");
+      if(context.mounted)
+        {commonSnackBar(context: context, msg: "Profile Upload successfully");}
     }
     else{
-      commonSnackBar(context: context, msg: response.body);
-    }
+if(context.mounted){
+  commonSnackBar(context: context, msg: response.body);
+
+}
+}
     // Handle the response as needed
     print(response.body);
   }

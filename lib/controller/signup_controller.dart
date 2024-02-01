@@ -11,19 +11,18 @@ class SignUpController extends GetxController {
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
 
-  void chnageGender(String gender) {
+  void changeGender(String gender) {
     if (gender != 'Select Gender') {
       selectedGender.value = gender;
       genders.remove('Select Gender');
     }
-    // funavtion to chnage value of gender
   }
 
-  void chnageBirthDate(String Date) {
+  void changeBirthDate(String Date) {
     selectedBirthDate.value = Date;
   }
 
-  void chnageDesignation(String Designation) {
+  void changeDesignation(String Designation) {
     if (Designation != 'Select Designation') {
       selectedDesignation.value = Designation;
       designations.remove('Select Designation');
