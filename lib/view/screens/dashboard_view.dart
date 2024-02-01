@@ -4,17 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/utils/constans.dart';
 import 'package:rudra_it_hub/view/screens/history_view.dart';
-
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
 import 'package:rudra_it_hub/view/screens/std_screen.dart';
-
 import '../../controller/dashboard_controller.dart';
+import '../../model/login_model_alpesh.dart';
 
 class AppbarBottomBarScreen extends StatelessWidget {
-  final AppbarBottombarController _controller =
-      Get.put(AppbarBottombarController());
-
-  AppbarBottomBarScreen({super.key});
+  final AppbarBottombarController _controller = Get.put(AppbarBottombarController());
+  AppbarBottomBarScreen({super.key,this.logInModel});
+  final LogInModel? logInModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,14 +44,14 @@ class AppbarBottomBarScreen extends StatelessWidget {
               return const History();
             } else
               return SignUpScreen(
-                firstName: 'Prashant',
+                firstName: logInModel?.data?.firstName ?? '',
                 isProfile: true,
-                lastName: 'Makwana',
-                email: 'mp959183@gmail.com',
-                mobileNo: '9484779764',
-                gender: 'Male',
-                desi: "student",
-                date: "15-02-2004",
+                lastName: logInModel?.data?.lastName ?? '',
+                email: logInModel?.data?.email ?? '',
+                mobileNo: logInModel?.data?.mobileNumber ?? '',
+                gender: logInModel?.data?.gender ?? "",
+                desi: logInModel?.data?.profession?[0].name ?? "",
+                date: logInModel?.data?.dob ?? "",
               );
           }),
       bottomNavigationBar: Obx(

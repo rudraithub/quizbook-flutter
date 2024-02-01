@@ -1,8 +1,6 @@
 // ignore_for_file: avoid_print, unused_local_variable, unused_element, non_constant_identifier_names, file_names
 
-import 'dart:convert';
 import 'package:get/get.dart';
-
 
 class SignUpController extends GetxController {
   final RxString selectedGender = 'Select Gender'.obs;
@@ -35,6 +33,4 @@ class SignUpController extends GetxController {
   }
 
 //----------------------------------
-
-
 }

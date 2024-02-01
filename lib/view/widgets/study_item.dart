@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:rudra_it_hub/model/study_model.dart';
 import 'package:rudra_it_hub/utils/constans.dart';
@@ -10,7 +12,7 @@ class StudyItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
-    double screenWidth = getScreenWidth(context);
+    // double screenWidth = getScreenWidth(context);
 
     return Padding(
       padding: const EdgeInsets.only(left: 5, right: 5, top: 20),
@@ -70,7 +72,6 @@ class StudyItem extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: model.sub.length,
                     itemBuilder: (context, index) {
-
                       return Padding(
                         padding: const EdgeInsets.only(top: 0, left: 2),
                         child: Column(
@@ -81,14 +82,15 @@ class StudyItem extends StatelessWidget {
                               onTap: () {
                                 // print(
                                 //     "${model.sub[index].subName} Std ${model.std}");
-                                print("this is std id  " + model.stdId.toString() );
-                                print("this is sub id  "+ model.sub[index].subId.toString() );
+                                print("this is std id  " +
+                                    model.stdId.toString());
+                                print("this is sub id  " +
+                                    model.sub[index].subId.toString());
 
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
-                                      stdId: model.stdId,
+                                          stdId: model.stdId,
                                           subId: model.sub[index].subId,
-
                                           std: model.std,
                                           subject: model.sub[index].subName,
                                         )));
@@ -113,13 +115,13 @@ class StudyItem extends StatelessWidget {
                             SizedBox(
                                 // width: screenWidth / 5,
                                 child: Text(
-                                  model.sub[index].subName,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: screenHeight * 0.02,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ))
+                              model.sub[index].subName,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: screenHeight * 0.02,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ))
                           ],
                         ),
                       );

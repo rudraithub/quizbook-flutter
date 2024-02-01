@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:rudra_it_hub/services/apiresponse.dart';
-
 
 class ApiController {
   static const Duration timeOutDuration = Duration(seconds: 30);
@@ -64,7 +62,7 @@ class ApiController {
     return apiResponse;
   }
 
-  static Future<ApiResponse> post(String url, Map<String , dynamic> body) async {
+  static Future<ApiResponse> post(String url, Map<String, dynamic> body) async {
     ApiResponse apiResponse = ApiResponse();
     print('object');
     try {
@@ -82,7 +80,10 @@ class ApiController {
       var client = http.Client();
       print("api $url $body");
       final response = await client
-          .post(Uri.parse(url), body: body, )//headers: headers
+          .post(
+            Uri.parse(url),
+            body: body,
+          ) //headers: headers
           .timeout(timeOutDuration);
       log("response.body $response");
       if (response.statusCode == 200) {
@@ -111,7 +112,7 @@ class ApiController {
         'Content-Type': 'application/json',
       };
       var response =
-      await http.post(Uri.parse(url), body: body, headers: headers);
+          await http.post(Uri.parse(url), body: body, headers: headers);
       return response;
     } catch (ex) {
       throw Exception([ex]);

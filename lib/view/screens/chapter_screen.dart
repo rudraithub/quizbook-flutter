@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
 import 'package:rudra_it_hub/utils/constans.dart';
-import 'package:rudra_it_hub/view/screens/quiz_view.dart';
+import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 
 ChapterController chProvider = ChapterController();
 
 class ChapterScreen extends StatefulWidget {
-  ChapterScreen(
+  const ChapterScreen(
       {super.key,
       required this.subId,
       required this.stdId,
@@ -29,6 +29,7 @@ class ChapterScreen extends StatefulWidget {
 class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void initState() {
+    print("sub stdId ${widget.stdId} :subId: ${widget.subId} :std: ${widget.std}");
     chProvider.fatchChepter(widget.stdId, widget.subId);
     super.initState();
   }
@@ -45,14 +46,13 @@ class _ChapterScreenState extends State<ChapterScreen> {
           body: ListView.builder(
             itemCount: chProvider.stdList.value.data.length,
             itemBuilder: (context, index) {
-              // print('llllll');
               final item = chProvider.stdList.value.data[index];
-              print(index.toString());
               if (chProvider.isLoading.value) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
-              } else {
+              }
+              else {
                 return InkWell(
                     onTap: () {
                       Navigator.push(
@@ -61,7 +61,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
                             builder: (context) => QuizScreen(
                               stdId: widget.stdId,
                               subId: widget.subId,
-                              chapterId: item.chapterid,
+                              chapterId: item.chapterid, titleName: item.content,
                             ),
                           ));
                     },
@@ -110,12 +110,12 @@ class CustomItem extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             backgroundImage:
-                const AssetImage('assets/images/normal_number_bg.png'),
+            const AssetImage('assets/images/normal_number_bg.png'),
+            maxRadius: screenWidth * 0.0750,
             child: Text(
               logoIndex,
               style: const TextStyle(color: Colors.white),
             ),
-            maxRadius: screenWidth * 0.0750,
           ),
           title: Text(
             chName,
@@ -152,7 +152,7 @@ class CustomItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                       height: screenHeight * 0.02,
                       width: screenHeight * 0.02,
                       child: Image.asset('assets/images/question_icon.png')),
@@ -172,7 +172,7 @@ class CustomItem extends StatelessWidget {
                   SizedBox(
                     width: screenWidth * 0.01,
                   ),
-                  Container(
+                  SizedBox(
                       height: screenHeight * 0.02,
                       width: screenHeight * 0.02,
                       child: Image.asset('assets/images/time_icon.png')),

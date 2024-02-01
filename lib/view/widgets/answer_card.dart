@@ -17,18 +17,20 @@ class AnswerCard extends StatelessWidget {
   final int? selectedAnswerIndex;
   final int currentIndex;
 
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
     bool isCorrectAnswer = (currentIndex == correctAnswerIndex);
     bool isWrongAnswer = !isCorrectAnswer && isSelected;
-    return selectedAnswerIndex != null
-        ? Card(
-      color: isCorrectAnswer
-          ? Colors.green
-          : isWrongAnswer
-          ? Colors.red
-          : Colors.white,
+    return selectedAnswerIndex != null ? Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0), // Set border radius
+        side: BorderSide(
+            color: isCorrectAnswer ? Colors.green : isWrongAnswer ? Colors.red : Colors.white,
+            width: 1.0), // Set border color and width
+      ),
+      color: isCorrectAnswer ? Colors.green[100] : isWrongAnswer ? Colors.red[100] : Colors.white,
       child: ListTile(
         title: Text(
           question,

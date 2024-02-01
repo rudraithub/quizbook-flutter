@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +20,18 @@ class StudyScreen extends StatefulWidget {
 
 class _StudyScreenState extends State<StudyScreen> {
   List<StudyModel> studyList = [];
+  StudyModel? studyModel;
+
   final SubjectProvider provider = Get.put(SubjectProvider());
+
+  // Future<void> fetchData() async {
+  //   // Simulate an asynchronous operation (e.g., API call)
+  //   // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
+  //   StudyModel tm = await RemoteServices.fetchStudyModel();
+  //   setState(() {
+  //     studyModel = tm;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -38,37 +51,35 @@ class _StudyScreenState extends State<StudyScreen> {
     // );
     // }
     return Scaffold(
-
-appBar:AppBar(
-  title: Text(
-    "શ્રેણીઓ",
-    textAlign: TextAlign.center,
-    style: const TextStyle(fontWeight: FontWeight.bold),
-  ),
-  centerTitle: true,
-  backgroundColor: Colors.white,
-  elevation: 2,
-  shadowColor: Colors.grey,
-),
-
-     body :  Obx(
-      () {
-        if (provider.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          // if(provider.stdList.isEmpty){
-          //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
-          // }
-          return ListView.builder(
-            itemCount: provider.stdList.length,
-            itemBuilder: (context, index) {
-              return StudyItem(model: provider.stdList[index]);
-
-            },
-          );
-        }
-      },
-    ));
+        appBar: AppBar(
+          title: const Text(
+            "Standards",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: Colors.grey,
+        ),
+        body: Obx(
+          () {
+            if (provider.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              // if(provider.stdList.isEmpty){
+              //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
+              // }
+              print("std screen in ${provider.stdList}");
+              return ListView.builder(
+                itemCount: provider.stdList.length,
+                itemBuilder: (context, index) {
+                  return StudyItem(model: provider.stdList[index]);
+                },
+              );
+            }
+          },
+        ));
   }
 }
 

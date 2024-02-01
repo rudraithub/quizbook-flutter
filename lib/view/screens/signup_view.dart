@@ -9,10 +9,13 @@ import 'package:rudra_it_hub/controller/signup_cantroller.dart';
 import 'package:rudra_it_hub/controller/uploadimage_controller.dart';
 import 'package:rudra_it_hub/services/remote_services.dart';
 import 'package:rudra_it_hub/utils/utility.dart';
+import 'package:rudra_it_hub/view/screens/login_view.dart';
 import 'package:rudra_it_hub/view/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constans.dart';
 import 'package:rudra_it_hub/view/widgets/common_button.dart';
 import 'package:rudra_it_hub/view/widgets/common_textfiled.dart';
+
+import '../widgets/common_snackbar.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({
@@ -63,6 +66,7 @@ class SignUpScreen extends StatelessWidget {
   final RxString genderErrorMessage = RxString('');
 
   final RxString desErrorMsg = RxString('');
+  String btnText = 'Next';
   // final AppbarBottombarController _controller1 =
   //     Get.put(AppbarBottombarController());
 
@@ -70,18 +74,19 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isProfile) {
       // Here
+      btnText = "Update";
       _firstNameController.text = firstName.isEmpty ? '' : firstName;
       _lastNameController.text = lastName.isEmpty ? '' : lastName;
       _emailController.text = email.isEmpty ? '' : email;
       _mobileController.text = mobileNo.isEmpty ? '' : mobileNo;
       selectedGender.value = gender.isEmpty ? '' : gender;
-      selectedDesignation.value  = desi.isEmpty ? '' : desi;
+      selectedDesignation.value = desi.isEmpty ? '' : desi;
       _controller.chnageBirthDate(date);
     }
 
     return Scaffold(
-      appBar:  PreferredSize(
-        preferredSize:const Size.fromHeight(60.0),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
         child: CommonAppBarScreen(
           title: 'Update Profile',
           backgroundColor: whiteColor, // Customize the color here
@@ -102,7 +107,9 @@ class SignUpScreen extends StatelessWidget {
                       height: 18,
                     ),
                     GestureDetector(
-                      onTap: photoController.pickImage,
+                      onTap: () {
+                        photoController.pickImage(context);
+                      },
                       child: Obx(() {
                         return (photoController.selectedImage.value == null)
                             ? CircleAvatar(
@@ -118,7 +125,6 @@ class SignUpScreen extends StatelessWidget {
                       }),
                     ),
                     CommonTextFormField(
-
                       controller: _firstNameController,
                       label: 'First Name',
                       errorMessage: 'Enter Your First Name',
@@ -189,7 +195,7 @@ class SignUpScreen extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                items: ['Male', 'Female', 'Other']
+                                items: ['male', 'female', 'other']
                                     .map<DropdownMenuItem<String>>(
                                       (String value) =>
                                           DropdownMenuItem<String>(
@@ -224,43 +230,41 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         Flexible(
                           child: SizedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 3),
-                                child:
-                                    //  CommonTextFormField(
-                                    //   controller: _pickDAte,
-                                    //   errorMessage: "Please Select The Date ",
-                                    //   onTap: Utility.showDatePickerDialog(),
-                                    // )
-                                    InkWell(
-                                  onTap: () {
-                                    Utility.showDatePickerDialog()
-                                        .then((pickedDate) {
-                                      if (pickedDate != null) {
-
-                                        _controller.chnageBirthDate(
-                                            "${pickedDate.day.toString().padLeft(2,'0')}-${pickedDate.month.toString().padLeft(2,'0')}-${pickedDate.year.toString()}" );
-                                        selectedDate = pickedDate;
-                                      }
-                                    });
-                                  },
-                                  child: InputDecorator(
-                                      decoration: const InputDecoration(
-                                          labelText: 'BirthDate',
-                                          labelStyle: TextStyle(
-                                              color: greyColor, fontSize: 14)),
-                                      child: Obx(() => Text(
-                                            _controller.selectedBirthDate.value,
-                                            maxLines: 1,
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500,
-                                                overflow: TextOverflow.clip),
-                                          ))),
-                                ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 3),
+                              child:
+                                  //  CommonTextFormField(
+                                  //   controller: _pickDAte,
+                                  //   errorMessage: "Please Select The Date ",
+                                  //   onTap: Utility.showDatePickerDialog(),
+                                  // )
+                                  InkWell(
+                                onTap: () {
+                                  Utility.showDatePickerDialog()
+                                      .then((pickedDate) {
+                                    if (pickedDate != null) {
+                                      _controller.chnageBirthDate(
+                                          "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
+                                      selectedDate = pickedDate;
+                                    }
+                                  });
+                                },
+                                child: InputDecorator(
+                                    decoration: const InputDecoration(
+                                        labelText: 'BirthDate',
+                                        labelStyle: TextStyle(
+                                            color: greyColor, fontSize: 14)),
+                                    child: Obx(() => Text(
+                                          _controller.selectedBirthDate.value,
+                                          maxLines: 1,
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                              overflow: TextOverflow.clip),
+                                        ))),
                               ),
                             ),
-
+                          ),
                         ),
                       ],
                     ),
@@ -336,15 +340,9 @@ class SignUpScreen extends StatelessWidget {
             if (_key.currentState!.validate()) {
               //  _controller.verifyOtp();
               if (_controller.selectedBirthDate.value == 'Select Date') {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please select date',
-                        style: TextStyle(fontSize: 15)),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
+                commonSnackBar(context: context, msg: "Please select date");
               } else {
-                RemoteServices.signUpApi(
+                bool status = await RemoteServices.signUpApi(
                     _firstNameController.text,
                     _lastNameController.text,
                     _emailController.text,
@@ -354,48 +352,13 @@ class SignUpScreen extends StatelessWidget {
                     professionId,
                     context);
 
-                // print("This is mo no" + _mobileController.text.toString());
-                // Get.offAll(AppbarBottomBarScreen());
+                if (status == true) {
+                  Get.offAll(LoginScreen());
+                }
               }
             }
           },
-
-          // onPress: () async {
-          //   if (_key.currentState!.validate()) {
-          //     Map<String, dynamic> signUpData = {
-          //       'firstName': _firstNameController.text,
-          //       'lastName': _lastNameController.text,
-          //       'email': _emailController.text,13
-          //       'password': "",
-          //       'gender': "",
-          //       'DOB': "",
-          //       'mobileNumber': _mobileController.text,
-          //       'professionId': 1
-          //     };
-          //     await _controller.signUpApi(signUpData);
-          //   }
-          //   Get.offAll(AppbarBottomBarScreen());
-          // },
-          // onPress: () async {
-          //   if (_key.currentState!.validate()) {
-          //     try {
-          //       // Make HTTP request
-          //       final response =
-          //           await http.get(Uri.parse("http://192.168.1.23:3000/std"));
-
-          //       if (response.statusCode == 200) {
-          //         Map<String, dynamic> data = json.decode(response.body);
-          //         print("Data from the server: $data");
-          //       } else {
-          //         print("Error: ${response.statusCode}");
-          //       }
-          //     } catch (e) {
-          //       print("Error: $e");
-          //     }
-          //   }
-          //   Get.offAll(AppbarBottomBarScreen());
-          // },
-          title: 'Next'),
+          title: btnText),
     );
   }
 }

@@ -1,18 +1,25 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, empty_catches, file_names
 
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/model/question2_model.dart';
 import 'package:rudra_it_hub/services/remote_services.dart';
 
+import '../model/question_api_data.dart';
 import '../model/question_model.dart';
 
 class QuestionController extends GetxController {
   RxInt currentQuestionIndex = 1.obs;
   RxList<Question2> questons2 = <Question2>[
-    Question2(queid: 0, chapterid: 0, stdid: 0, subid: 0, questionNo: 0, question: '0', option: Option(a: 'a', b: 'b', c: 'c', d: 'd'), rightAns: '')
+    Question2(
+        queid: 0,
+        chapterid: 0,
+        stdid: 0,
+        subid: 0,
+        questionNo: 0,
+        question: '0',
+        option: Option(a: 'a', b: 'b', c: 'c', d: 'd'),
+        rightAns: '')
   ].obs;
 
   RxList<QuestionModel> questions = <QuestionModel>[
@@ -38,6 +45,8 @@ class QuestionController extends GetxController {
       trueAnswer: 3,
     ),
   ].obs;
+
+  Rx<QuestionApiData>? apiQuestions;
 
   RxInt selectedOptionIndex = (-1).obs;
 
@@ -75,9 +84,12 @@ class QuestionController extends GetxController {
 
     try {
       isLoading(true);
+      // var products = await RemoteServices.getQuestionList(stdId, subId, chapterId, context);
       var products = await RemoteServices.getQuestionList(
-          stdId, subId, chapterId, context);
-      products = questons2.value;
+          stdId: stdId, subId: subId, chapterId: chapterId, context: context);
+      // products = questons2.value;
+      apiQuestions = products.obs;
+      products = products;
       print(questons2[0].question);
       // print(products.toString());
       // if (products.data.isNotEmpty) {
