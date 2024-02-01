@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rudra_it_hub/appUrl/all_url.dart';
+import 'package:rudra_it_hub/appUrl/http_all_method.dart';
 import 'package:rudra_it_hub/controller/quiz_controller.dart';
 import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/model/study_model.dart';
@@ -21,37 +22,35 @@ class RemoteServices {
   // LoginController loginController = LoginController();
   // final TextEditingController _mobileController = TextEditingController();
 
-  static Future<Chapter> fatchChepter(int stdId, int subId) async {
-    try {
-      final uri = Uri.parse('$baseUrl$chapterUrl'
-          // 'http://192.168.1.22:3000/std/$stdId/subject/$subId/chapter'
-          );
-
-      var headers = <String, String>{};
-      headers['Content-Type'] = 'application/json';
-
-      var body = <String, dynamic>{"stdid": stdId, "subid": subId};
-      var response =
-          await client.post(uri, headers: headers, body: jsonEncode(body));
-      print('fatchChepterfatchChepter ${response.body}');
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return chapterFromJson(jsonString);
-      } else {
-        print('hiiiii');
-        return Chapter(status: 0, data: [], message: '');
-      }
-    } catch (e) {
-      print(e.toString());
-      return Chapter(status: 0, data: [], message: '');
-    }
-  }
+  // static Future<Chapter> fatchChapter(int stdId, int subId) async {
+  //   try {
+  //     final uri = Uri.parse('$baseUrl$chapterUrl'
+  //         // 'http://192.168.1.22:3000/std/$stdId/subject/$subId/chapter'
+  //         );
+  //
+  //     var headers = <String, String>{};
+  //     headers['Content-Type'] = 'application/json';
+  //
+  //     var body = <String, dynamic>{"stdid": stdId, "subid": subId};
+  //     var response =await postMethod('$baseUrl$chapterUrl', body, headers);
+  //
+  //
+  //     if (response.statusCode == 200) {
+  //       var jsonString = response.body;
+  //       return chapterFromJson(jsonString);
+  //     } else {
+  //       return Chapter(status: 0, data: [], message: '');
+  //     }
+  //   } catch (e) {
+  //     return Chapter(status: 0, data: [], message: '');
+  //   }
+  // }
 
   static Future<bool> signUpApi(
       String firstName,
       String lastName,
       String email,
-      String gender,
+      int gender,
       DateTime dob,
       String mobileNo,
       int professionId,
@@ -61,15 +60,15 @@ class RemoteServices {
 
     String formattedDate =
         "${dob.day.toString().padLeft(2, '0')}/${dob.month.toString().padLeft(2, '0')}/${dob.year.toString()}";
-    print(formattedDate);
+    print(gender);
     // String formattedDate = "${dob.day}-${dob.month}-${dob.year}";
-    print(formattedDate);
+
     final Map<String, dynamic> requestBody = {
       "firstName": firstName,
       "lastName": lastName,
       "email": email,
       "password": 'Password Is here',
-      "gender": gender,
+      "genderID": gender,
       "DOB": formattedDate,
       "mobileNumber": mobileNo,
       "professionId": professionId,
@@ -147,41 +146,41 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> getUserAvailable(
-      String moNo, BuildContext context) async {
-    const uri = '$baseUrl$userVerifyUrl';
-    try {
-      var headers = <String, String>{};
-      headers['Content-Type'] = 'application/json';
-
-// Body map
-      var body = <String, dynamic>{"mobileNumber": moNo};
-
-// Encode body
-      var encodedBody = jsonEncode(body);
-
-// Make request
-      var response =
-          await http.post(Uri.parse(uri), headers: headers, body: encodedBody);
-
-      if (response.statusCode == 200) {
-        final responseString = response;
-        return true;
-      } else {
-        Map<String, dynamic> error = json.decode(response.body);
-        print(error['message']);
-
-        commonSnackBar(context: context, msg: error['message']);
-
-        return false;
-      }
-    } catch (e) {
-      commonSnackBar(context: context, msg: e.toString());
-
-      print('Prashant ' + e.toString());
-      return false;
-    }
-  }
+//   static Future<bool> getUserAvailable(
+//       String moNo, BuildContext context) async {
+//     const uri = '$baseUrl$userVerifyUrl';
+//     try {
+//       var headers = <String, String>{};
+//       headers['Content-Type'] = 'application/json';
+//
+// // Body map
+//       var body = <String, dynamic>{"mobileNumber": moNo};
+//
+// // Encode body
+//       var encodedBody = jsonEncode(body);
+//
+// // Make request
+//       var response =
+//           await http.post(Uri.parse(uri), headers: headers, body: encodedBody);
+//
+//       if (response.statusCode == 200) {
+//         final responseString = response;
+//         return true;
+//       } else {
+//         Map<String, dynamic> error = json.decode(response.body);
+//         print(error['message']);
+//
+//         commonSnackBar(context: context, msg: error['message']);
+//
+//         return false;
+//       }
+//     } catch (e) {
+//       commonSnackBar(context: context, msg: e.toString());
+//
+//       print('Prashant ' + e.toString());
+//       return false;
+//     }
+//   }
 
   static Future<QuestionApiData> getQuestionList(
       {required int stdId,
@@ -204,7 +203,10 @@ class RemoteServices {
         QuestionApiData tm = questionApiDataFromJson(response.body);
         return tm;
       } else {
-        commonSnackBar(context: context, msg: response.body);
+        Map<String, dynamic> data = json.decode(response.body);
+        String message = data['message'];
+        print(message);
+        commonSnackBar(context: context, msg: message);
         return QuestionApiData();
       }
     } catch (e) {
@@ -234,10 +236,9 @@ class RemoteServices {
         "chapterid": chapterid,
         "questions": questions
       };
-      // print("url kurl kkjlflkjsdljk ${uri}");
-      // print("url kurl kkjlflkjsdljk ${userBearerToken}");
+
       var encodedBody = jsonEncode(body);
-      // print("userBearerTokenuserBearerToken $encodedBody");
+
       var response =
           await http.post(Uri.parse(uri), headers: headers, body: encodedBody);
 
@@ -257,44 +258,3 @@ class RemoteServices {
 }
 
 
-// var apiDataStatic = {
-//   "message": "Success!",
-//   "status": 200,
-//   "data": [
-//     {
-//       "queid": 1,
-//       "chapterid": 1,
-//       "stdid": 4,
-//       "subid": 1,
-//       "question_no": 1,
-//       "rightAns": 0,
-//       "question": "If A = {1, 2, 3} and B = {3, 4, 5}, what is A ∪ B?",
-//       "Option": [
-//         "A: {1, 2, 3, 4, 5}",
-//         "B: {1, 2}",
-//         "C: {3, 4, 5}",
-//         "D: {1, 2, 3}"
-//       ]
-//     },
-//     {
-//       "queid": 2,
-//       "chapterid": 1,
-//       "stdid": 4,
-//       "subid": 1,
-//       "question_no": 1,
-//       "rightAns": 2,
-//       "question": "What is the HCF of 12, 18 and 30?",
-//       "Option": ["A: 2", "B: 3", "C: 6", "D: 4"]
-//     },
-//     {
-//       "queid": 3,
-//       "chapterid": 1,
-//       "stdid": 4,
-//       "subid": 1,
-//       "question_no": 1,
-//       "rightAns": 2,
-//       "question": "If a^2 - b^2 = 16 and ab = 8, what is the value of a + b?",
-//       "Option": ["A: 4", "B: 8", "C: 12", "D: 16"]
-//     }
-//   ]
-// };

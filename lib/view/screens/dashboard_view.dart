@@ -49,7 +49,7 @@ class AppbarBottomBarScreen extends StatelessWidget {
                 lastName: logInModel?.data?.lastName ?? '',
                 email: logInModel?.data?.email ?? '',
                 mobileNo: logInModel?.data?.mobileNumber ?? '',
-                gender: logInModel?.data?.gender ?? "",
+                gender: logInModel?.data?.gender?[0].name ?? "",
                 desi: logInModel?.data?.profession?[0].name ?? "",
                 date: logInModel?.data?.dob ?? "",
               );

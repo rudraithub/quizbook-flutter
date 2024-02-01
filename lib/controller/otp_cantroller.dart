@@ -67,12 +67,16 @@ class OTPController extends GetxController {
                       (route) => false);
             }
           } else {
+            print('Here 3');
+
             if(context.mounted){
               commonSnackBar(context: context, msg: "catch ${response.body}");
             }
             // LogInModel users =  LogInModel();
           }
         } catch (e) {
+          print('Here 4');
+          print(e.toString());
          if(context.mounted){
            commonSnackBar(context: context, msg: "catch ${e.toString()}");
          }

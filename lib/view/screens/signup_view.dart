@@ -77,6 +77,7 @@ class SignUpScreen extends StatelessWidget {
       _lastNameController.text = lastName.isEmpty ? '' : lastName;
       _emailController.text = email.isEmpty ? '' : email;
       _mobileController.text = mobileNo.isEmpty ? '' : mobileNo;
+
       selectedGender.value = gender.isEmpty ? '' : gender;
       selectedDesignation.value = desi.isEmpty ? '' : desi;
       _controller.changeBirthDate(date);
@@ -193,7 +194,7 @@ class SignUpScreen extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                items: ['male', 'female', 'other']
+                                items: ['Male', 'Female', 'Other']
                                     .map<DropdownMenuItem<String>>(
                                       (String value) =>
                                           DropdownMenuItem<String>(
@@ -335,6 +336,14 @@ class SignUpScreen extends StatelessWidget {
             } else {
               professionId = 3;
             }
+            int genderId = 1;
+            if (selectedDesignation.value == 'male') {
+              genderId = 1;
+            } else if (selectedDesignation.value == 'female') {
+              genderId == 2;
+            } else {
+              genderId = 3;
+            }
             if (_key.currentState!.validate()) {
               //  _controller.verifyOtp();
               if (_controller.selectedBirthDate.value == 'Select Date') {
@@ -344,7 +353,7 @@ class SignUpScreen extends StatelessWidget {
                     _firstNameController.text,
                     _lastNameController.text,
                     _emailController.text,
-                    selectedGender.toString(),
+                   genderId,
                     selectedDate,
                     _mobileController.text,
                     professionId,

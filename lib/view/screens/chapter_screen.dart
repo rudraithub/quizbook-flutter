@@ -30,7 +30,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void initState() {
     // print("sub stdId ${widget.stdId} :subId: ${widget.subId} :std: ${widget.std}");
-    chProvider.fetchChapter(widget.stdId, widget.subId);
+    chProvider.fetchChapter(widget.stdId, widget.subId ,context);
     super.initState();
   }
 

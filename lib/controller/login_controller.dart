@@ -13,8 +13,13 @@ import '../view/widgets/common_snack_bar.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
-  void changeLoading(bool loadingStatus) {
-    isLoading.value = loadingStatus;
+  void changeLoading(bool loadingStatus, BuildContext context) {
+    if (isLoading.value) {
+      Navigator.of(context).pop();
+      isLoading.value = loadingStatus;
+    } else {
+      isLoading.value = loadingStatus;
+    }
   }
 
   Future<void> logInUser(
@@ -37,11 +42,12 @@ class LoginController extends GetxController {
           await FirebaseAuth.instance.verifyPhoneNumber(
               verificationCompleted: (PhoneAuthCredential credential) {},
               verificationFailed: (FirebaseAuthException ex) {
-                changeLoading(false);
+                changeLoading(false, context);
                 commonSnackBar(context: context, msg: ex.toString());
               },
               codeSent: (String verificationId, int? resendToken) {
-                changeLoading(false);
+                changeLoading(false, context);
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -54,22 +60,26 @@ class LoginController extends GetxController {
               codeAutoRetrievalTimeout: (String verificationId) {},
               phoneNumber: '+91${mobileController.text.toString()}');
         } catch (e) {
-          changeLoading(false);
+         if(context.mounted){
+           changeLoading(false, context);
+         }
           // print("This is Exception $e");
         }
       } else {
         Map<String, dynamic> error = json.decode(response.body);
         // print(error['message'] + ' ssss');
-        changeLoading(false);
+
         if (context.mounted) {
+          changeLoading(false, context);
           commonSnackBar(context: context, msg: error['message']);
         }
       }
     } catch (e) {
       if (context.mounted) {
         commonSnackBar(context: context, msg: e.toString());
+        changeLoading(false, context);
       }
-      changeLoading(false);
+
       // print('Prashant ' + e.toString());
     }
   }
