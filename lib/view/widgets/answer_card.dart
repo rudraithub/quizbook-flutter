@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 
 class AnswerCard extends StatelessWidget {
   const AnswerCard({
@@ -55,22 +55,5 @@ class AnswerCard extends StatelessWidget {
   }
 }
 
-// Widget buildCorrectIcon() => const CircleAvatar(
-//       radius: 15,
-//       backgroundColor: Colors.green,
-//       child: Icon(
-//         Icons.check,
-//         color: Colors.white,
-//       ),
-//     );
-
-// Widget buildWrongIcon() => const CircleAvatar(
-//       radius: 15,
-//       backgroundColor: Colors.red,
-//       child: Icon(
-//         Icons.close,
-//         color: Colors.white,
-//       ),
-//     );
 
 

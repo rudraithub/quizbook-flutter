@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class HsAnswerCard extends StatelessWidget {
   final String option;
 
-  HsAnswerCard({required this.option});
+  const HsAnswerCard({super.key, required this.option});
 
   @override
   Widget build(BuildContext context) {

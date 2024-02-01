@@ -7,8 +7,8 @@ import 'package:rudra_it_hub/view/widgets/answer_card.dart';
 import 'package:rudra_it_hub/view/widgets/common_button.dart';
 
 import '../../controller/quiz_controller.dart';
-import '../../utils/constans.dart';
-import '../widgets/common_snackbar.dart';
+import '../../utils/constants.dart';
+import '../widgets/common_snack_bar.dart';
 
 // import '/screens/result_screen.dart';
 
@@ -30,7 +30,7 @@ class _QuizScreen1State extends State<QuizScreen1> {
   final QuestionController _questionController = QuestionController();
   @override
   void initState() {
-    _questionController.getQusetionList(widget.chapterId, widget.subId,widget.stdId, context);
+    _questionController.getQuestionList(widget.chapterId, widget.subId,widget.stdId, context);
     setState(() {
 
     });
@@ -48,7 +48,7 @@ class _QuizScreen1State extends State<QuizScreen1> {
   }
 
   void goToNextQuestion() {
-    print(_questionController.currentQuestionIndex.value.toString());
+    // print(_questionController.currentQuestionIndex.value.toString());
     _questionController.moveToNextQuestion();
   }
 
@@ -58,7 +58,7 @@ class _QuizScreen1State extends State<QuizScreen1> {
     double screenWidth = getScreenWidth(context);
 
     // final question = _questionController.questions[questionIndex];
-    bool isLastQuestion = questionIndex == _questionController.questons2.length ;
+    bool isLastQuestion = questionIndex == _questionController.questions2.length ;
     return Scaffold(
       appBar: AppBar(
         // leading: null,
@@ -73,7 +73,7 @@ class _QuizScreen1State extends State<QuizScreen1> {
           // Marquee
               Text(
                          _questionController
-                            .questons2[questionIndex].question,
+                            .questions2[questionIndex].question,
                         style: TextStyle(
                             color: whiteColor, fontSize: screenHeight * 0.030),
                       )
@@ -129,7 +129,7 @@ class _QuizScreen1State extends State<QuizScreen1> {
                 },
               ),
             ),
-            // Next Buttonconsconstt
+
             const Spacer(),
 
             isLastQuestion
@@ -140,7 +140,7 @@ class _QuizScreen1State extends State<QuizScreen1> {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (_) => CongratulationScreen(
-                              noOftrueans: score,
+                              noOfTrueAns: score,
                               totalQuestion:
                                   _questionController.questions.length,
                             ),

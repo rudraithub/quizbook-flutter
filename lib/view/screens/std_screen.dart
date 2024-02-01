@@ -12,7 +12,7 @@ class StudyScreen extends StatefulWidget {
   const StudyScreen({
     super.key,
   });
-  // final List<StudyModel> dataList;
+
 
   @override
   State<StudyScreen> createState() => _StudyScreenState();
@@ -23,16 +23,6 @@ class _StudyScreenState extends State<StudyScreen> {
   StudyModel? studyModel;
 
   final SubjectProvider provider = Get.put(SubjectProvider());
-
-  // Future<void> fetchData() async {
-  //   // Simulate an asynchronous operation (e.g., API call)
-  //   // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
-  //   StudyModel tm = await RemoteServices.fetchStudyModel();
-  //   setState(() {
-  //     studyModel = tm;
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -40,16 +30,6 @@ class _StudyScreenState extends State<StudyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Widget content = Center(child: Text('data'));
-
-    // if (widget.dataList.isNotEmpty) {
-    //   content =ListView.builder(
-    //   itemCount: widget.dataList.length,
-    //   itemBuilder: (context, index) {
-    //     return StudyItem(model: provider.stdList[index]);
-    //   },
-    // );
-    // }
     return Scaffold(
         appBar: AppBar(
           title: const Text(

@@ -10,7 +10,7 @@ import '../model/question_model.dart';
 
 class QuestionController extends GetxController {
   RxInt currentQuestionIndex = 1.obs;
-  RxList<Question2> questons2 = <Question2>[
+  RxList<Question2> questions2 = <Question2>[
     Question2(
         queid: 0,
         chapterid: 0,
@@ -77,7 +77,7 @@ class QuestionController extends GetxController {
     }
   }
 
-  void getQusetionList(
+  void getQuestionList(
       int chapterId, subId, stdId, BuildContext context) async {
     var isLoading = true.obs;
     // Rx<Chapter> stdList = Chapter(status: 0, data: [], message:'').obs;
@@ -87,10 +87,9 @@ class QuestionController extends GetxController {
       // var products = await RemoteServices.getQuestionList(stdId, subId, chapterId, context);
       var products = await RemoteServices.getQuestionList(
           stdId: stdId, subId: subId, chapterId: chapterId, context: context);
-      // products = questons2.value;
       apiQuestions = products.obs;
       products = products;
-      print(questons2[0].question);
+      print(questions2[0].question);
       // print(products.toString());
       // if (products.data.isNotEmpty) {
       //   questions.value = products;

@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/login_controller.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
+import 'package:rudra_it_hub/view/widgets/common_text_field.dart';
 
-import 'package:rudra_it_hub/view/widgets/common_textfiled.dart';
+
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -121,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                 if (_key.currentState!.validate()) {
                   loginController.logInUser(context, _mobileController);
                   // print(_mobileController.text.toString());
-                  loginController.ChangeLoading(true);
+                  loginController.changeLoading(true);
                   FocusScope.of(context).unfocus();
                   // loginController.LogInUser(context, _mobileController);
                 }

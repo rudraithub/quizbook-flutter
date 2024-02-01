@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 
 class History extends StatelessWidget {
   const History({super.key});
 
   @override
   Widget build(BuildContext context) {
-    int noOfCurrectAnswer = 0;
+    int noOfCorrectAnswer = 0;
     int noOfTotalQuestion = 7;
-    double percent = noOfCurrectAnswer / noOfTotalQuestion;
+    double percent = noOfCorrectAnswer / noOfTotalQuestion;
     double screenHeight = getScreenHeight(context);
     double screenWidth = getScreenWidth(context);
 
@@ -22,7 +22,7 @@ class History extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          actions: <Widget>[
+          actions: const <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 11, top: 5),
               child: Text('Clear All'),
@@ -75,7 +75,7 @@ class History extends StatelessWidget {
                                 height: screenHeight * 0.009,
                               ),
                               Text(
-                                'Math - Chapter ${index + 1}. Basic Methamatics',
+                                'Math - Chapter ${index + 1}. Basic Mathematics',
                                 style: TextStyle(
                                   fontSize: screenHeight * 0.02,
                                 ),
@@ -112,7 +112,7 @@ class History extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     color: purpleColor.withOpacity(0.2),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
+                                        const BorderRadius.all(Radius.circular(10))),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       left: 7, right: 7, top: 2, bottom: 3),

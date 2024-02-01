@@ -4,12 +4,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:rudra_it_hub/appurl/all_url.dart';
+import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/controller/quiz_controller.dart';
 import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/model/study_model.dart';
 
-import 'package:rudra_it_hub/view/widgets/common_snackbar.dart';
+import 'package:rudra_it_hub/view/widgets/common_snack_bar.dart';
 
 import '../model/login_model_alpesh.dart';
 import '../model/question_api_data.dart';

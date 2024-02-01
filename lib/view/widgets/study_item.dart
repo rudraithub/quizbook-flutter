@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:rudra_it_hub/model/study_model.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/chapter_screen.dart';
 
 class StudyItem extends StatelessWidget {

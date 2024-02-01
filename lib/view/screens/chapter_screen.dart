@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 
 ChapterController chProvider = ChapterController();
@@ -29,8 +29,8 @@ class ChapterScreen extends StatefulWidget {
 class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void initState() {
-    print("sub stdId ${widget.stdId} :subId: ${widget.subId} :std: ${widget.std}");
-    chProvider.fatchChepter(widget.stdId, widget.subId);
+    // print("sub stdId ${widget.stdId} :subId: ${widget.subId} :std: ${widget.std}");
+    chProvider.fetchChapter(widget.stdId, widget.subId);
     super.initState();
   }
 

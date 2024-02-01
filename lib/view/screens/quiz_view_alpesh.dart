@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../model/question_api_data.dart';
 import '../../services/remote_services.dart';
-import '../../utils/constans.dart';
+import '../../utils/constants.dart';
 import '../widgets/answer_card.dart';
 import '../widgets/common_button.dart';
-import '../widgets/common_snackbar.dart';
+import '../widgets/common_snack_bar.dart';
 import 'congratulation_view.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class _QuizScreenState extends State<QuizScreen> {
         context: context);
     setState(() {
       apiQuestion = tm;
-      print("fetchData is ${apiQuestion!.data![0].option}");
+      // print("fetchData is ${apiQuestion!.data![0].option}");
     });
   }
 
@@ -52,10 +52,10 @@ class _QuizScreenState extends State<QuizScreen> {
     super.initState();
   }
 
-  void pickAnswer(int value, answerIndex, int queid) {
-    Map<String, int> value1 = {"queid": queid, "user_answer": value};
+  void pickAnswer(int value, answerIndex, int queId) {
+    Map<String, int> value1 = {"queid": queId, "user_answer": value};
     resultData.add(value1);
-    print("rseult data is ${resultData}");
+    // print("result data is ${resultData}");
 
     selectedAnswerIndex = value;
 
@@ -130,8 +130,8 @@ class _QuizScreenState extends State<QuizScreen> {
                       itemCount:
                           apiQuestion?.data?[questionIndex].option?.length ?? 0,
                       itemBuilder: (context, index) {
-                        print(
-                            "index data $index >> ${apiQuestion?.data?[questionIndex].option?[index]}");
+                        // print(
+                        //     "index data $index >> ${apiQuestion?.data?[questionIndex].option?[index]}");
                         return Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: InkWell(
@@ -167,14 +167,16 @@ class _QuizScreenState extends State<QuizScreen> {
                       chapterid: widget.chapterId,
                       questions: resultData);
                   if (sendData) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => CongratulationScreen(
-                          noOftrueans: score,
-                          totalQuestion: apiQuestion?.data?.length ?? 0,
-                        ),
-                      ),
-                    );
+                    if(context.mounted){
+                      Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => CongratulationScreen(
+                                noOfTrueAns: score,
+                                totalQuestion: apiQuestion?.data?.length ?? 0,
+                              ),
+                            ),
+                          );
+                    }
                   }
                 } else {
                   commonSnackBar(

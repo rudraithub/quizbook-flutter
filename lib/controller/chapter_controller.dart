@@ -10,12 +10,12 @@ class ChapterController extends GetxController {
   Rx<Chapter> stdList = Chapter(status: 0, data: [], message: '').obs;
 
   @override
-  void fatchChepter(int stdId, int subId) async {
+  void fetchChapter(int stdId, int subId) async {
     try {
       isLoading(true);
       var products = await RemoteServices.fatchChepter(stdId, subId);
 
-      print("fatchChepterfatchChepterfatchChepter ${products.data}");
+      // print("fetch Chapter fetch Chapter Fetch Chapter ${products.data}");
       if (products.data.isNotEmpty) {
         stdList.value = products;
       } else {

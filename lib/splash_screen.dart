@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:rudra_it_hub/utils/constans.dart';
-import 'package:rudra_it_hub/utils/prefrence_helper.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
+import 'package:rudra_it_hub/utils/preference_helper.dart';
 import 'package:rudra_it_hub/utils/prefrences.dart';
 import 'package:rudra_it_hub/view/screens/dashboard_view.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';

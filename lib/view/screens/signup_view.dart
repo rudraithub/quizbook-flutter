@@ -5,17 +5,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/controller/signup_cantroller.dart';
-import 'package:rudra_it_hub/controller/uploadimage_controller.dart';
+import 'package:rudra_it_hub/controller/signup_controller.dart';
+import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/services/remote_services.dart';
 import 'package:rudra_it_hub/utils/utility.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
 import 'package:rudra_it_hub/view/widgets/common_appbar.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/widgets/common_button.dart';
-import 'package:rudra_it_hub/view/widgets/common_textfiled.dart';
+import 'package:rudra_it_hub/view/widgets/common_text_field.dart';
 
-import '../widgets/common_snackbar.dart';
+import '../widgets/common_snack_bar.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({
@@ -67,8 +67,6 @@ class SignUpScreen extends StatelessWidget {
 
   final RxString desErrorMsg = RxString('');
   String btnText = 'Next';
-  // final AppbarBottombarController _controller1 =
-  //     Get.put(AppbarBottombarController());
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +79,7 @@ class SignUpScreen extends StatelessWidget {
       _mobileController.text = mobileNo.isEmpty ? '' : mobileNo;
       selectedGender.value = gender.isEmpty ? '' : gender;
       selectedDesignation.value = desi.isEmpty ? '' : desi;
-      _controller.chnageBirthDate(date);
+      _controller.changeBirthDate(date);
     }
 
     return Scaffold(
@@ -157,7 +155,7 @@ class SignUpScreen extends StatelessWidget {
                       label: 'Mobile Number',
                       errorMessage: 'Please enter valid Number',
                       inputType: TextInputType.number,
-                      formatter: [mobileLengthFormatter, mobileNumberFormater],
+                      formatter: [mobileLengthFormatter, mobileNumberFormat],
                       length: 10,
                       onTap: () {},
                       isMobileNumber: true,
@@ -243,7 +241,7 @@ class SignUpScreen extends StatelessWidget {
                                   Utility.showDatePickerDialog()
                                       .then((pickedDate) {
                                     if (pickedDate != null) {
-                                      _controller.chnageBirthDate(
+                                      _controller.changeBirthDate(
                                           "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
                                       selectedDate = pickedDate;
                                     }

@@ -1,20 +1,19 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/appurl/all_url.dart';
-import 'package:rudra_it_hub/appurl/http_all_method.dart';
+import 'package:rudra_it_hub/appUrl/all_url.dart';
+import 'package:rudra_it_hub/appUrl/http_all_method.dart';
 
 import '../view/screens/otp_view.dart';
-import '../view/widgets/common_snackbar.dart';
+import '../view/widgets/common_snack_bar.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
-  void ChangeLoading(bool loadingStatus) {
+  void changeLoading(bool loadingStatus) {
     isLoading.value = loadingStatus;
   }
 
@@ -32,17 +31,17 @@ class LoginController extends GetxController {
 
       if (response.statusCode == 200) {
         final responseString = response;
-        print('Response is success');
+        // print('Response is success');
 
         try {
           await FirebaseAuth.instance.verifyPhoneNumber(
               verificationCompleted: (PhoneAuthCredential credential) {},
               verificationFailed: (FirebaseAuthException ex) {
-                ChangeLoading(false);
+                changeLoading(false);
                 commonSnackBar(context: context, msg: ex.toString());
               },
-              codeSent: (String verificationId, int? resendtToken) {
-                ChangeLoading(false);
+              codeSent: (String verificationId, int? resendToken) {
+                changeLoading(false);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -55,13 +54,13 @@ class LoginController extends GetxController {
               codeAutoRetrievalTimeout: (String verificationId) {},
               phoneNumber: '+91${mobileController.text.toString()}');
         } catch (e) {
-          ChangeLoading(false);
-          print("This is Exeption $e");
+          changeLoading(false);
+          // print("This is Exception $e");
         }
       } else {
         Map<String, dynamic> error = json.decode(response.body);
         // print(error['message'] + ' ssss');
-        ChangeLoading(false);
+        changeLoading(false);
         if (context.mounted) {
           commonSnackBar(context: context, msg: error['message']);
         }
@@ -70,7 +69,7 @@ class LoginController extends GetxController {
       if (context.mounted) {
         commonSnackBar(context: context, msg: e.toString());
       }
-      ChangeLoading(false);
+      changeLoading(false);
       // print('Prashant ' + e.toString());
     }
   }
