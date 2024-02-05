@@ -7,15 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
-import 'package:rudra_it_hub/services/remote_services.dart';
 import 'package:rudra_it_hub/utils/utility.dart';
-import 'package:rudra_it_hub/view/screens/login_view.dart';
-import 'package:rudra_it_hub/view/widgets/common_appbar.dart';
+import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
-import 'package:rudra_it_hub/view/widgets/common_button.dart';
-import 'package:rudra_it_hub/view/widgets/common_text_field.dart';
-
-import '../widgets/common_snack_bar.dart';
+import 'package:rudra_it_hub/widgets/common_button.dart';
+import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
+import 'package:rudra_it_hub/widgets/common_text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({
@@ -46,7 +43,7 @@ class SignUpScreen extends StatelessWidget {
 
   // final String /;
 
-  final SignUpController _controller = Get.put(SignUpController());
+  final SignUpController signUpCantroller = Get.put(SignUpController());
 
   final TextEditingController _firstNameController = TextEditingController();
 
@@ -80,7 +77,7 @@ class SignUpScreen extends StatelessWidget {
 
       selectedGender.value = gender.isEmpty ? '' : gender;
       selectedDesignation.value = desi.isEmpty ? '' : desi;
-      _controller.changeBirthDate(date);
+      signUpCantroller.changeBirthDate(date);
     }
 
     return Scaffold(
@@ -194,7 +191,7 @@ class SignUpScreen extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                items: ['Male', 'Female', 'Other']
+                                items: ['Male', 'Female', 'Others']
                                     .map<DropdownMenuItem<String>>(
                                       (String value) =>
                                           DropdownMenuItem<String>(
@@ -242,7 +239,7 @@ class SignUpScreen extends StatelessWidget {
                                   Utility.showDatePickerDialog()
                                       .then((pickedDate) {
                                     if (pickedDate != null) {
-                                      _controller.changeBirthDate(
+                                      signUpCantroller.changeBirthDate(
                                           "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
                                       selectedDate = pickedDate;
                                     }
@@ -254,7 +251,8 @@ class SignUpScreen extends StatelessWidget {
                                         labelStyle: TextStyle(
                                             color: greyColor, fontSize: 14)),
                                     child: Obx(() => Text(
-                                          _controller.selectedBirthDate.value,
+                                          signUpCantroller
+                                              .selectedBirthDate.value,
                                           maxLines: 1,
                                           style: const TextStyle(
                                               fontSize: 15,
@@ -346,22 +344,19 @@ class SignUpScreen extends StatelessWidget {
             }
             if (_key.currentState!.validate()) {
               //  _controller.verifyOtp();
-              if (_controller.selectedBirthDate.value == 'Select Date') {
+              if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                 commonSnackBar(context: context, msg: "Please select date");
               } else {
-                bool status = await RemoteServices.signUpApi(
+                print('else calll');
+                signUpCantroller.signUp(
                     _firstNameController.text,
                     _lastNameController.text,
                     _emailController.text,
-                   genderId,
+                    genderId,
                     selectedDate,
                     _mobileController.text,
                     professionId,
                     context);
-
-                if (status == true) {
-                  Get.offAll(LoginScreen());
-                }
               }
             }
           },

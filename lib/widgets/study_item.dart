@@ -7,13 +7,13 @@ import 'package:rudra_it_hub/view/screens/chapter_screen.dart';
 
 class StudyItem extends StatelessWidget {
   const StudyItem({super.key, required this.model});
-  final StudyModel model;
+  final Datum model;
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
     // double screenWidth = getScreenWidth(context);
-
+    print(model.subject![1].id);
     return Padding(
       padding: const EdgeInsets.only(left: 5, right: 5, top: 20),
       child: Container(
@@ -70,7 +70,7 @@ class StudyItem extends StatelessWidget {
                 Expanded(
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: model.sub.length,
+                    itemCount: model.subject!.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 0, left: 2),
@@ -82,17 +82,18 @@ class StudyItem extends StatelessWidget {
                               onTap: () {
                                 // print(
                                 //     "${model.sub[index].subName} Std ${model.std}");
-                                print("this is std id  " +
-                                    model.stdId.toString());
-                                print("this is sub id  " +
-                                    model.sub[index].subId.toString());
+                                // print("this is std id  " +
+                                //     model.data!..toString());
+                                // print("this is sub id  " +
+                                //     model.sub[index].subId.toString());
 
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
-                                          stdId: model.stdId,
-                                          subId: model.sub[index].subId,
-                                          std: model.std,
-                                          subject: model.sub[index].subName,
+                                          stdId: model.stdid!,
+                                          subId: model.subject![index].subid!,
+                                          std: model.std!,
+                                          subject: model
+                                              .subject![index].subjectName!,
                                         )));
                               },
                               child: ClipRRect(
@@ -102,7 +103,7 @@ class StudyItem extends StatelessWidget {
                                   child: Image.network(
                                     // Add dummy Url because the api url not working
 
-                                    model.sub[index].imageUrl,
+                                    model.subject![index].img!,
 
                                     height: screenHeight * 0.12,
                                     width: screenHeight * 0.12,
@@ -115,7 +116,7 @@ class StudyItem extends StatelessWidget {
                             SizedBox(
                                 // width: screenWidth / 5,
                                 child: Text(
-                              model.sub[index].subName,
+                              model.subject![index].subjectName!,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: screenHeight * 0.02,

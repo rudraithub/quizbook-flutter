@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
               SharedPreferencesHelper(prefs)
                   .getString(Preferences.userFullDetails));
           userBearerToken = userData.token;
-          print("userBearerToken $userBearerToken");
+          // print("userBearerToken $userBearerToken");
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

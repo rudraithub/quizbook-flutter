@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.1.11:3000/';
+const baseUrl = 'http://192.168.1.13:3000/';
 const loginUrl = 'users/login';
 const signupUrl = 'users/signup';
 const userVerifyUrl = 'user/varify';
@@ -12,4 +12,3 @@ const userProfessionUrl = 'users/profession';
 const resultUrl = 'results';
 const historyUrl = 'history';
 const questionUrl = 'std/subject/chapter/questions';
-

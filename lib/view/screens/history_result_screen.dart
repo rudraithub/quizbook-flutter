@@ -1,13 +1,13 @@
 // quiz_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/view/widgets/common_card.dart';
+import 'package:rudra_it_hub/widgets/common_card.dart';
 import '../../controller/history_controller.dart';
 
 class HistoryDetail extends StatelessWidget {
   final QuizController controller = Get.put(QuizController());
 
-   HistoryDetail({super.key});
+  HistoryDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class HistoryDetail extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title:const Text('Quiz Results'),
+        title: const Text('Quiz Results'),
       ),
       body: ListView.builder(
         itemCount: controller.totalQuestions + 1,
@@ -123,7 +123,7 @@ class HistoryDetail extends StatelessWidget {
               ],
             ),
           ),
-         const SizedBox(),
+          const SizedBox(),
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(

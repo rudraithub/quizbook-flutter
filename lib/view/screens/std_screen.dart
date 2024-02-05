@@ -6,21 +6,20 @@ import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/subject_controller.dart';
 
 import 'package:rudra_it_hub/model/study_model.dart';
-import 'package:rudra_it_hub/view/widgets/study_item.dart';
+import 'package:rudra_it_hub/widgets/study_item.dart';
 
 class StudyScreen extends StatefulWidget {
   const StudyScreen({
     super.key,
   });
 
-
   @override
   State<StudyScreen> createState() => _StudyScreenState();
 }
 
 class _StudyScreenState extends State<StudyScreen> {
-  List<StudyModel> studyList = [];
-  StudyModel? studyModel;
+  List<Temperatures> studyList = [];
+  Temperatures? studyModel;
 
   final SubjectProvider provider = Get.put(SubjectProvider());
   @override
@@ -52,9 +51,11 @@ class _StudyScreenState extends State<StudyScreen> {
               // }
               print("std screen in ${provider.stdList}");
               return ListView.builder(
-                itemCount: provider.stdList.length,
+                itemCount: provider.stdList.value.data!.length,
                 itemBuilder: (context, index) {
-                  return StudyItem(model: provider.stdList[index]);
+                  return StudyItem(
+                    model: provider.stdList.value.data![index],
+                  );
                 },
               );
             }

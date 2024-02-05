@@ -14,18 +14,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/login_model_alpesh.dart';
 import '../utils/prefrences.dart';
 import '../view/screens/dashboard_view.dart';
-import '../view/widgets/common_snack_bar.dart';
+import '../widgets/common_snack_bar.dart';
 
 class OTPController extends GetxController {
   Future<void> verifyOTP(
-
       String verificationId,
       TextEditingController otpController,
       String moNumber,
       BuildContext context) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: otpController.text.toString());
+        verificationId: verificationId, smsCode: otpController.text.toString());
 
     try {
       FirebaseAuth.instance
@@ -48,6 +46,7 @@ class OTPController extends GetxController {
 
         try {
           if (response.statusCode == 200) {
+            // print("Prashant" + response.body);
             LogInModel users = logInModelFromJson(response.body);
             var sharedPreferences = await SharedPreferences.getInstance();
             SharedPreferencesHelper sharedPreferencesHelper =
@@ -56,7 +55,7 @@ class OTPController extends GetxController {
             await sharedPreferencesHelper.putString(
                 Preferences.userFullDetails, jsonEncode(users));
 
-            if(context.mounted){
+            if (context.mounted) {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -64,22 +63,22 @@ class OTPController extends GetxController {
                       logInModel: users,
                     ),
                   ),
-                      (route) => false);
+                  (route) => false);
             }
           } else {
-            print('Here 3');
+            // print('Here 3');
 
-            if(context.mounted){
+            if (context.mounted) {
               commonSnackBar(context: context, msg: "catch ${response.body}");
             }
             // LogInModel users =  LogInModel();
           }
         } catch (e) {
-          print('Here 4');
-          print(e.toString());
-         if(context.mounted){
-           commonSnackBar(context: context, msg: "catch ${e.toString()}");
-         }
+          // print('Here 4');
+          // print(e.toString());
+          if (context.mounted) {
+            commonSnackBar(context: context, msg: "catch ${e.toString()}");
+          }
           // return LogInModel();
         }
       });

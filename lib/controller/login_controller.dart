@@ -6,10 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
-import 'package:rudra_it_hub/appUrl/http_all_method.dart';
+import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 
 import '../view/screens/otp_view.dart';
-import '../view/widgets/common_snack_bar.dart';
+import '../widgets/common_snack_bar.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -60,9 +60,9 @@ class LoginController extends GetxController {
               codeAutoRetrievalTimeout: (String verificationId) {},
               phoneNumber: '+91${mobileController.text.toString()}');
         } catch (e) {
-         if(context.mounted){
-           changeLoading(false, context);
-         }
+          if (context.mounted) {
+            changeLoading(false, context);
+          }
           // print("This is Exception $e");
         }
       } else {

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
-import 'package:rudra_it_hub/view/widgets/pogress_indicator.dart';
+import 'package:rudra_it_hub/widgets/pogress_indicator.dart';
 
 class Utility {
   static String getRandomString({int length = 10}) {
@@ -74,5 +74,3 @@ class Utility {
         .hasMatch(email);
   }
 }
-
-

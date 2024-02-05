@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rudra_it_hub/controller/quiz_controller.dart';
+import 'package:rudra_it_hub/widgets/answer_card.dart';
+import 'package:rudra_it_hub/widgets/common_button.dart';
+import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 import '../../model/question_api_data.dart';
-import '../../services/remote_services.dart';
 import '../../utils/constants.dart';
-import '../widgets/answer_card.dart';
-import '../widgets/common_button.dart';
-import '../widgets/common_snack_bar.dart';
-import 'congratulation_view.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
@@ -30,12 +29,13 @@ class _QuizScreenState extends State<QuizScreen> {
   bool? isLastQuestion;
   int score = 0;
   List<Map<String, dynamic>> resultData = [];
+  QuestionController questionController = QuestionController();
 
   Future<void> fetchData() async {
     // Simulate an asynchronous operation (e.g., API call)
     // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
     // QuestionApiData tm = await RemoteServices.getQuestionList(4, 1, 1, context);
-    QuestionApiData tm = await RemoteServices.getQuestionList(
+    QuestionApiData tm = await questionController.getQuestionList(
         stdId: widget.stdId,
         subId: widget.subId,
         chapterId: widget.chapterId,
@@ -71,27 +71,6 @@ class _QuizScreenState extends State<QuizScreen> {
     var screenWidth = MediaQuery.of(context).size.width;
     isLastQuestion = (questionIndex + 1) == apiQuestion?.data?.length;
     return Scaffold(
-      /*appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0), // Set the preferred height of the AppBar
-        child: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          title: Column(
-            children: [
-              Text(apiQuestion?.data?[questionIndex].question ?? ''),
-              SizedBox(height: 10,),
-              Text(apiQuestion?.data?[questionIndex].question ?? ''),
-            ],
-          ),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              color: purpleColor, // Set the background color of the Container
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular((screenWidth * 5) / 100),bottomRight: Radius.circular((screenWidth * 5) / 100))
-            ),
-            height: 100.0, // Set the height of the Container
-          ),
-        ),
-      ),*/
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -160,24 +139,12 @@ class _QuizScreenState extends State<QuizScreen> {
           ? CommonButton(
               onPress: () async {
                 if (selectedAnswerIndex != null) {
-                  bool sendData = await RemoteServices.resultDataSend(
+                  questionController.resultDataSend(
                       context: context,
                       stdid: widget.stdId,
                       subid: widget.subId,
                       chapterid: widget.chapterId,
                       questions: resultData);
-                  if (sendData) {
-                    if(context.mounted){
-                      Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (_) => CongratulationScreen(
-                                noOfTrueAns: score,
-                                totalQuestion: apiQuestion?.data?.length ?? 0,
-                              ),
-                            ),
-                          );
-                    }
-                  }
                 } else {
                   commonSnackBar(
                       context: context, msg: "Please select question");
