@@ -1,77 +1,86 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/appurl/all_url.dart';
+import 'package:rudra_it_hub/appUrl/all_url.dart';
+import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 
 import '../view/screens/otp_view.dart';
-import '../view/widgets/common_snackbar.dart';
+import '../widgets/common_snack_bar.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
-  void ChangeLoading(bool loadingStatus) {
-    isLoading.value = loadingStatus;
+  void changeLoading(bool loadingStatus, BuildContext context) {
+    if (isLoading.value) {
+      Navigator.of(context).pop();
+      isLoading.value = loadingStatus;
+    } else {
+      isLoading.value = loadingStatus;
+    }
   }
 
-  Future<void> LogInUser(
-      BuildContext context, TextEditingController _mobileController) async {
+  Future<void> logInUser(
+      BuildContext context, TextEditingController mobileController) async {
     const uri = '$baseUrl$userVerifyUrl';
     try {
-      var headers = <String, String>{};
-      headers['Content-Type'] = 'application/json';
-
       var body = <String, dynamic>{
-        "mobileNumber": _mobileController.text.toString()
+        "mobileNumber": mobileController.text.toString()
       };
+      var header = <String, String>{};
+      header['Content-Type'] = 'application/json';
 
-      var encodedBody = jsonEncode(body);
-
-      var response =
-          await http.post(Uri.parse(uri), headers: headers, body: encodedBody);
+      final response = await postMethod('$baseUrl$userVerifyUrl', body, header);
 
       if (response.statusCode == 200) {
         final responseString = response;
-        print('Response is success');
+        // print('Response is success');
 
         try {
           await FirebaseAuth.instance.verifyPhoneNumber(
               verificationCompleted: (PhoneAuthCredential credential) {},
               verificationFailed: (FirebaseAuthException ex) {
-                ChangeLoading(false);
+                changeLoading(false, context);
                 commonSnackBar(context: context, msg: ex.toString());
               },
-              codeSent: (String verificationId, int? resendtToken) {
-                ChangeLoading(false);
+              codeSent: (String verificationId, int? resendToken) {
+                changeLoading(false, context);
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => OTPScreen(
                         verificationId: verificationId,
-                        moNumber: _mobileController.text.toString(),
+                        moNumber: mobileController.text.toString(),
                       ),
                     ));
               },
               codeAutoRetrievalTimeout: (String verificationId) {},
-              phoneNumber: '+91${_mobileController.text.toString()}');
+              phoneNumber: '+91${mobileController.text.toString()}');
         } catch (e) {
-          ChangeLoading(false);
-          print("This is Exeption $e");
+          if (context.mounted) {
+            changeLoading(false, context);
+          }
+          // print("This is Exception $e");
         }
       } else {
         Map<String, dynamic> error = json.decode(response.body);
-        print(error['message'] + ' ssss');
-        ChangeLoading(false);
+        // print(error['message'] + ' ssss');
 
-        commonSnackBar(context: context, msg: error['message']);
+        if (context.mounted) {
+          changeLoading(false, context);
+          commonSnackBar(context: context, msg: error['message']);
+        }
       }
     } catch (e) {
-      commonSnackBar(context: context, msg: e.toString());
-      ChangeLoading(false);
-      print('Prashant ' + e.toString());
+      if (context.mounted) {
+        commonSnackBar(context: context, msg: e.toString());
+        changeLoading(false, context);
+      }
+
+      // print('Prashant ' + e.toString());
     }
   }
 }

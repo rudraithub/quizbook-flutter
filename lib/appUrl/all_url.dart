@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.1.11:3000/';
+const baseUrl = 'http://192.168.1.13:3000/';
 const loginUrl = 'users/login';
 const signupUrl = 'users/signup';
 const userVerifyUrl = 'user/varify';
@@ -8,8 +8,7 @@ const chapterUrl = 'std/subject/chapter';
 const userProfileDataUrl = '65a0bec31e87d7a0656cf64f/profile';
 const userProfileUpdateUrl = '65a0bec31e87d7a0656cf64f/profile/update';
 const uploadUserProfileUrl = 'users/avatars';
-const userProessionUrl = 'users/profession';
+const userProfessionUrl = 'users/profession';
 const resultUrl = 'results';
 const historyUrl = 'history';
 const questionUrl = 'std/subject/chapter/questions';
-

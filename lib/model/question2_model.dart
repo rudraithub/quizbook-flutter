@@ -76,7 +76,7 @@ class Question2 {
   };
 }
 
-class Option {
+class   Option {
   String a;
   String b;
   String c;

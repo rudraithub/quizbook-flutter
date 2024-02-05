@@ -1,12 +1,10 @@
 // ignore_for_file: avoid_print, file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/login_controller.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
-
-import 'package:rudra_it_hub/view/widgets/common_textfiled.dart';
+import 'package:rudra_it_hub/widgets/common_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -21,12 +19,7 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body:
-
-
-      // SingleChildScrollView(
-          // child:
-          Column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -100,7 +93,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Obx(() => ElevatedButton(
+          ElevatedButton(
               style: ButtonStyle(
                 shape: MaterialStateProperty.resolveWith((states) {
                   return RoundedRectangleBorder(
@@ -120,29 +113,44 @@ class LoginScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
-                  loginController.LogInUser(context, _mobileController);
+                  loginController.logInUser(context, _mobileController);
                   // print(_mobileController.text.toString());
-                  loginController.ChangeLoading(true);
+                  loginController.changeLoading(true, context);
+
+                  loginController.isLoading.value
+                      ? showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(purpleColor),
+                            ));
+                          })
+                      : null;
+
                   FocusScope.of(context).unfocus();
                   // loginController.LogInUser(context, _mobileController);
                 }
               },
-              child: loginController.isLoading.value
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 5, bottom: 5),
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        strokeWidth: 3,
-                      ),
-                    )
-                  : const Text(
-                      'Send OTP',
-                      style: TextStyle(
-                        color: whiteColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ))),
+              child:
+                  // loginController.isLoading.value
+                  //     ? const Padding(
+                  //         padding: EdgeInsets.only(top: 5, bottom: 5),
+                  //         child: CircularProgressIndicator(
+                  //           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  //           strokeWidth: 3,
+                  //         ),
+                  //       )
+                  //     :
+                  const Text(
+                'Send OTP',
+                style: TextStyle(
+                  color: whiteColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
 //           CommonButton(
 //               onPress: () async {
 //                 loginController.ChangeLoading(false);

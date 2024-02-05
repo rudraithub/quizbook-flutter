@@ -11,6 +11,7 @@ double getScreenWidth(BuildContext context) {
 }
 
 
+
 const String bgImage = 'assets/images/bg.png';
 const String imgLogo = 'assets/images/logo.png';
 const String changeProfile = 'assets/images/add_pic_icon.png';
@@ -28,10 +29,11 @@ const Color resultFalseColor = Color(0xFFC43131);
 const Color blackColor = Colors.black;
 const Color redColor = Colors.red;
 
-final mobileNumberFormater = FilteringTextInputFormatter.allow(RegExp('[0-9]'));
+final mobileNumberFormat = FilteringTextInputFormatter.allow(RegExp('[0-9]'));
 
 final LengthLimitingTextInputFormatter mobileLengthFormatter =
 LengthLimitingTextInputFormatter(10);
 
 final LengthLimitingTextInputFormatter otpFormatter =
 LengthLimitingTextInputFormatter(6);
+

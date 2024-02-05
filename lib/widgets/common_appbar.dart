@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 class CommonAppBarScreen extends StatelessWidget {
   final String title;
   final Color backgroundColor;

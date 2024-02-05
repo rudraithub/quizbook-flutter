@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 
 ChapterController chProvider = ChapterController();
@@ -29,8 +29,8 @@ class ChapterScreen extends StatefulWidget {
 class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void initState() {
-    print("sub stdId ${widget.stdId} :subId: ${widget.subId} :std: ${widget.std}");
-    chProvider.fatchChepter(widget.stdId, widget.subId);
+    // print("sub stdId ${widget.stdId} :subId: ${widget.subId} :std: ${widget.std}");
+    chProvider.fetchChapter(widget.stdId, widget.subId ,context);
     super.initState();
   }
 
@@ -102,23 +102,61 @@ class CustomItem extends StatelessWidget {
     double screenHeight = getScreenHeight(context);
     double screenWidth = getScreenWidth(context);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(2.0),
       child: Card(
         color: Colors.white,
         // color: Colors.white,
-        elevation: 10,
+        // elevation: 10,
         child: ListTile(
-          leading: CircleAvatar(
-            backgroundImage:
-            const AssetImage('assets/images/normal_number_bg.png'),
-            maxRadius: screenWidth * 0.0750,
-            child: Text(
-              logoIndex,
-              style: const TextStyle(color: Colors.white),
+          leading :
+          // leading: Container(
+          //   height: 100,
+          //   width: 50,
+          //   child:CircleAvatar(
+          //     // radius: screenHeight * 0.075,
+          //     backgroundImage:
+          //     const AssetImage('assets/images/normal_number_bg.png'),
+          //     maxRadius: screenHeight * 0.035,
+          //     child: Text(
+          //       logoIndex,
+          //       style: const TextStyle(color: Colors.white ,fontSize: 20),
+          //     ),
+          //   ) ,
+          // ),
+          Container(
+            width: 65.0,
+            height: 85.0,
+            decoration:const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue, // You can set the background color of the circle
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ClipOval(
+                  child: Image.asset(
+                    'assets/images/normal_number_bg.png', // Replace with your image URL
+                    width: 65.0,
+                    height: 85.0,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Text(
+                  logoIndex,
+                  style:const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
+
+
           title: Text(
-            chName,
+            "Cha No $logoIndex : $chName",
             style: TextStyle(
                 color: Colors.black,
                 overflow: TextOverflow.ellipsis,
@@ -130,7 +168,7 @@ class CustomItem extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    radius: screenHeight * 0.02,
+                    radius: screenHeight * 0.015,
                     backgroundImage: const AssetImage(
                       'assets/images/logo.png',
                     ),

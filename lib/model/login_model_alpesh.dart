@@ -41,7 +41,7 @@ class Data {
   String? firstName;
   String? lastName;
   String? email;
-  String? gender;
+  List<Gender>? gender;
   String? dob;
   String? mobileNumber;
   List<Profession>? profession;
@@ -64,7 +64,9 @@ class Data {
     firstName: json["firstName"],
     lastName: json["lastName"],
     email: json["email"],
-    gender: json["gender"],
+    // gender: json["gender"] == null ? [] : List<Gender>.f,
+    gender: json["gender"] == null ? [] : List<Gender>.from(json["gender"]!.map((x) => Gender.fromJson(x))),
+
     dob: json["DOB"],
     mobileNumber: json["mobileNumber"],
     profession: json["profession"] == null ? [] : List<Profession>.from(json["profession"]!.map((x) => Profession.fromJson(x))),
@@ -76,7 +78,8 @@ class Data {
     "firstName": firstName,
     "lastName": lastName,
     "email": email,
-    "gender": gender,
+    // "gender": gender,
+    "gender": gender == null ? [] : List<dynamic>.from(gender!.map((x) => x.toJson())),
     "DOB": dob,
     "mobileNumber": mobileNumber,
     "profession": profession == null ? [] : List<dynamic>.from(profession!.map((x) => x.toJson())),
@@ -94,6 +97,25 @@ class Profession {
   });
 
   factory Profession.fromJson(Map<String, dynamic> json) => Profession(
+    id: json["_id"],
+    name: json["name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "name": name,
+  };
+}
+class Gender {
+  int? id;
+  String? name;
+
+  Gender({
+    this.id,
+    this.name,
+  });
+
+  factory Gender.fromJson(Map<String, dynamic> json) => Gender(
     id: json["_id"],
     name: json["name"],
   );

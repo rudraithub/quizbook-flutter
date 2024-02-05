@@ -1,4 +1,3 @@
-// ignore_for_file: unnecessary_brace_in_string_interps, avoid_print
 
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,7 +108,7 @@ class SharedPreferencesHelper {
   // get obj list with mapper fun
   List<T> getObjectList<T>(String key, T Function(Map v) f,
       {List<T> defValue = const []}) {
-    print('getObjectListgetObjectList $key : ${defValue} :  $f');
+    // print('getObjectListGetObjectList $key : ${defValue} :  $f');
     List<Map>? dataList = getObjList(key);
     List<T>? list = dataList?.map((value) {
       return f(value);

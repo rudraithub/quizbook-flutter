@@ -1,16 +1,21 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, empty_catches, file_names
 
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rudra_it_hub/appUrl/all_url.dart';
+import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/question2_model.dart';
-import 'package:rudra_it_hub/services/remote_services.dart';
+import 'package:rudra_it_hub/splash_screen.dart';
+import 'package:rudra_it_hub/view/screens/congratulation_view.dart';
+import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 
 import '../model/question_api_data.dart';
-import '../model/question_model.dart';
 
 class QuestionController extends GetxController {
   RxInt currentQuestionIndex = 1.obs;
-  RxList<Question2> questons2 = <Question2>[
+  RxList<Question2> questions2 = <Question2>[
     Question2(
         queid: 0,
         chapterid: 0,
@@ -22,85 +27,92 @@ class QuestionController extends GetxController {
         rightAns: '')
   ].obs;
 
-  RxList<QuestionModel> questions = <QuestionModel>[
-    QuestionModel(
-      question:
-          'Lassi paratha and mixed vegetables are staple food of which states?',
-      options: ['A: Gujarat', 'B: Maharashtra', 'C: Rajasthan', 'D: Punjab'],
-      trueAnswer: 3,
-    ),
-    QuestionModel(
-      question: 'Second Question',
-      options: ['A: Option A', 'B: Option B', 'C: Option C', 'D: Option D'],
-      trueAnswer: 0,
-    ),
-    QuestionModel(
-      question: 'Third Question',
-      options: ['A: abc', 'B: def', 'C: jkl', 'D: xyz'],
-      trueAnswer: 2,
-    ),
-    QuestionModel(
-      question: 'Forth Question',
-      options: ['A: Apple', 'B: Banana', 'C: Mango', 'D: Orange'],
-      trueAnswer: 3,
-    ),
-  ].obs;
-
   Rx<QuestionApiData>? apiQuestions;
 
   RxInt selectedOptionIndex = (-1).obs;
 
-  bool isOptionCorrect(int index) {
-    return index == getCorrectOptionIndex();
-  }
+  Future<void> resultDataSend({
+    required BuildContext context,
+    required int stdid,
+    required int subid,
+    required int chapterid,
+    required List questions,
+  }) async {
+    String url = '$baseUrl$resultUrl';
+    try {
+      var headers = <String, String>{};
+      headers['Content-Type'] = 'application/json';
+      headers['Authorization'] = userBearerToken ?? '';
 
-  void checkAnswer(int selectedOptionIndex) {
-    this.selectedOptionIndex.value = selectedOptionIndex;
+      var body = <String, dynamic>{
+        // "userID": userID,
+        "stdid": stdid,
+        "subid": subid,
+        "chapterid": chapterid,
+        "questions": questions
+      };
 
-    Future.delayed(Duration(seconds: 2), () {
-      moveToNextQuestion();
-    });
-  }
+      // var encodedBody = jsonEncode(body);
 
-  int getCorrectOptionIndex() {
-    return questions[currentQuestionIndex.value - 1].trueAnswer;
-  }
+      var response = await postMethod(url, body, headers);
 
-  void moveToNextQuestion() {
-    if (currentQuestionIndex < questions.length) {
-      currentQuestionIndex++;
-      selectedOptionIndex.value =
-          -1; // Reset selected option for the new question
-      print('hhhh');
-    } else {
-      // Get.to(CongratulationScreen());
+      print("just data for $response");
+      if (response.statusCode == 200) {
+        if (context.mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => CongratulationScreen(
+                noOfTrueAns: 5,
+                totalQuestion: 10,
+              ),
+            ),
+          );
+        }
+      } else {
+        if (context.mounted) {
+          commonSnackBar(context: context, msg: response.body);
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        commonSnackBar(
+            context: context, msg: "Catch ${e.toString()}", durationSeconds: 5);
+      }
     }
   }
 
-  void getQusetionList(
-      int chapterId, subId, stdId, BuildContext context) async {
-    var isLoading = true.obs;
-    // Rx<Chapter> stdList = Chapter(status: 0, data: [], message:'').obs;
-
+  Future<QuestionApiData> getQuestionList(
+      {required int stdId,
+      required subId,
+      required chapterId,
+      required BuildContext context}) async {
     try {
-      isLoading(true);
-      // var products = await RemoteServices.getQuestionList(stdId, subId, chapterId, context);
-      var products = await RemoteServices.getQuestionList(
-          stdId: stdId, subId: subId, chapterId: chapterId, context: context);
-      // products = questons2.value;
-      apiQuestions = products.obs;
-      products = products;
-      print(questons2[0].question);
-      // print(products.toString());
-      // if (products.data.isNotEmpty) {
-      //   questions.value = products;
-      //
-      // }
-      // else{
-      //   // stdList.value = stu
-      // }
-    } finally {
-      isLoading(false);
+      var body = <String, dynamic>{
+        "stdid": stdId,
+        "subid": subId,
+        "chapterid": chapterId
+      };
+      final Map<String, String> headers = {'Content-Type': 'application/json'};
+
+      var response = await postMethod('$baseUrl$questionUrl', body, headers);
+      if (response.statusCode == 200) {
+        QuestionApiData tm = questionApiDataFromJson(response.body);
+        return tm;
+      } else {
+        Map<String, dynamic> data = json.decode(response.body);
+        String message = data['message'];
+        print(message);
+        if (context.mounted) {
+          commonSnackBar(context: context, msg: message);
+        }
+        return QuestionApiData();
+      }
+    } catch (e) {
+      print("error msg ${e.toString()}");
+      if (context.mounted) {
+        commonSnackBar(context: context, msg: "catch ${e.toString()}");
+      }
+      return QuestionApiData();
     }
   }
 }

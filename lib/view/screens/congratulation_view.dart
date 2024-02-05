@@ -1,15 +1,14 @@
 // ignore_for_file: sized_box_for_whitespace, avoid_print, file_names
 
 import 'package:flutter/material.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CongratulationScreen extends StatelessWidget {
   const CongratulationScreen(
-      {super.key, required this.totalQuestion, required this.noOftrueans});
+      {super.key, required this.totalQuestion, required this.noOfTrueAns});
   final int totalQuestion;
-  final int noOftrueans;
+  final int noOfTrueAns;
   // final TextStyle commonTextStyle = const TextStyle(
   //   fontSize: 20,
   //   color: Colors.white,
@@ -48,7 +47,7 @@ class CongratulationScreen extends StatelessWidget {
                 height: screenHeight * 0.02,
               ),
               Text(
-                'You have completed s uccessfully.',
+                'You have completed s successfully.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: screenHeight * 0.02, color: Colors.white),
@@ -72,7 +71,7 @@ class CongratulationScreen extends StatelessWidget {
                           backgroundColor: resultTrueColor,
                         ),
                         child: Text(
-                          '$noOftrueans correct',
+                          '$noOfTrueAns correct',
                           style: TextStyle(
                               color: Colors.white, fontSize: screenHeight * 0.025 ,overflow: TextOverflow.ellipsis),
                         )),
@@ -90,7 +89,7 @@ class CongratulationScreen extends StatelessWidget {
                           backgroundColor: resultFalseColor,
                         ),
                         child: Text(
-                          '${totalQuestion - noOftrueans} Incorrect',
+                          '${totalQuestion - noOfTrueAns} Incorrect',
                           style: TextStyle(
                               color: Colors.white, fontSize: screenHeight * 0.025  ,overflow: TextOverflow.ellipsis),
                         )),

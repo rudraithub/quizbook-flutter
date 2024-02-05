@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 
 class CommonButton extends StatelessWidget {
   const CommonButton(

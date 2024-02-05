@@ -6,33 +6,22 @@ import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/subject_controller.dart';
 
 import 'package:rudra_it_hub/model/study_model.dart';
-import 'package:rudra_it_hub/view/widgets/study_item.dart';
+import 'package:rudra_it_hub/widgets/study_item.dart';
 
 class StudyScreen extends StatefulWidget {
   const StudyScreen({
     super.key,
   });
-  // final List<StudyModel> dataList;
 
   @override
   State<StudyScreen> createState() => _StudyScreenState();
 }
 
 class _StudyScreenState extends State<StudyScreen> {
-  List<StudyModel> studyList = [];
-  StudyModel? studyModel;
+  List<Temperatures> studyList = [];
+  Temperatures? studyModel;
 
   final SubjectProvider provider = Get.put(SubjectProvider());
-
-  // Future<void> fetchData() async {
-  //   // Simulate an asynchronous operation (e.g., API call)
-  //   // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
-  //   StudyModel tm = await RemoteServices.fetchStudyModel();
-  //   setState(() {
-  //     studyModel = tm;
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -40,16 +29,6 @@ class _StudyScreenState extends State<StudyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Widget content = Center(child: Text('data'));
-
-    // if (widget.dataList.isNotEmpty) {
-    //   content =ListView.builder(
-    //   itemCount: widget.dataList.length,
-    //   itemBuilder: (context, index) {
-    //     return StudyItem(model: provider.stdList[index]);
-    //   },
-    // );
-    // }
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -72,9 +51,11 @@ class _StudyScreenState extends State<StudyScreen> {
               // }
               print("std screen in ${provider.stdList}");
               return ListView.builder(
-                itemCount: provider.stdList.length,
+                itemCount: provider.stdList.value.data!.length,
                 itemBuilder: (context, index) {
-                  return StudyItem(model: provider.stdList[index]);
+                  return StudyItem(
+                    model: provider.stdList.value.data![index],
+                  );
                 },
               );
             }

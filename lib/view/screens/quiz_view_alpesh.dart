@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rudra_it_hub/controller/quiz_controller.dart';
+import 'package:rudra_it_hub/widgets/answer_card.dart';
+import 'package:rudra_it_hub/widgets/common_button.dart';
+import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 import '../../model/question_api_data.dart';
-import '../../services/remote_services.dart';
-import '../../utils/constans.dart';
-import '../widgets/answer_card.dart';
-import '../widgets/common_button.dart';
-import '../widgets/common_snackbar.dart';
-import 'congratulation_view.dart';
+import '../../utils/constants.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
@@ -30,19 +29,20 @@ class _QuizScreenState extends State<QuizScreen> {
   bool? isLastQuestion;
   int score = 0;
   List<Map<String, dynamic>> resultData = [];
+  QuestionController questionController = QuestionController();
 
   Future<void> fetchData() async {
     // Simulate an asynchronous operation (e.g., API call)
     // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
     // QuestionApiData tm = await RemoteServices.getQuestionList(4, 1, 1, context);
-    QuestionApiData tm = await RemoteServices.getQuestionList(
+    QuestionApiData tm = await questionController.getQuestionList(
         stdId: widget.stdId,
         subId: widget.subId,
         chapterId: widget.chapterId,
         context: context);
     setState(() {
       apiQuestion = tm;
-      print("fetchData is ${apiQuestion!.data![0].option}");
+      // print("fetchData is ${apiQuestion!.data![0].option}");
     });
   }
 
@@ -52,10 +52,10 @@ class _QuizScreenState extends State<QuizScreen> {
     super.initState();
   }
 
-  void pickAnswer(int value, answerIndex, int queid) {
-    Map<String, int> value1 = {"queid": queid, "user_answer": value};
+  void pickAnswer(int value, answerIndex, int queId) {
+    Map<String, int> value1 = {"queid": queId, "user_answer": value};
     resultData.add(value1);
-    print("rseult data is ${resultData}");
+    // print("result data is ${resultData}");
 
     selectedAnswerIndex = value;
 
@@ -71,27 +71,6 @@ class _QuizScreenState extends State<QuizScreen> {
     var screenWidth = MediaQuery.of(context).size.width;
     isLastQuestion = (questionIndex + 1) == apiQuestion?.data?.length;
     return Scaffold(
-      /*appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0), // Set the preferred height of the AppBar
-        child: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          title: Column(
-            children: [
-              Text(apiQuestion?.data?[questionIndex].question ?? ''),
-              SizedBox(height: 10,),
-              Text(apiQuestion?.data?[questionIndex].question ?? ''),
-            ],
-          ),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              color: purpleColor, // Set the background color of the Container
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular((screenWidth * 5) / 100),bottomRight: Radius.circular((screenWidth * 5) / 100))
-            ),
-            height: 100.0, // Set the height of the Container
-          ),
-        ),
-      ),*/
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -130,8 +109,8 @@ class _QuizScreenState extends State<QuizScreen> {
                       itemCount:
                           apiQuestion?.data?[questionIndex].option?.length ?? 0,
                       itemBuilder: (context, index) {
-                        print(
-                            "index data $index >> ${apiQuestion?.data?[questionIndex].option?[index]}");
+                        // print(
+                        //     "index data $index >> ${apiQuestion?.data?[questionIndex].option?[index]}");
                         return Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: InkWell(
@@ -160,22 +139,12 @@ class _QuizScreenState extends State<QuizScreen> {
           ? CommonButton(
               onPress: () async {
                 if (selectedAnswerIndex != null) {
-                  bool sendData = await RemoteServices.resultDataSend(
+                  questionController.resultDataSend(
                       context: context,
                       stdid: widget.stdId,
                       subid: widget.subId,
                       chapterid: widget.chapterId,
                       questions: resultData);
-                  if (sendData) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => CongratulationScreen(
-                          noOftrueans: score,
-                          totalQuestion: apiQuestion?.data?.length ?? 0,
-                        ),
-                      ),
-                    );
-                  }
                 } else {
                   commonSnackBar(
                       context: context, msg: "Please select question");

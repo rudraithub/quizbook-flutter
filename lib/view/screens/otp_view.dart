@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:rudra_it_hub/controller/otp_cantroller.dart';
+import 'package:rudra_it_hub/widgets/common_appbar.dart';
+import 'package:rudra_it_hub/widgets/common_button.dart';
+import 'package:rudra_it_hub/widgets/common_text_field.dart';
 
-import '../../utils/constans.dart';
-import '../widgets/common_appbar.dart';
-import '../widgets/common_button.dart';
-import '../widgets/common_textfiled.dart';
+import '../../utils/constants.dart';
 
 class OTPScreen extends StatelessWidget {
   // ignore: unused_field
@@ -54,7 +54,7 @@ class OTPScreen extends StatelessWidget {
                     errorMessage: 'Enter Valid OTP',
                     inputType: TextInputType.number,
                     label: 'Enter OTP',
-                    formatter: [otpFormatter, mobileNumberFormater],
+                    formatter: [otpFormatter, mobileNumberFormat],
                     onTap: () {},
                     isOTPField: true,
                     autoFocus: true,

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rudra_it_hub/utils/constans.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/history_view.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
 import 'package:rudra_it_hub/view/screens/std_screen.dart';
@@ -10,7 +10,7 @@ import '../../controller/dashboard_controller.dart';
 import '../../model/login_model_alpesh.dart';
 
 class AppbarBottomBarScreen extends StatelessWidget {
-  final AppbarBottombarController _controller = Get.put(AppbarBottombarController());
+  final AppbarBottomBarController _controller = Get.put(AppbarBottomBarController());
   AppbarBottomBarScreen({super.key,this.logInModel});
   final LogInModel? logInModel;
   @override
@@ -49,7 +49,7 @@ class AppbarBottomBarScreen extends StatelessWidget {
                 lastName: logInModel?.data?.lastName ?? '',
                 email: logInModel?.data?.email ?? '',
                 mobileNo: logInModel?.data?.mobileNumber ?? '',
-                gender: logInModel?.data?.gender ?? "",
+                gender: logInModel?.data?.gender?[0].name ?? "",
                 desi: logInModel?.data?.profession?[0].name ?? "",
                 date: logInModel?.data?.dob ?? "",
               );
