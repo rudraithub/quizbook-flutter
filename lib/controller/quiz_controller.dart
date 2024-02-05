@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/question2_model.dart';
+import 'package:rudra_it_hub/model/result.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/view/screens/congratulation_view.dart';
 import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
@@ -32,12 +33,14 @@ class QuestionController extends GetxController {
   RxInt selectedOptionIndex = (-1).obs;
 
   Future<void> resultDataSend({
+
     required BuildContext context,
     required int stdid,
     required int subid,
     required int chapterid,
     required List questions,
   }) async {
+    print('result send call');
     String url = '$baseUrl$resultUrl';
     try {
       var headers = <String, String>{};
@@ -54,7 +57,8 @@ class QuestionController extends GetxController {
 
       // var encodedBody = jsonEncode(body);
 
-      var response = await postMethod(url, body, headers);
+      var response = await postMethod(url, body, headers ,context);
+      var finalResult = resultFromJson(response.body);
 
       print("just data for $response");
       if (response.statusCode == 200) {
@@ -62,8 +66,8 @@ class QuestionController extends GetxController {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (_) => CongratulationScreen(
-                noOfTrueAns: 5,
-                totalQuestion: 10,
+                noOfTrueAns: finalResult.data.totalRightQuestions,
+                noOfWrongAns: finalResult.data.totalWrongQuestions,
               ),
             ),
           );
@@ -72,12 +76,14 @@ class QuestionController extends GetxController {
         if (context.mounted) {
           commonSnackBar(context: context, msg: response.body);
         }
+        print('object');
       }
     } catch (e) {
       if (context.mounted) {
         commonSnackBar(
             context: context, msg: "Catch ${e.toString()}", durationSeconds: 5);
       }
+      print(e.toString());
     }
   }
 
@@ -94,7 +100,7 @@ class QuestionController extends GetxController {
       };
       final Map<String, String> headers = {'Content-Type': 'application/json'};
 
-      var response = await postMethod('$baseUrl$questionUrl', body, headers);
+      var response = await postMethod('$baseUrl$questionUrl', body, headers ,context);
       if (response.statusCode == 200) {
         QuestionApiData tm = questionApiDataFromJson(response.body);
         return tm;

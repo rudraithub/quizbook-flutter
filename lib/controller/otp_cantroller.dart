@@ -7,7 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
+import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/utils/preference_helper.dart';
+import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +32,7 @@ class OTPController extends GetxController {
           .signInWithCredential(credential)
           .catchError((onError) async {
         commonSnackBar(context: context, msg: 'Please enter correct otp');
+
       }).then((value) async {
         LogInModel users = LogInModel();
 
@@ -41,8 +44,7 @@ class OTPController extends GetxController {
         };
         // const uri = 'http://192.168.1.22:3000/users/login';
         const uri = '$baseUrl$loginUrl';
-        var response = await http.post(Uri.parse(uri),
-            headers: headers, body: jsonEncode(requestBody));
+        var response = await postMethod(uri, requestBody, headers, context);
 
         try {
           if (response.statusCode == 200) {
@@ -52,6 +54,7 @@ class OTPController extends GetxController {
             SharedPreferencesHelper sharedPreferencesHelper =
                 SharedPreferencesHelper(sharedPreferences);
             sharedPreferencesHelper.putBool(Preferences.userLogin, true);
+            // sharedPreferencesHelper.putString(Preferences.token, users.token!);
             await sharedPreferencesHelper.putString(
                 Preferences.userFullDetails, jsonEncode(users));
 

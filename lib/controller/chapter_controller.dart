@@ -20,7 +20,7 @@ class ChapterController extends GetxController {
       headers['Content-Type'] = 'application/json';
 
       var body = <String, dynamic>{"stdid": stdId, "subid": subId};
-      var response = await postMethod('$baseUrl$chapterUrl', body, headers);
+      var response = await postMethod('$baseUrl$chapterUrl', body, headers ,context);
 
       // var products = await RemoteServices.fatchChapter(stdId, subId);
       if (response.statusCode == 200) {

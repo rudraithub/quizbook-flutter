@@ -64,7 +64,7 @@ class OTPScreen extends StatelessWidget {
               const SizedBox(height: 20),
               CommonButton(
                   onPress: () async {
-                    FocusScope.of(context).unfocus();
+                    // FocusScope.of(context).unfocus();
                     otpController.verifyOTP(
                         verificationId, _otpController, moNumber, context);
                   },

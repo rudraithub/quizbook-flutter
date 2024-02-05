@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'model/login_model_alpesh.dart';
 
 String? userBearerToken;
+LogInModel? userData;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,10 +30,10 @@ class _SplashScreenState extends State<SplashScreen> {
             SharedPreferencesHelper(prefs).getBool(Preferences.userLogin);
 
         if (loginStatus == true) {
-          LogInModel userData = logInModelFromJson(
+           userData = logInModelFromJson(
               SharedPreferencesHelper(prefs)
                   .getString(Preferences.userFullDetails));
-          userBearerToken = userData.token;
+          userBearerToken = userData!.token;
           // print("userBearerToken $userBearerToken");
           Navigator.pushReplacement(
               context,
@@ -49,7 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ));
         }
       });
-      // Replace HomeScreen with your main content screen
     });
     super.initState();
   }
