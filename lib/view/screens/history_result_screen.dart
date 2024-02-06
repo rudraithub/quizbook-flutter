@@ -5,7 +5,7 @@ import 'package:rudra_it_hub/widgets/common_card.dart';
 import '../../controller/history_controller.dart';
 
 class HistoryDetail extends StatelessWidget {
-  final QuizController controller = Get.put(QuizController());
+  final HistoryController controller = Get.put(HistoryController());
 
   HistoryDetail({super.key});
 

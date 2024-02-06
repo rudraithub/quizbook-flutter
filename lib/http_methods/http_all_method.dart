@@ -25,10 +25,12 @@ Future<Response> postMethod(String url, Map<String, dynamic> body,
     Map<String, String> header, BuildContext context) async {
   try {
     if (await checkInternetStatus() == false) {
-      print("Check ");
-      commonSnackBar(
-          context: context,
-          msg: 'check your internet connection and try again');
+      // print("Check ");
+      if (context.mounted) {
+        commonSnackBar(
+            context: context,
+            msg: 'check your internet connection and try again');
+      }
       throw ("Check Your Connection");
     } else {
       var response =
@@ -40,19 +42,22 @@ Future<Response> postMethod(String url, Map<String, dynamic> body,
   }
 }
 
-Future<Response> getMethode(String url, BuildContext context) async {
+Future<Response> getMethode(
+    String url, BuildContext context, Map<String, String> head) async {
   try {
     if (await checkInternetStatus() == false) {
-      commonSnackBar(
-          context: context,
-          msg: 'check your internet connection and try again');
-      print('object');
+      if (context.mounted) {
+        commonSnackBar(
+            context: context,
+            msg: 'check your internet connection and try again');
+      }
+      // print('object');
       const CommonAlertDialog(
         message: "Pleaseeee",
       );
       throw ("check");
     }
-    var response = await get(Uri.parse(url));
+    var response = await get(Uri.parse(url), headers: head);
     return response;
   } catch (e) {
     throw ("Something Went Wrong");

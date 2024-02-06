@@ -19,8 +19,9 @@ class SubjectProvider extends GetxController {
   void fetchStudyModel(BuildContext context) async {
     try {
       isLoading(true);
-
-      var response = await getMethode('$baseUrl$dashboardUrl' ,context);
+      final Map<String, String> headers = {'Content-Type': 'application/json'};
+      var response =
+          await getMethode('$baseUrl$dashboardUrl', context, headers);
       if (response.statusCode == 200) {
         stdList.value = temperaturesFromJson(response.body);
       } else {

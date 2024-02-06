@@ -10,8 +10,9 @@ import '../../controller/dashboard_controller.dart';
 import '../../model/login_model_alpesh.dart';
 
 class AppbarBottomBarScreen extends StatelessWidget {
-  final AppbarBottomBarController _controller = Get.put(AppbarBottomBarController());
-  AppbarBottomBarScreen({super.key,this.logInModel});
+  final AppbarBottomBarController _controller =
+      Get.put(AppbarBottomBarController());
+  AppbarBottomBarScreen({super.key, this.logInModel});
   final LogInModel? logInModel;
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class AppbarBottomBarScreen extends StatelessWidget {
             if (index == 0) {
               return const StudyScreen();
             } else if (index == 1) {
-              return const History();
+              return History();
             } else
               return SignUpScreen(
                 firstName: logInModel?.data?.firstName ?? '',
