@@ -364,7 +364,6 @@ class SignUpScreen extends StatelessWidget {
                       professionId,
                       context);
                 }
-
               }
             }
           },

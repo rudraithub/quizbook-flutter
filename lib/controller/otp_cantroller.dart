@@ -1,7 +1,6 @@
 // ignore_for_file: unused_local_variable, body_might_complete_normally_catch_error
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/utils/preference_helper.dart';
-import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 

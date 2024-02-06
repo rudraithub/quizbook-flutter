@@ -33,6 +33,7 @@ class QuestionController extends GetxController {
   RxInt selectedOptionIndex = (-1).obs;
 
   Future<void> resultDataSend({
+
     required BuildContext context,
     required int stdid,
     required int subid,
