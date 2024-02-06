@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/login_model_alpesh.dart';
@@ -23,6 +24,14 @@ class SignUpController extends GetxController {
 
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
+
+  RxString selectedValue = ''.obs; // Observable string for the selected value
+  RxBool isValid = false.obs; // Observable boolean for validation state
+
+  void onItemSelected(String value) {
+    selectedValue.value = value; // Update the selected value
+    isValid.value = value.isNotEmpty; // Update the validation state
+  }
 
   Future<bool> updateUser(
       String firstName, String lastName, BuildContext context) async {
@@ -56,24 +65,28 @@ class SignUpController extends GetxController {
     // ignore: use_build_context_synchronously
     final response = await postMethod(
         '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
+    try {
+      if (response.statusCode == 200) {
+        print('here');
 
-    if (response.statusCode == 200) {
-      print('here');
+        await sharedPreferencesHelper.putString(
+            Preferences.userFullDetails, jsonEncode(users));
+        if (context.mounted) {
+          commonSnackBar(context: context, msg: "Data Updated");
+        }
+        return true;
+      } else {
+        Map<String, dynamic> error = json.decode(response.body);
+        print(error['message']);
 
-      await sharedPreferencesHelper.putString(
-          Preferences.userFullDetails, jsonEncode(users));
-      if (context.mounted) {
-        commonSnackBar(context: context, msg: "Data Updated");
+        if (context.mounted) {
+          commonSnackBar(context: context, msg: error['message']);
+        }
+        return false;
       }
-      return true;
-    } else {
-      Map<String, dynamic> error = json.decode(response.body);
-      print(error['message']);
-
-      if (context.mounted) {
-        commonSnackBar(context: context, msg: error['message']);
-      }
-      return false;
+    } catch (e) {
+      print(e.toString());
+      throw '';
     }
   }
 
@@ -86,8 +99,11 @@ class SignUpController extends GetxController {
       String mobileNo,
       int professionId,
       BuildContext context) async {
+    print(dob.toString());
+
     String formattedDate =
         "${dob.day.toString().padLeft(2, '0')}/${dob.month.toString().padLeft(2, '0')}/${dob.year.toString()}";
+    print(formattedDate);
     final Map<String, dynamic> requestBody = {
       "firstName": firstName,
       "lastName": lastName,
