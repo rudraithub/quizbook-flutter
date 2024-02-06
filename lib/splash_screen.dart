@@ -33,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
            userData = logInModelFromJson(
               SharedPreferencesHelper(prefs)
                   .getString(Preferences.userFullDetails));
+
           userBearerToken = userData!.token;
           // print("userBearerToken $userBearerToken");
           Navigator.pushReplacement(

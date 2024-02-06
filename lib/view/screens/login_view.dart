@@ -129,8 +129,6 @@ class LoginScreen extends StatelessWidget {
                           })
                       : null;
 
-                  // FocusScope.of(context).unfocus();
-                  // loginController.LogInUser(context, _mobileController);
                 }
               },
               child:

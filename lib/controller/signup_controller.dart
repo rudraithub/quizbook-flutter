@@ -66,30 +66,6 @@ class SignUpController extends GetxController {
     }
   }
 
-  void signUp(
-      String firstName,
-      String lastName,
-      String email,
-      int gender,
-      DateTime dob,
-      String mobileNo,
-      int professionId,
-      BuildContext context) async {
-    String formattedDate =
-        "${dob.day.toString().padLeft(2, '0')}/${dob.month.toString().padLeft(2, '0')}/${dob.year.toString()}";
-    final Map<String, dynamic> requestBody = {
-      "firstName": firstName,
-      "lastName": lastName,
-      "email": email,
-      "password": 'Password Is here',
-      "genderID": gender,
-      "DOB": formattedDate,
-      "mobileNumber": mobileNo,
-      "professionId": professionId,
-    };
-    final Map<String, String> headers = {'Content-Type': 'application/json'};
-    // const uri = 'http://192.168.1.22:3000/users/signup';
-    const url = '$baseUrl$signupUrl';
     var response = await postMethod(url, requestBody, headers, context);
     if (response.statusCode == 200) {
       print('response success');
@@ -131,5 +107,4 @@ class SignUpController extends GetxController {
     void verifyOtp() {}
   }
 
-//----------------------------------
 }

@@ -37,7 +37,6 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         final responseString = response;
 
-
         try {
           await FirebaseAuth.instance.verifyPhoneNumber(
               verificationCompleted: (PhoneAuthCredential credential) {},

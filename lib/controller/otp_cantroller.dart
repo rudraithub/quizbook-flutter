@@ -32,7 +32,6 @@ class OTPController extends GetxController {
           .signInWithCredential(credential)
           .catchError((onError) async {
         commonSnackBar(context: context, msg: 'Please enter correct otp');
-
       }).then((value) async {
         LogInModel users = LogInModel();
 
