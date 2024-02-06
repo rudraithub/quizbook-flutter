@@ -20,7 +20,8 @@ class ChapterController extends GetxController {
       headers['Content-Type'] = 'application/json';
 
       var body = <String, dynamic>{"stdid": stdId, "subid": subId};
-      var response = await postMethod('$baseUrl$chapterUrl', body, headers ,context);
+      var response =
+          await postMethod('$baseUrl$chapterUrl', body, headers, context);
 
       // var products = await RemoteServices.fatchChapter(stdId, subId);
       if (response.statusCode == 200) {
@@ -31,11 +32,6 @@ class ChapterController extends GetxController {
           commonSnackBar(context: context, msg: 'Problem To Load Data');
         }
       }
-
-      // if (products.data.isNotEmpty) {
-      //   stdList.value = products;
-      // } else {
-      // }
     } finally {
       isLoading(false);
     }
