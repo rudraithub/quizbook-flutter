@@ -28,7 +28,8 @@ class SignUpScreen extends StatelessWidget {
     this.email = '',
   });
 
-  final _key = GlobalKey<FormState>();
+  // final _key = GlobalKey<FormState>();
+  static final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   final bool isBackArrow;
   final bool isProfile;
@@ -81,6 +82,7 @@ class SignUpScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: CommonAppBarScreen(
@@ -347,16 +349,22 @@ class SignUpScreen extends StatelessWidget {
               if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                 commonSnackBar(context: context, msg: "Please select date");
               } else {
-                print('else calll');
-                signUpCantroller.signUp(
-                    _firstNameController.text,
-                    _lastNameController.text,
-                    _emailController.text,
-                    genderId,
-                    selectedDate,
-                    _mobileController.text,
-                    professionId,
-                    context);
+                // print('else calll');
+                if(isProfile){
+                  signUpCantroller.updateUser(_firstNameController.text,_lastNameController.text, context);
+                }
+                else{
+                  signUpCantroller.signUp(
+                      _firstNameController.text,
+                      _lastNameController.text,
+                      _emailController.text,
+                      genderId,
+                      selectedDate,
+                      _mobileController.text,
+                      professionId,
+                      context);
+                }
+
               }
             }
           },

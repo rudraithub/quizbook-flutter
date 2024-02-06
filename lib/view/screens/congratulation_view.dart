@@ -2,12 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
+import 'package:rudra_it_hub/view/screens/dashboard_view.dart';
 
 
 class CongratulationScreen extends StatelessWidget {
   const CongratulationScreen(
-      {super.key, required this.totalQuestion, required this.noOfTrueAns});
-  final int totalQuestion;
+      {super.key, required this.noOfWrongAns, required this.noOfTrueAns});
+  final int noOfWrongAns;
   final int noOfTrueAns;
   // final TextStyle commonTextStyle = const TextStyle(
   //   fontSize: 20,
@@ -40,7 +41,7 @@ class CongratulationScreen extends StatelessWidget {
               ),
               Text(
                 'Congratulation',
-                style: TextStyle(fontSize: screenHeight * 0.05),
+                style: TextStyle(fontSize: screenHeight * 0.05,color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -89,7 +90,7 @@ class CongratulationScreen extends StatelessWidget {
                           backgroundColor: resultFalseColor,
                         ),
                         child: Text(
-                          '${totalQuestion - noOfTrueAns} Incorrect',
+                          '$noOfWrongAns Incorrect',
                           style: TextStyle(
                               color: Colors.white, fontSize: screenHeight * 0.025  ,overflow: TextOverflow.ellipsis),
                         )),
@@ -135,7 +136,9 @@ class CongratulationScreen extends StatelessWidget {
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
                                   side: const BorderSide(color: whiteColor)))),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AppbarBottomBarScreen(),), (route) => false);
+                      },
                       child:  Text(
                         'Start a new quiz',
                         style: TextStyle(color: whiteColor ,fontSize: screenHeight * 0.03 ,overflow: TextOverflow.ellipsis),

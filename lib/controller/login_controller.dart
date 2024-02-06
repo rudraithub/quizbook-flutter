@@ -32,11 +32,10 @@ class LoginController extends GetxController {
       var header = <String, String>{};
       header['Content-Type'] = 'application/json';
 
-      final response = await postMethod('$baseUrl$userVerifyUrl', body, header);
+      final response = await postMethod('$baseUrl$userVerifyUrl', body, header ,context);
 
       if (response.statusCode == 200) {
         final responseString = response;
-        // print('Response is success');
 
         try {
           await FirebaseAuth.instance.verifyPhoneNumber(
