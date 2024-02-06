@@ -24,7 +24,7 @@ class SignUpController extends GetxController {
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
 
-  void updateUser(
+  Future<bool> updateUser(
       String firstName, String lastName, BuildContext context) async {
     final Map<String, dynamic> requestBody = {
       "firstName": firstName,
@@ -59,11 +59,21 @@ class SignUpController extends GetxController {
 
     if (response.statusCode == 200) {
       print('here');
+
       await sharedPreferencesHelper.putString(
           Preferences.userFullDetails, jsonEncode(users));
       if (context.mounted) {
         commonSnackBar(context: context, msg: "Data Updated");
       }
+      return true;
+    } else {
+      Map<String, dynamic> error = json.decode(response.body);
+      print(error['message']);
+
+      if (context.mounted) {
+        commonSnackBar(context: context, msg: error['message']);
+      }
+      return false;
     }
   }
 
