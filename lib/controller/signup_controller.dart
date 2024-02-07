@@ -25,7 +25,9 @@ class SignUpController extends GetxController {
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
 
+
   RxString selectedValue = ''.obs; // Observable string for the selected value
+
 
   Future<bool> updateUser(
       String firstName, String lastName, BuildContext context) async {
@@ -81,6 +83,7 @@ class SignUpController extends GetxController {
     } catch (e) {
       print(e.toString());
       throw '';
+
     }
   }
 
@@ -152,5 +155,5 @@ class SignUpController extends GetxController {
     void verifyOtp() {}
   }
 
-//----------------------------------
+
 }
