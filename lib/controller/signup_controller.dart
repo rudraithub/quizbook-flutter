@@ -25,13 +25,8 @@ class SignUpController extends GetxController {
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
 
-  RxString selectedValue = ''.obs; // Observable string for the selected value
-  RxBool isValid = false.obs; // Observable boolean for validation state
 
-  void onItemSelected(String value) {
-    selectedValue.value = value; // Update the selected value
-    isValid.value = value.isNotEmpty; // Update the validation state
-  }
+
 
   Future<bool> updateUser(
       String firstName, String lastName, BuildContext context) async {
@@ -65,6 +60,7 @@ class SignUpController extends GetxController {
     // ignore: use_build_context_synchronously
     final response = await postMethod(
         '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
+
     try {
       if (response.statusCode == 200) {
         print('here');
@@ -87,6 +83,7 @@ class SignUpController extends GetxController {
     } catch (e) {
       print(e.toString());
       throw '';
+
     }
   }
 
@@ -158,5 +155,4 @@ class SignUpController extends GetxController {
     void verifyOtp() {}
   }
 
-//----------------------------------
 }
