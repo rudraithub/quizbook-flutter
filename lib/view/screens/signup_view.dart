@@ -61,6 +61,9 @@ class SignUpScreen extends StatelessWidget {
 
   final RxString selectedDesignation = ''.obs;
 
+  RxString selectedValue = ''.obs; // Observable string for the selected value
+  RxBool isValid = false.obs;
+
   final RxString genderErrorMessage = RxString('');
 
   final RxString desErrorMsg = RxString('');
@@ -187,12 +190,16 @@ class SignUpScreen extends StatelessWidget {
                                   selectedGender(value);
                                   genderErrorMessage('');
                                 },
+                                // Call the method from the controller
                                 validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please select a gender";
-                                  }
-                                  return null;
+                                  return 'Please select an option';
                                 },
+                                // validator: (value) {
+                                //   if (value == null || value.isEmpty) {
+                                //     return "Please select a gender";
+                                //   }
+                                //   return null;
+                                // },
                                 items: ['Male', 'Female', 'Others']
                                     .map<DropdownMenuItem<String>>(
                                       (String value) =>
@@ -350,10 +357,10 @@ class SignUpScreen extends StatelessWidget {
                 commonSnackBar(context: context, msg: "Please select date");
               } else {
                 // print('else calll');
-                if(isProfile){
-                  signUpCantroller.updateUser(_firstNameController.text,_lastNameController.text, context);
-                }
-                else{
+                if (isProfile) {
+                  signUpCantroller.updateUser(_firstNameController.text,
+                      _lastNameController.text, context);
+                } else {
                   signUpCantroller.signUp(
                       _firstNameController.text,
                       _lastNameController.text,

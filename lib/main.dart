@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
+import 'package:rudra_it_hub/view/screens/login_view.dart';
+import 'package:rudra_it_hub/view/screens/signup_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white60),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: SignUpScreen(),
     );
   }
 }
