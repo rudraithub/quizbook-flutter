@@ -6,105 +6,96 @@ import 'dart:convert';
 
 Result resultFromJson(String str) => Result.fromJson(json.decode(str));
 
-String resultToJson(Result data) => json.encode(data.toJson());
+String temperaturesToJson(Result data) => json.encode(data.toJson());
 
 class Result {
-  int status;
-  Data data;
-  String message;
+  int? status;
+  Data? data;
+  String? message;
 
   Result({
-    required this.status,
-    required this.data,
-    required this.message,
+    this.status,
+    this.data,
+    this.message,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        status: json["status"],
-        data: Data.fromJson(json["data"]),
-        message: json["message"],
-      );
+    status: json["status"],
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    message: json["message"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "data": data.toJson(),
-        "message": message,
-      };
+    "status": status,
+    "data": data?.toJson(),
+    "message": message,
+  };
 }
 
 class Data {
-  String userId;
-  int stdid;
-  int subid;
-  int chapterid;
-  List<Question> questions;
-  String id;
-  int v;
-  int totalRightQuestions;
-  int totalWrongQuestions;
+  int? userId;
+  int? stdid;
+  int? subid;
+  int? chapterid;
+  List<Question>? questions;
+  int? totalRightQuestions;
+  int? totalWrongQuestions;
+  DateTime? submitTime;
 
   Data({
-    required this.userId,
-    required this.stdid,
-    required this.subid,
-    required this.chapterid,
-    required this.questions,
-    required this.id,
-    required this.v,
-    required this.totalRightQuestions,
-    required this.totalWrongQuestions,
+    this.userId,
+    this.stdid,
+    this.subid,
+    this.chapterid,
+    this.questions,
+    this.totalRightQuestions,
+    this.totalWrongQuestions,
+    this.submitTime,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        userId: json["userID"],
-        stdid: json["stdid"],
-        subid: json["subid"],
-        chapterid: json["chapterid"],
-        questions: List<Question>.from(
-            json["questions"].map((x) => Question.fromJson(x))),
-        id: json["_id"],
-        v: json["__v"],
-        totalRightQuestions: json["totalRightQuestions"],
-        totalWrongQuestions: json["totalWrongQuestions"],
-      );
+    userId: json["userID"],
+    stdid: json["stdid"],
+    subid: json["subid"],
+    chapterid: json["chapterid"],
+    questions: json["questions"] == null ? [] : List<Question>.from(json["questions"]!.map((x) => Question.fromJson(x))),
+    totalRightQuestions: json["totalRightQuestions"],
+    totalWrongQuestions: json["totalWrongQuestions"],
+    submitTime: json["submitTime"] == null ? null : DateTime.parse(json["submitTime"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "userID": userId,
-        "stdid": stdid,
-        "subid": subid,
-        "chapterid": chapterid,
-        "questions": List<dynamic>.from(questions.map((x) => x.toJson())),
-        "_id": id,
-        "__v": v,
-        "totalRightQuestions": totalRightQuestions,
-        "totalWrongQuestions": totalWrongQuestions,
-      };
+    "userID": userId,
+    "stdid": stdid,
+    "subid": subid,
+    "chapterid": chapterid,
+    "questions": questions == null ? [] : List<dynamic>.from(questions!.map((x) => x.toJson())),
+    "totalRightQuestions": totalRightQuestions,
+    "totalWrongQuestions": totalWrongQuestions,
+    "submitTime": submitTime?.toIso8601String(),
+  };
 }
 
 class Question {
-  int queid;
-  int userAnswer;
-  bool userResult;
-  String id;
+  int? queid;
+  int? userAnswer;
+  bool? userResult;
 
   Question({
-    required this.queid,
-    required this.userAnswer,
-    required this.userResult,
-    required this.id,
+    this.queid,
+    this.userAnswer,
+    this.userResult,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
-        queid: json["queid"],
-        userAnswer: json["user_answer"],
-        userResult: json["user_result"],
-        id: json["_id"],
-      );
+    queid: json["queid"],
+    userAnswer: json["user_answer"],
+    userResult: json["user_result"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "queid": queid,
-        "user_answer": userAnswer,
-        "user_result": userResult,
-        "_id": id,
-      };
+    "queid": queid,
+    "user_answer": userAnswer,
+    "user_result": userResult,
+  };
 }

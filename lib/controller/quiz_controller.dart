@@ -41,33 +41,36 @@ class QuestionController extends GetxController {
     required List questions,
   }) async {
     print('result send call');
+    // print(stdid.toString() + subid.toString() + chapterid.toString());
     String url = '$baseUrl$resultUrl';
     try {
-      var headers = <String, String>{};
-      headers['Content-Type'] = 'application/json';
-      headers['Authorization'] = userBearerToken ?? '';
-
+       Map <String, String>  headers = {
+        'Content-Type' :'application/json',
+        'Authorization' : userBearerToken!,
+      };
       var body = <String, dynamic>{
         // "userID": userID,
-        "stdid": stdid,
-        "subid": subid,
-        "chapterid": chapterid,
+        "stdid": 1,
+        "subid": 1,
+        "chapterid": 1,
         "questions": questions
       };
+      print('here');
 
       // var encodedBody = jsonEncode(body);
 
       var response = await postMethod(url, body, headers ,context);
+      print('here');
+      print(userBearerToken);
       var finalResult = resultFromJson(response.body);
 
-      print("just data for $response");
       if (response.statusCode == 200) {
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (_) => CongratulationScreen(
-                noOfTrueAns: finalResult.data.totalRightQuestions,
-                noOfWrongAns: finalResult.data.totalWrongQuestions,
+                noOfTrueAns: finalResult.data!.totalRightQuestions!,
+                noOfWrongAns: finalResult.data!.totalWrongQuestions!,
               ),
             ),
           );
@@ -81,7 +84,7 @@ class QuestionController extends GetxController {
     } catch (e) {
       if (context.mounted) {
         commonSnackBar(
-            context: context, msg: "Catch ${e.toString()}", durationSeconds: 5);
+            context: context, msg: "Catch2 ${e.toString()}", durationSeconds: 5);
       }
       print(e.toString());
     }

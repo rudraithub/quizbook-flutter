@@ -13,7 +13,7 @@ class StudyItem extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
     // double screenWidth = getScreenWidth(context);
-    print(model.subject![1].id);
+
     return Padding(
       padding: const EdgeInsets.only(left: 5, right: 5, top: 20),
       child: Container(
@@ -70,7 +70,7 @@ class StudyItem extends StatelessWidget {
                 Expanded(
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: model.subject!.length,
+                    itemCount: model.subjects.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 0, left: 2),
@@ -90,10 +90,10 @@ class StudyItem extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
                                           stdId: model.stdid!,
-                                          subId: model.subject![index].subid!,
+                                          subId: model.subjects[index].subid!,
                                           std: model.std!,
                                           subject: model
-                                              .subject![index].subjectName!,
+                                              .subjects[index].subjectName!,
                                         )));
                               },
                               child: ClipRRect(
@@ -103,7 +103,7 @@ class StudyItem extends StatelessWidget {
                                   child: Image.network(
                                     // Add dummy Url because the api url not working
 
-                                    model.subject![index].img!,
+                                    model.subjects[index].img!,
 
                                     height: screenHeight * 0.12,
                                     width: screenHeight * 0.12,
@@ -116,7 +116,7 @@ class StudyItem extends StatelessWidget {
                             SizedBox(
                                 // width: screenWidth / 5,
                                 child: Text(
-                              model.subject![index].subjectName!,
+                              model.subjects[index].subjectName!,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: screenHeight * 0.02,
