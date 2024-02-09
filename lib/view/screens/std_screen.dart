@@ -51,10 +51,12 @@ class _StudyScreenState extends State<StudyScreen> {
               // }
               print("std screen in ${provider.stdList}");
               return ListView.builder(
-                itemCount: provider.stdList.value.data!.length,
+                itemCount: provider.stdList.value.data.length,
                 itemBuilder: (context, index) {
-                  return StudyItem(
-                    model: provider.stdList.value.data![index],
+                  return
+                    // Text('hi');
+                    StudyItem(
+                    model: provider.stdList.value.data[index],
                   );
                 },
               );

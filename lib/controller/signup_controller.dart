@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/login_model_alpesh.dart';
@@ -25,8 +24,14 @@ class SignUpController extends GetxController {
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
 
-
   RxString selectedValue = ''.obs; // Observable string for the selected value
+
+  RxBool isValid = false.obs; // Observable boolean for validation state
+
+  void onItemSelected(String value) {
+    selectedValue.value = value; // Update the selected value
+    isValid.value = value.isNotEmpty; // Update the validation state
+  }
 
 
   Future<bool> updateUser(
@@ -83,7 +88,6 @@ class SignUpController extends GetxController {
     } catch (e) {
       print(e.toString());
       throw '';
-
     }
   }
 
@@ -155,5 +159,5 @@ class SignUpController extends GetxController {
     void verifyOtp() {}
   }
 
-
+//----------------------------------
 }

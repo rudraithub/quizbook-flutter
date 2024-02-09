@@ -9,85 +9,73 @@ Temperatures temperaturesFromJson(String str) => Temperatures.fromJson(json.deco
 String temperaturesToJson(Temperatures data) => json.encode(data.toJson());
 
 class Temperatures {
-  int? status;
-  List<Datum>? data;
-  String? message;
+  int status;
+  List<Datum> data;
+  String message;
 
   Temperatures({
-    this.status,
-    this.data,
-    this.message,
+    required this.status,
+    required this.data,
+    required this.message,
   });
 
   factory Temperatures.fromJson(Map<String, dynamic> json) => Temperatures(
     status: json["status"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
     "message": message,
   };
 }
 
 class Datum {
-  String? id;
-  String? std;
-  List<Subject>? subject;
-  int? stdid;
-  int? v;
+  int stdid;
+  String std;
+  List<Subject> subjects;
 
   Datum({
-    this.id,
-    this.std,
-    this.subject,
-    this.stdid,
-    this.v,
+    required this.stdid,
+    required this.std,
+    required this.subjects,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    id: json["_id"],
-    std: json["std"],
-    subject: json["subject"] == null ? [] : List<Subject>.from(json["subject"]!.map((x) => Subject.fromJson(x))),
     stdid: json["stdid"],
-    v: json["__v"],
+    std: json["std"],
+    subjects: List<Subject>.from(json["Subjects"].map((x) => Subject.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "std": std,
-    "subject": subject == null ? [] : List<dynamic>.from(subject!.map((x) => x.toJson())),
     "stdid": stdid,
-    "__v": v,
+    "std": std,
+    "Subjects": List<dynamic>.from(subjects.map((x) => x.toJson())),
   };
 }
 
 class Subject {
-  String? subjectName;
-  String? img;
-  int? subid;
-  String? id;
+  int subid;
+  String subjectName;
+  String img;
 
   Subject({
-    this.subjectName,
-    this.img,
-    this.subid,
-    this.id,
+    required this.subid,
+    required this.subjectName,
+    required this.img,
   });
 
   factory Subject.fromJson(Map<String, dynamic> json) => Subject(
+    subid: json["subid"],
     subjectName: json["subjectName"],
     img: json["img"],
-    subid: json["subid"],
-    id: json["_id"],
   );
 
   Map<String, dynamic> toJson() => {
+    "subid": subid,
     "subjectName": subjectName,
     "img": img,
-    "subid": subid,
-    "_id": id,
   };
 }
