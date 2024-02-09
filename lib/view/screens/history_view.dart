@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:rudra_it_hub/controller/history_controller.dart';
-import 'package:rudra_it_hub/model/history_model_data.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/history_result_screen.dart';
 

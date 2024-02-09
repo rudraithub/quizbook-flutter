@@ -1,33 +1,35 @@
-
 import 'package:flutter/material.dart';
 
-class CommonAlertDialog extends StatelessWidget {
-  final String message;
+class DialogUtils {
+  // static DialogUtils _instance = new DialogUtils.internal();
 
-  const CommonAlertDialog({super.key, required this.message});
+  DialogUtils.internal();
 
-  void show(BuildContext context) {
+  // factory DialogUtils() => _instance;
+
+  static void showCustomDialog(BuildContext context,String msg,
+      {required String title, 
+      String okBtnText = "Ok",
+      String cancelBtnText = "Cancel",
+      required Function okBtnFunction}) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return this;
-      },
-    );
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Opps!!!'),
+            content: Text(msg),/* Here add your custom widget  */
+            actions: <Widget>[
+              // FlatButton(
+              //   child: Text(okBtnText),
+              //   onPressed: okBtnFunction,
+              // ),
+              Center(
+                child: TextButton(
+                    child: Text("Ok"),
+                    onPressed: () => Navigator.pop(context)),
+              )
+            ],
+          );
+        });
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Alert'),
-      content: Text(message),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close the alert dialog
-          },
-          child: const Text('Close'),
-        ),
-      ],
-    );
-  }
-}
+ }

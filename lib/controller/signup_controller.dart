@@ -58,7 +58,7 @@ class SignUpController extends GetxController {
           profession: userData!.data!.profession,
           userId: userData!.data!.userId,
         ),
-        token: userData!.token);
+        token: userBearerToken);
 
     var sharedPreferences = await SharedPreferences.getInstance();
     SharedPreferencesHelper sharedPreferencesHelper =

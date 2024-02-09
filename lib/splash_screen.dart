@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   .getString(Preferences.userFullDetails));
           userBearerToken = userData!.token;
           print(userData!.token);
-          // print("userBearerToken $userBearerToken");
+          print("userBearerToken $userBearerToken");
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

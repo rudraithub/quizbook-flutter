@@ -1,10 +1,13 @@
 // ignore_for_file: override_on_non_overriding_member
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
+import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 
 class ChapterController extends GetxController {
@@ -29,7 +32,15 @@ class ChapterController extends GetxController {
         stdList.value = chapterFromJson(jsonString);
       } else {
         if (context.mounted) {
-          commonSnackBar(context: context, msg: 'Problem To Load Data');
+          var responseData = json.decode(response.body);
+    String message = responseData['message'];
+          // CommonAlertDialog(message: message,);
+          DialogUtils.showCustomDialog(context,message,
+          title: "Gallary",
+          okBtnText: "Save",
+          cancelBtnText: "Cancel",
+          okBtnFunction: () {});
+          print('erro');
         }
       }
     } finally {

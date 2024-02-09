@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
+import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/utils/preference_helper.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,6 +49,8 @@ class OTPController extends GetxController {
           if (response.statusCode == 200) {
             // print("Prashant" + response.body);
             LogInModel users = logInModelFromJson(response.body);
+            userBearerToken = users.token!;
+            userData = users;
             var sharedPreferences = await SharedPreferences.getInstance();
             SharedPreferencesHelper sharedPreferencesHelper =
                 SharedPreferencesHelper(sharedPreferences);
@@ -80,6 +83,10 @@ class OTPController extends GetxController {
         }
       });
     } catch (e) {
+      if (context.mounted) {
+        commonSnackBar(context: context, msg:"SOmnething Went Wrong");
+        
+      }
     }
   }
 }

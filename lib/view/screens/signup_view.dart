@@ -192,7 +192,7 @@ class SignUpScreen extends StatelessWidget {
                                   selectedGender(value);
                                   genderErrorMessage('');
                                   signUpCantroller.selectedGender.value = value!;
-                                  signUpCantroller.onItemSelected(value!);
+                                  signUpCantroller.onItemSelected(value);
                                   signUpCantroller.isValid.value == true;
                                 },
                                 // Call the method from the controller

@@ -24,7 +24,7 @@ class HistoryController extends GetxController {
   String getCorrectAnswer(int index) => _model.options[index - 1][0];
 
   void loadData(BuildContext context) async {
-    print('Load Data Call');
+    print(userBearerToken!);
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': userBearerToken!,

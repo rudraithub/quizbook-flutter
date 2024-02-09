@@ -4,7 +4,6 @@ const signupUrl = 'users/signup';
 const userVerifyUrl = 'user/varify';
 const dashboardUrl = 'std';
 const chapterUrl = 'std/subject/chapter';
-// const questionUrl = 'std/1/subject/2/chapter/2/questions';
 const userProfileDataUrl = '65a0bec31e87d7a0656cf64f/profile';
 const userProfileUpdateUrl = 'profile/update';
 const uploadUserProfileUrl = 'users/avatars';
