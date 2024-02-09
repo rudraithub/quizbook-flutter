@@ -82,6 +82,8 @@ class SignUpScreen extends StatelessWidget {
       selectedGender.value = gender.isEmpty ? '' : gender;
       selectedDesignation.value = desi.isEmpty ? '' : desi;
       signUpCantroller.changeBirthDate(date);
+      signUpCantroller.isValid.value = true;
+      
     }
 
     return Scaffold(
@@ -189,6 +191,7 @@ class SignUpScreen extends StatelessWidget {
                                 onChanged: (value) {
                                   selectedGender(value);
                                   genderErrorMessage('');
+                                  signUpCantroller.selectedGender.value = value!;
                                   signUpCantroller.onItemSelected(value!);
                                   signUpCantroller.isValid.value == true;
                                 },
@@ -196,7 +199,7 @@ class SignUpScreen extends StatelessWidget {
                                 validator: (value) {
                                   return signUpCantroller.isValid.value
                                       ? null
-                                      : 'Please select an option';
+                                      : 'Please select Gender';
                                 },
                                 // validator: (value) {
                                 //   if (value == null || value.isEmpty) {
