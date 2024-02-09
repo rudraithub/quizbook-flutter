@@ -17,13 +17,7 @@ class HistoryController extends GetxController {
   int get rightAnswers => _model.rightAnswers;
   int get wrongAnswers => _model.wrongAnswers;
   var isLoading = false.obs;
-  @override
-  void onInit() {
-    // final context = Get.context;
-    // loadData(context!);
-
-    super.onInit();
-  }
+  
 
   String getQuestion(int index) => _model.questions[index - 1];
   List<String> getOptions(int index) => _model.options[index - 1];
@@ -37,12 +31,14 @@ class HistoryController extends GetxController {
     };
     String url = '$baseUrl$historyUrl';
     try {
-      isLoading(true);
+      
+      isLoading.value =true;
       print("inside try");
       var response = await getMethode(url, context, headers);
       if (response.statusCode == 200) {
-        historyModel.value = historyModelFromJson(response.body);
+        historyModel.value = historyFromJson(response.body);
         print('Respones Success');
+
       } else {
         Map<String, dynamic> error = json.decode(response.body);
         print('error[' 'message' ']');
@@ -52,6 +48,7 @@ class HistoryController extends GetxController {
         }
       }
     } catch (e) {
+      isLoading.value =false;
       print(e.toString());
       isLoading(false);
     } finally {

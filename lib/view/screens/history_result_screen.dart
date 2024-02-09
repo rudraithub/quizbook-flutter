@@ -1,13 +1,15 @@
 // quiz_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rudra_it_hub/model/history_model_data.dart';
 import 'package:rudra_it_hub/widgets/common_card.dart';
 import '../../controller/history_controller.dart';
 
 class HistoryDetail extends StatelessWidget {
   final HistoryController controller = Get.put(HistoryController());
 
-  HistoryDetail({super.key});
+  HistoryDetail({super.key ,required this.chapterHistory});
+  final ChapterHistory chapterHistory ;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class HistoryDetail extends StatelessWidget {
                 vertical: screenHeight * 0.015,
               ),
               child:
-                  _buildQuestionCard(context, index, screenWidth, screenHeight),
+                  _buildQuestionCard(context, screenWidth, chapterHistory.questions[index].questionName, chapterHistory.questions[index].option, chapterHistory.questions[index].option[chapterHistory.questions[index].rightAnswer], screenHeight)
             );
           }
         },
@@ -48,19 +50,16 @@ class HistoryDetail extends StatelessWidget {
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildResultCard('Total Questions',
-                  '${controller.totalQuestions}', screenWidth, screenHeight),
-              _buildResultCard('Right Answer', '${controller.rightAnswers}',
-                  screenWidth, screenHeight),
-              _buildResultCard('Wrong Answer', '${controller.wrongAnswers}',
-                  screenWidth, screenHeight)
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildResultCard('Total Qusetion',
+                '${controller.totalQuestions}', screenWidth, screenHeight),
+            _buildResultCard('Right Ans', chapterHistory.totalRightQuestions.toString(),
+                screenWidth, screenHeight),
+            _buildResultCard('Wrong Ans', chapterHistory.totalWrongQuestions.toString(),
+                screenWidth, screenHeight)
+          ],
         ),
       ),
     );
@@ -76,7 +75,7 @@ class HistoryDetail extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: screenHeight * 0.03,
+                fontSize: screenHeight * 0.018,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
@@ -84,7 +83,7 @@ class HistoryDetail extends StatelessWidget {
             Text(
               value,
               style:
-                  TextStyle(fontSize: screenHeight * 0.03, color: Colors.black),
+                  TextStyle(fontSize: screenHeight * 0.02, color: Colors.black),
             ),
             SizedBox(height: screenHeight * 0.02),
           ],
@@ -93,11 +92,9 @@ class HistoryDetail extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionCard(BuildContext context, int index, double screenWidth,
+  Widget _buildQuestionCard(BuildContext context,  double screenWidth,String question, List<String> options ,  String correctAnswer ,
       double screenHeight) {
-    String question = controller.getQuestion(index);
-    List<String> options = controller.getOptions(index);
-    String correctAnswer = controller.getCorrectAnswer(index);
+   
 
     return Card(
       elevation: 5,
@@ -110,29 +107,33 @@ class HistoryDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  '$index: $question',
+                  question,
                   style: TextStyle(
                     fontSize:
-                        screenHeight * 0.04, // Adjusted based on screenHeight
+                        screenHeight * 0.028, // Adjusted based on screenHeight
                     color: Colors.black,
                   ),
                   textAlign: TextAlign.start,
                 ),
-                SizedBox(height: screenHeight * 0.02),
-                for (String option in options) HsAnswerCard(option: option),
+                SizedBox(height: screenHeight * 0.01),
+                HsAnswerCard(option: "A : ${options[0]}"),
+                HsAnswerCard(option: "B : ${options[1]}"),
+                HsAnswerCard(option: "C : ${options[2]}"),
+                HsAnswerCard(option: "D : ${options[3]}"),
+                // HsAnswerCard(option: "A : ${options[0]}"),
+             
               ],
             ),
           ),
-          const SizedBox(),
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                correctAnswer,
+               "User Answer : $correctAnswer",
                 style: TextStyle(
                   color: Colors.red,
-                  fontSize: screenHeight * 0.030,
+                  fontSize: screenHeight * 0.0220,
                 ),
               ),
             ),

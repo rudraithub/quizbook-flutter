@@ -1,3 +1,4 @@
+
 // ignore_for_file: unused_local_variable, body_might_complete_normally_catch_error
 
 import 'dart:convert';
@@ -51,7 +52,7 @@ class OTPController extends GetxController {
             SharedPreferencesHelper sharedPreferencesHelper =
                 SharedPreferencesHelper(sharedPreferences);
             sharedPreferencesHelper.putBool(Preferences.userLogin, true);
-            // sharedPreferencesHelper.putString(Preferences.token, users.token!);
+            sharedPreferencesHelper.putString(Preferences.token, users.token!);
             await sharedPreferencesHelper.putString(
                 Preferences.userFullDetails, jsonEncode(users));
 
@@ -71,19 +72,14 @@ class OTPController extends GetxController {
             if (context.mounted) {
               commonSnackBar(context: context, msg: "catch ${response.body}");
             }
-            // LogInModel users =  LogInModel();
           }
         } catch (e) {
-          // print('Here 4');
-          // print(e.toString());
           if (context.mounted) {
             commonSnackBar(context: context, msg: "catch ${e.toString()}");
           }
-          // return LogInModel();
         }
       });
     } catch (e) {
-      // print('error');
     }
   }
 }
