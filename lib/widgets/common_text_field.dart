@@ -50,7 +50,7 @@ class CommonTextFormField extends StatelessWidget {
   });
 
   final TextStyle labelStyle = const TextStyle(
-    fontSize: 14,
+    fontSize: 15,
     color: greyColor,
     fontWeight: FontWeight.w500,
   );
@@ -59,11 +59,11 @@ class CommonTextFormField extends StatelessWidget {
     color: greyColor,
     fontWeight: FontWeight.w500,
   );
-  final TextStyle textStyle =const TextStyle(
-    fontSize: 14,
-    color: blackColor,
-    fontWeight: FontWeight.w500,
-  );
+  // final TextStyle textStyle =const TextStyle(
+  //   fontSize: 14,
+  //   color: blackColor,
+  //   fontWeight: FontWeight.w500,
+  // );
 
   final TextStyle mobileNumberStyle = const TextStyle(
     fontSize: 15,
@@ -83,25 +83,33 @@ class CommonTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style:const TextStyle(
+        color: Colors.black,
+        fontSize: 15.1,
+      fontWeight: FontWeight.w500
+      ),
       autofocus: autoFocus,
       onTap: onTap,
       readOnly: isReadOnly,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      style: mobileNumberStyle,
+      // style: mobileNumberStyle,
       keyboardType: inputType,
       inputFormatters: formatter,
       textInputAction: TextInputAction.next,
       controller: controller,
       decoration: InputDecoration(
+
           floatingLabelBehavior: FloatingLabelBehavior.always,
+
           counterText: '',
           isDense: false,
           hintText: hint,
           hintStyle: hintStyle,
           label: Text(
             label,
-            style: labelStyle,
+
           ),
+          labelStyle:labelStyle ,
           errorBorder: errorBorder,
           focusedBorder: focusBorder,
           border: border,

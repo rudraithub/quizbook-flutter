@@ -8,6 +8,7 @@ import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 
 import '../model/history_model_data.dart';
+import '../widgets/commo_alert_dilog.dart';
 
 class HistoryController extends GetxController {
   final QuizModel _model = QuizModel();
@@ -44,7 +45,9 @@ class HistoryController extends GetxController {
         print('error[' 'message' ']');
         isLoading(false);
         if (context.mounted) {
-          commonSnackBar(context: context, msg: error['message']);
+          DialogUtils.showCustomDialog(context, "Sorry", error['message']);
+
+          // commonSnackBar(context: context, msg: error['message']);
         }
       }
     } catch (e) {

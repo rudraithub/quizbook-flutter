@@ -5,6 +5,7 @@ import 'package:rudra_it_hub/widgets/common_button.dart';
 import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 import '../../model/question_api_data.dart';
 import '../../utils/constants.dart';
+import '../../widgets/commo_alert_dilog.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
@@ -146,8 +147,10 @@ class _QuizScreenState extends State<QuizScreen> {
                       chapterid: widget.chapterId,
                       questions: resultData);
                 } else {
-                  commonSnackBar(
-                      context: context, msg: "Please select question");
+                  DialogUtils.showCustomDialog(context, "Empty Answer", "Please Select Question");
+
+                  // commonSnackBar(
+                  //     context: context, msg: "Please select question");
                 }
               },
               title: 'Finish',
@@ -158,8 +161,9 @@ class _QuizScreenState extends State<QuizScreen> {
                   questionIndex = questionIndex + 1;
                   selectedAnswerIndex = null;
                 } else {
-                  commonSnackBar(
-                      context: context, msg: "Please select question");
+                  // commonSnackBar(
+                  //     context: context, msg: "Please select question");
+                  DialogUtils.showCustomDialog(context, "Empty Answer", "Please Select Question");
                 }
                 setState(() {});
               },

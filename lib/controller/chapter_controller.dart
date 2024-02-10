@@ -35,12 +35,8 @@ class ChapterController extends GetxController {
           var responseData = json.decode(response.body);
     String message = responseData['message'];
           // CommonAlertDialog(message: message,);
-          DialogUtils.showCustomDialog(context,message,
-          title: "Gallary",
-          okBtnText: "Save",
-          cancelBtnText: "Cancel",
-          okBtnFunction: () {});
-          print('erro');
+          DialogUtils.showCustomDialog(context,"Ops!!!",message);
+          // print('erro');
         }
       }
     } finally {

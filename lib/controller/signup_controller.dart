@@ -14,12 +14,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../splash_screen.dart';
 import '../utils/preference_helper.dart';
 import '../utils/prefrences.dart';
+import '../widgets/commo_alert_dilog.dart';
 
 class SignUpController extends GetxController {
   final RxString selectedGender = 'Select Gender'.obs;
   final RxString selectedBirthDate = 'Select Date'.obs;
   final RxString selectedDesignation = 'Select Designation'.obs;
   RxList<String> genders = ["Select Gender", "Male", "Female", "Other"].obs;
+  Rx<String> firstNameobx = ''.obs;
+    Rx<String> lastNameobx = ''.obs;
+
 
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
@@ -69,11 +73,16 @@ class SignUpController extends GetxController {
     try {
       if (response.statusCode == 200) {
         print('here');
-
         await sharedPreferencesHelper.putString(
             Preferences.userFullDetails, jsonEncode(users));
+            firstNameobx.value = firstName;
+                        lastNameobx.value =lastName;
+
+
         if (context.mounted) {
-          commonSnackBar(context: context, msg: "Data Updated");
+          // commonSnackBar(context: context, msg: "Data Updated");
+          // Map<String, dynamic> error = json.decode(response.body);
+          DialogUtils.showCustomDialog(context, "Success", "User Data Updated");
         }
         return true;
       } else {
@@ -81,7 +90,9 @@ class SignUpController extends GetxController {
         print(error['message']);
 
         if (context.mounted) {
-          commonSnackBar(context: context, msg: error['message']);
+          Map<String, dynamic> error = json.decode(response.body);
+          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+          // commonSnackBar(context: context, msg: error['message']);
         }
         return false;
       }
@@ -122,17 +133,21 @@ class SignUpController extends GetxController {
     if (response.statusCode == 200) {
       print('response success');
       if (context.mounted) {
-        commonSnackBar(
-            context: context, msg: jsonDecode(response.body)['message']);
+        // commonSnackBar(
+        //     context: context, msg: jsonDecode(response.body)['message']);
+        Map<String, dynamic> error = json.decode(response.body);
+        DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
       }
 
       Get.offAll(LoginScreen());
     } else {
-      Map<String, dynamic> error = json.decode(response.body);
-      print(error['message']);
+      // Map<String, dynamic> error = json.decode(response.body);
+      // print(error['message']);
 
       if (context.mounted) {
-        commonSnackBar(context: context, msg: error['message']);
+        // commonSnackBar(context: context, msg: error['message']);
+        Map<String, dynamic> error = json.decode(response.body);
+        DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
       }
 
       // print('${response.body.toString()}');

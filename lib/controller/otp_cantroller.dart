@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/login_model_alpesh.dart';
 import '../utils/prefrences.dart';
 import '../view/screens/dashboard_view.dart';
+import '../widgets/commo_alert_dilog.dart';
 import '../widgets/common_snack_bar.dart';
 
 class OTPController extends GetxController {
@@ -31,7 +32,9 @@ class OTPController extends GetxController {
       FirebaseAuth.instance
           .signInWithCredential(credential)
           .catchError((onError) async {
-        commonSnackBar(context: context, msg: 'Please enter correct otp');
+        // commonSnackBar(context: context, msg: 'Please enter correct otp');
+        DialogUtils.showCustomDialog(context, "Wrong OTP", 'Please enter correct otp');
+
       }).then((value) async {
         LogInModel users = LogInModel();
 
@@ -73,19 +76,28 @@ class OTPController extends GetxController {
             // print('Here 3');
 
             if (context.mounted) {
-              commonSnackBar(context: context, msg: "catch ${response.body}");
+              // commonSnackBar(context: context, msg: "catch ${response.body}");
+              Map<String, dynamic> error = json.decode(response.body);
+              DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+
+
             }
           }
         } catch (e) {
           if (context.mounted) {
-            commonSnackBar(context: context, msg: "catch ${e.toString()}");
+            // commonSnackBar(context: context, msg: "catch ${e.toString()}");
+            DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
+
           }
         }
       });
     } catch (e) {
       if (context.mounted) {
-        commonSnackBar(context: context, msg:"SOmnething Went Wrong");
-        
+        // commonSnackBar(context: context, msg:"SOmnething Went Wrong");
+        DialogUtils.showCustomDialog(context, "Ops!!!", 'Something Went Wrong');
+
+
+
       }
     }
   }

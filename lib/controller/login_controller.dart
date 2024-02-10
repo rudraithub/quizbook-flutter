@@ -9,6 +9,7 @@ import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 
 import '../view/screens/otp_view.dart';
+import '../widgets/commo_alert_dilog.dart';
 import '../widgets/common_snack_bar.dart';
 
 class LoginController extends GetxController {
@@ -43,7 +44,9 @@ class LoginController extends GetxController {
               verificationCompleted: (PhoneAuthCredential credential) {},
               verificationFailed: (FirebaseAuthException ex) {
                 changeLoading(false, context);
-                commonSnackBar(context: context, msg: ex.toString());
+                // commonSnackBar(context: context, msg: ex.toString());
+                DialogUtils.showCustomDialog(context, "Sorry", 'Something Went Wrong');
+
               },
               codeSent: (String verificationId, int? resendToken) {
                 changeLoading(false, context);
@@ -71,12 +74,16 @@ class LoginController extends GetxController {
 
         if (context.mounted) {
           changeLoading(false, context);
-          commonSnackBar(context: context, msg: error['message']);
+          // commonSnackBar(context: context, msg: error['message']);
+          DialogUtils.showCustomDialog(context, "Sorry", error['message']);
+
         }
       }
     } catch (e) {
       if (context.mounted) {
-        commonSnackBar(context: context, msg: e.toString());
+        // commonSnackBar(context: context, msg: e.toString());
+        DialogUtils.showCustomDialog(context, "Sorry", e.toString());
+
         changeLoading(false, context);
       }
 
