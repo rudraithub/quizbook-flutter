@@ -1,33 +1,54 @@
-
 import 'package:flutter/material.dart';
 
-class CommonAlertDialog extends StatelessWidget {
-  final String message;
+import '../utils/constants.dart';
 
-  const CommonAlertDialog({super.key, required this.message});
+class DialogUtils {
 
-  void show(BuildContext context) {
+  DialogUtils.internal();
+
+
+  static void showCustomDialog(BuildContext context,String title ,  String msg,) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return this;
-      },
-    );
-  }
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(title,style:const TextStyle(fontSize: 25)),
+            content: Text(msg , style:const TextStyle(fontSize: 18),),/* Here add your custom widget  */
+            actions: <Widget>[
 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Alert'),
-      content: Text(message),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close the alert dialog
-          },
-          child: const Text('Close'),
-        ),
-      ],
-    );
+              Center(
+                child:  InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color:
+                        purpleColor.withOpacity(0.2),
+                        borderRadius:
+                        const BorderRadius.all(
+                            Radius.circular(15))),
+                    child:const Padding(
+                      padding:  EdgeInsets.only(
+                          left: 7,
+                          right: 7,
+                          top: 2,
+                          bottom: 3),
+                      child: Text(
+                        'OK',
+                        style: TextStyle(
+                            fontSize:
+                            12,
+                            fontWeight: FontWeight.bold,
+                            color: purpleColor),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
-}
+ }

@@ -89,11 +89,11 @@ class StudyItem extends StatelessWidget {
 
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
-                                          stdId: model.stdid!,
-                                          subId: model.subjects[index].subid!,
-                                          std: model.std!,
+                                          stdId: model.stdid,
+                                          subId: model.subjects[index].subid,
+                                          std: model.std,
                                           subject: model
-                                              .subjects[index].subjectName!,
+                                              .subjects[index].subjectName,
                                         )));
                               },
                               child: ClipRRect(
@@ -103,7 +103,7 @@ class StudyItem extends StatelessWidget {
                                   child: Image.network(
                                     // Add dummy Url because the api url not working
 
-                                    model.subjects[index].img!,
+                                    model.subjects[index].img,
 
                                     height: screenHeight * 0.12,
                                     width: screenHeight * 0.12,
@@ -116,7 +116,7 @@ class StudyItem extends StatelessWidget {
                             SizedBox(
                                 // width: screenWidth / 5,
                                 child: Text(
-                              model.subjects[index].subjectName!,
+                              model.subjects[index].subjectName,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: screenHeight * 0.02,

@@ -13,6 +13,7 @@ import 'package:rudra_it_hub/view/screens/congratulation_view.dart';
 import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 
 import '../model/question_api_data.dart';
+import '../widgets/commo_alert_dilog.dart';
 
 class QuestionController extends GetxController {
   RxInt currentQuestionIndex = 1.obs;
@@ -77,14 +78,16 @@ class QuestionController extends GetxController {
         }
       } else {
         if (context.mounted) {
-          commonSnackBar(context: context, msg: response.body);
+          // commonSnackBar(context: context, msg: response.body);
+          Map<String, dynamic> error = json.decode(response.body);
+          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
         }
         print('object');
       }
     } catch (e) {
       if (context.mounted) {
-        commonSnackBar(
-            context: context, msg: "Catch2 ${e.toString()}", durationSeconds: 5);
+      //   commonSnackBar(
+      //       context: context, msg: "Catch2 ${e.toString()}", durationSeconds: 5);
       }
       print(e.toString());
     }
@@ -108,18 +111,21 @@ class QuestionController extends GetxController {
         QuestionApiData tm = questionApiDataFromJson(response.body);
         return tm;
       } else {
-        Map<String, dynamic> data = json.decode(response.body);
-        String message = data['message'];
-        print(message);
+        // Map<String, dynamic> data = json.decode(response.body);
+        // String message = data['message'];
+        // print(message);
         if (context.mounted) {
-          commonSnackBar(context: context, msg: message);
+          Map<String, dynamic> error = json.decode(response.body);
+          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
         }
         return QuestionApiData();
       }
     } catch (e) {
       print("error msg ${e.toString()}");
       if (context.mounted) {
-        commonSnackBar(context: context, msg: "catch ${e.toString()}");
+        // commonSnackBar(context: context, msg: "catch ${e.toString()}");
+        // Map<String, dynamic> error = json.decode(response.body);
+        DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
       }
       return QuestionApiData();
     }

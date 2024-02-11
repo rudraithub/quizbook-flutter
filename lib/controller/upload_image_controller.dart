@@ -10,6 +10,7 @@ import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 
 import '../appUrl/all_url.dart';
 import '../splash_screen.dart';
+import '../widgets/commo_alert_dilog.dart';
 
 class PhotoController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
@@ -46,12 +47,16 @@ class PhotoController extends GetxController {
         headers: headers);
     if (response.statusCode == 200) {
       if (context.mounted) {
-        commonSnackBar(context: context, msg: "Profile Upload successfully");
+        // commonSnackBar(context: context, msg: "Profile Upload successfully");
+        DialogUtils.showCustomDialog(context, "Success", 'Profile Upload successfully');
       }
     } else {
       if (context.mounted) {
-        commonSnackBar(context: context, msg: response.body);
+        // commonSnackBar(context: context, msg: response.body);
+        Map<String, dynamic> error = json.decode(response.body);
+        DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
       }
+
     }
     // Handle the response as needed
     print(response.body);

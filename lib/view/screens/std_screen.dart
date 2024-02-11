@@ -26,7 +26,6 @@ class _StudyScreenState extends State<StudyScreen> {
   void initState() {
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,27 +40,40 @@ class _StudyScreenState extends State<StudyScreen> {
           elevation: 2,
           shadowColor: Colors.grey,
         ),
-        body: Obx(
-          () {
-            if (provider.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              // if(provider.stdList.isEmpty){
-              //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
-              // }
-              print("std screen in ${provider.stdList}");
-              return ListView.builder(
-                itemCount: provider.stdList.value.data.length,
-                itemBuilder: (context, index) {
-                  return
-                    // Text('hi');
-                    StudyItem(
-                    model: provider.stdList.value.data[index],
-                  );
-                },
-              );
-            }
+        body:
+        
+        RefreshIndicator(
+          color: Colors.purple,
+          strokeWidth: 2,
+          displacement: 180,
+          onRefresh: ()async{
+            setState(() {
+              print('app Refreshed');
+              provider.fetchStudyModel(context);
+            });
           },
+          child: Obx(
+            () {
+              if (provider.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                // if(provider.stdList.isEmpty){
+                //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
+                // }
+
+                return ListView.builder(
+                  itemCount: provider.stdList.value.data.length,
+                  itemBuilder: (context, index) {
+                    return
+                      // Text('hi');
+                      StudyItem(
+                      model: provider.stdList.value.data[index],
+                    );
+                  },
+                );
+              }
+            },
+          ),
         ));
   }
 }

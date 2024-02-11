@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/utils/utility.dart';
+import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
@@ -76,6 +77,9 @@ class SignUpScreen extends StatelessWidget {
       btnText = "Update";
       _firstNameController.text = firstName.isEmpty ? '' : firstName;
       _lastNameController.text = lastName.isEmpty ? '' : lastName;
+       signUpCantroller.lastNameobx.value == '' ?  signUpCantroller.lastNameobx.value = lastName  : null;
+      signUpCantroller.firstNameobx.value == '' ?  signUpCantroller.firstNameobx.value = firstName  : null;
+
       _emailController.text = email.isEmpty ? '' : email;
       _mobileController.text = mobileNo.isEmpty ? '' : mobileNo;
 
@@ -99,35 +103,37 @@ class SignUpScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
-            child: Form(
-              key: _key,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 18,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        photoController.pickImage(context);
-                      },
-                      child: Obx(() {
-                        return (photoController.selectedImage.value == null)
-                            ? CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.grey,
-                                child: Image.asset(changeProfile),
-                              )
-                            : CircleAvatar(
-                                radius: 50,
-                                backgroundImage: FileImage(
-                                    photoController.selectedImage.value!),
-                              );
-                      }),
-                    ),
-                    CommonTextFormField(
+          child: Form(
+            key: _key,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      photoController.pickImage(context);
+                    },
+                    child: Obx(() {
+                      return (photoController.selectedImage.value == null)
+                          ? CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey,
+                              child: Image.asset(changeProfile),
+                            )
+                          : CircleAvatar(
+                              radius: 50,
+                              backgroundImage: FileImage(
+                                  photoController.selectedImage.value!),
+                            );
+                    }),
+                  ),
+                  Obx(() {
+                         _firstNameController.text = signUpCantroller.firstNameobx.value;
+
+                    return   CommonTextFormField(
                       controller: _firstNameController,
                       label: 'First Name',
                       errorMessage: 'Enter Your First Name',
@@ -135,206 +141,214 @@ class SignUpScreen extends StatelessWidget {
                       formatter: [],
                       length: 60,
                       onTap: () {},
-                    ),
-                    CommonTextFormField(
-                      controller: _lastNameController,
-                      label: 'Last Name',
-                      errorMessage: 'Enter Your Last Name',
-                      inputType: TextInputType.text,
-                      formatter: [],
-                      length: 60,
-                      onTap: () {},
-                    ),
-                    CommonTextFormField(
-                      controller: _emailController,
-                      label: 'Email ID',
-                      errorMessage: 'Please enter valid Email Id',
-                      inputType: TextInputType.text,
-                      formatter: [],
-                      length: 60,
-                      onTap: () {},
-                      isEmailField: true,
-                    ),
-                    CommonTextFormField(
-                      controller: _mobileController,
-                      label: 'Mobile Number',
-                      errorMessage: 'Please enter valid Number',
-                      inputType: TextInputType.number,
-                      formatter: [mobileLengthFormatter, mobileNumberFormat],
-                      length: 10,
-                      onTap: () {},
-                      isMobileNumber: true,
-                      isReadOnly: isProfile,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: SizedBox(
-                            width: (MediaQuery.of(context).size.width / 2 - 10),
-                            child: Obx(
-                              () => DropdownButtonFormField<String>(
-                                value: selectedGender.value.isEmpty
-                                    ? null
-                                    : selectedGender.value,
-                                decoration: const InputDecoration(
-                                    labelText: 'Gender',
-                                    labelStyle: TextStyle(
-                                        color: greyColor, fontSize: 14)
-                                    // Add other styling properties here if needed
-                                    ),
-                                hint: const Text(
-                                  "Select gender",
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                onChanged: (value) {
-                                  selectedGender(value);
-                                  genderErrorMessage('');
-                                  signUpCantroller.selectedGender.value = value!;
-                                  signUpCantroller.onItemSelected(value!);
-                                  signUpCantroller.isValid.value == true;
-                                },
-                                // Call the method from the controller
-                                validator: (value) {
-                                  return signUpCantroller.isValid.value
-                                      ? null
-                                      : 'Please select Gender';
-                                },
-                                // validator: (value) {
-                                //   if (value == null || value.isEmpty) {
-                                //     return "Please select a gender";
-                                //   }
-                                //   return null;
-                                // },
-                                items: ['Male', 'Female', 'Others']
-                                    .map<DropdownMenuItem<String>>(
-                                      (String value) =>
-                                          DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: const TextStyle(fontSize: 15),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Obx(() {
-                          if (genderErrorMessage.value.isNotEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: Text(
-                                genderErrorMessage.value,
-                                style: const TextStyle(
-                                    color: redColor, fontSize: 13),
-                              ),
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        }),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                          child: SizedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 3),
-                              child:
-                                  //  CommonTextFormField(
-                                  //   controller: _pickDAte,
-                                  //   errorMessage: "Please Select The Date ",
-                                  //   onTap: Utility.showDatePickerDialog(),
-                                  // )
-                                  InkWell(
-                                onTap: () {
-                                  Utility.showDatePickerDialog()
-                                      .then((pickedDate) {
-                                    if (pickedDate != null) {
-                                      signUpCantroller.changeBirthDate(
-                                          "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
-                                      selectedDate = pickedDate;
-                                    }
-                                  });
-                                },
-                                child: InputDecorator(
-                                    decoration: const InputDecoration(
-                                        labelText: 'BirthDate',
-                                        labelStyle: TextStyle(
-                                            color: greyColor, fontSize: 14)),
-                                    child: Obx(() => Text(
-                                          signUpCantroller
-                                              .selectedBirthDate.value,
-                                          maxLines: 1,
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                              overflow: TextOverflow.clip),
-                                        ))),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1,
-                      child: Obx(
-                        () => DropdownButtonFormField<String>(
-                          padding: EdgeInsets.zero,
-                          value: selectedDesignation.value.isEmpty
-                              ? null
-                              : selectedDesignation.value,
-                          decoration: const InputDecoration(
-                              labelText: 'Select Designation',
-                              labelStyle:
-                                  TextStyle(color: greyColor, fontSize: 14)
-                              // Add other styling properties here if needed
-                              ),
-                          onChanged: (value) {
-                            selectedDesignation(value);
-                            desErrorMsg('');
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please Select ";
-                            }
-                            return null;
-                          },
-                          items: ["student", "teacher", "admin"]
-                              .map<DropdownMenuItem<String>>(
-                                (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(fontSize: 15),
+                    );
+                  }),
+
+                 Obx(() {
+
+                    _lastNameController.text = signUpCantroller.lastNameobx.value;
+
+                  return CommonTextFormField(
+                    controller: _lastNameController,
+                    label: 'Last Name',
+                    errorMessage: 'Enter Your Last Name',
+                    inputType: TextInputType.text,
+                    formatter: [],
+                    length: 60,
+                    onTap: () {},
+                  );
+                 }) ,
+                  CommonTextFormField(
+                    controller: _emailController,
+                    label: 'Email ID',
+                    errorMessage: 'Please enter valid Email Id',
+                    inputType: TextInputType.text,
+                    formatter: [],
+                    length: 60,
+                    onTap: () {},
+                    isEmailField: true,
+                  ),
+                  CommonTextFormField(
+                    controller: _mobileController,
+                    label: 'Mobile Number',
+                    errorMessage: 'Please enter valid Number',
+                    inputType: TextInputType.number,
+                    formatter: [mobileLengthFormatter, mobileNumberFormat],
+                    length: 10,
+                    onTap: () {},
+                    isMobileNumber: true,
+                    isReadOnly: isProfile,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: SizedBox(
+                          width: (MediaQuery.of(context).size.width / 2 - 10),
+                          child: Obx(
+                            () => DropdownButtonFormField<String>(
+                              value: selectedGender.value.isEmpty
+                                  ? null
+                                  : selectedGender.value,
+                              decoration: const InputDecoration(
+                                  labelText: 'Gender',
+                                  labelStyle: TextStyle(
+                                      color: greyColor, fontSize: 14 ,fontWeight: FontWeight.w500)
+                                  // Add other styling properties here if needed
                                   ),
-                                ),
-                              )
-                              .toList(),
+                              hint: const Text(
+                                "Select Gender",
+                                style: TextStyle(fontSize: 14 ,color: greyColor),
+                              ),
+                              onChanged: (value) {
+                                selectedGender(value);
+                                genderErrorMessage('');
+                                signUpCantroller.selectedGender.value = value!;
+                                signUpCantroller.onItemSelected(value);
+                                signUpCantroller.isValid.value == true;
+                              },
+                              // Call the method from the controller
+                              validator: (value) {
+                                return signUpCantroller.isValid.value
+                                    ? null
+                                    : 'Please select Gender';
+                              },
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return "Please select a gender";
+                              //   }
+                              //   return null;
+                              // },
+                              items: ['Male', 'Female', 'Others']
+                                  .map<DropdownMenuItem<String>>(
+                                    (String value) =>
+                                        DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: const TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Obx(() {
-                      if (desErrorMsg.value.isNotEmpty) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            desErrorMsg.value,
-                            style:
-                                const TextStyle(color: redColor, fontSize: 13),
+                      Obx(() {
+                        if (genderErrorMessage.value.isNotEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 0),
+                            child: Text(
+                              genderErrorMessage.value,
+                              style: const TextStyle(
+                                  color: redColor, fontSize: 13),
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Flexible(
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 3),
+                            child:
+                                //  CommonTextFormField(
+                                //   controller: _pickDAte,
+                                //   errorMessage: "Please Select The Date ",
+                                //   onTap: Utility.showDatePickerDialog(),
+                                // )
+                                InkWell(
+                              onTap: () {
+                                Utility.showDatePickerDialog()
+                                    .then((pickedDate) {
+                                  if (pickedDate != null) {
+                                    signUpCantroller.changeBirthDate(
+                                        "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
+                                    selectedDate = pickedDate;
+                                  }
+                                });
+                              },
+                              child: InputDecorator(
+                                  decoration: const InputDecoration(
+                                      labelText: 'BirthDate',
+                                      labelStyle: TextStyle(
+                                          color: greyColor, fontSize: 14 ,fontWeight: FontWeight.w500)),
+                                  child: Obx(() => Text(
+                                        signUpCantroller
+                                            .selectedBirthDate.value,
+                                        maxLines: 1,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: blackColor,
+                                            fontWeight: FontWeight.w500,
+                                            overflow: TextOverflow.clip),
+                                      ))),
+                            ),
                           ),
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    }),
-                  ],
-                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 1,
+                    child: Obx(
+                      () => DropdownButtonFormField<String>(
+                        padding: EdgeInsets.zero,
+                        value: selectedDesignation.value.isEmpty
+                            ? null
+                            : selectedDesignation.value,
+                        decoration: const InputDecoration(
+                            labelText: 'Select Designation',
+                            labelStyle:
+                                TextStyle(color: greyColor, fontSize: 14 ,fontWeight: FontWeight.w500)
+                            // Add other styling properties here if needed
+                            ),
+                        onChanged: (value) {
+                          selectedDesignation(value);
+                          desErrorMsg('');
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please Select ";
+                          }
+                          return null;
+                        },
+                        items: ["student", "teacher", "admin"]
+                            .map<DropdownMenuItem<String>>(
+                              (String value) => DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(fontSize: 15),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                  Obx(() {
+                    if (desErrorMsg.value.isNotEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          desErrorMsg.value,
+                          style:
+                              const TextStyle(color: redColor, fontSize: 13),
+                        ),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }),
+                  // const SizedBox(height: 200,)
+                ],
               ),
             ),
           ),
@@ -361,7 +375,8 @@ class SignUpScreen extends StatelessWidget {
             if (_key.currentState!.validate()) {
               //  _controller.verifyOtp();
               if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
-                commonSnackBar(context: context, msg: "Please select date");
+                // commonSnackBar(context: context, msg: "Please select date");
+                DialogUtils.showCustomDialog(context, "Empty Filed", "Please Select Date");
               } else {
                 // print('else calll');
                 if (isProfile) {
