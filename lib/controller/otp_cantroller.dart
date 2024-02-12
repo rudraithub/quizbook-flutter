@@ -17,7 +17,6 @@ import '../model/login_model_alpesh.dart';
 import '../utils/prefrences.dart';
 import '../view/screens/dashboard_view.dart';
 import '../widgets/commo_alert_dilog.dart';
-import '../widgets/common_snack_bar.dart';
 
 class OTPController extends GetxController {
   Future<void> verifyOTP(

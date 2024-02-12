@@ -97,7 +97,7 @@ class StudyItem extends StatelessWidget {
                                         )));
                               },
                               child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(45),
 
                                   // borderRadius: BorderRadius.circular(90),
                                   child: Image.network(
@@ -107,7 +107,7 @@ class StudyItem extends StatelessWidget {
 
                                     height: screenHeight * 0.12,
                                     width: screenHeight * 0.12,
-                                    fit: BoxFit.fitWidth,
+                                    fit: BoxFit.cover,
                                   )),
                             ),
                             SizedBox(

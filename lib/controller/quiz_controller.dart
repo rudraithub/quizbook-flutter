@@ -10,13 +10,14 @@ import 'package:rudra_it_hub/model/question2_model.dart';
 import 'package:rudra_it_hub/model/result.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/view/screens/congratulation_view.dart';
-import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 
 import '../model/question_api_data.dart';
 import '../widgets/commo_alert_dilog.dart';
 
 class QuestionController extends GetxController {
   RxInt currentQuestionIndex = 1.obs;
+  RxBool isLoading = false.obs;
+  Rx<QuestionApiData> apiQuestion =QuestionApiData(data: [],message: '',status: 0).obs;
   RxList<Question2> questions2 = <Question2>[
     Question2(
         queid: 0,
@@ -66,6 +67,7 @@ class QuestionController extends GetxController {
       var finalResult = resultFromJson(response.body);
 
       if (response.statusCode == 200) {
+        
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -78,7 +80,7 @@ class QuestionController extends GetxController {
         }
       } else {
         if (context.mounted) {
-          // commonSnackBar(context: context, msg: response.body);
+          
           Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
         }
@@ -86,19 +88,21 @@ class QuestionController extends GetxController {
       }
     } catch (e) {
       if (context.mounted) {
-      //   commonSnackBar(
-      //       context: context, msg: "Catch2 ${e.toString()}", durationSeconds: 5);
+      
       }
       print(e.toString());
     }
   }
 
-  Future<QuestionApiData> getQuestionList(
+  Future<void> getQuestionList(
       {required int stdId,
       required subId,
       required chapterId,
       required BuildContext context}) async {
     try {
+      print('inside try');
+               isLoading.value =true;
+
       var body = <String, dynamic>{
         "stdid": stdId,
         "subid": subId,
@@ -108,26 +112,34 @@ class QuestionController extends GetxController {
 
       var response = await postMethod('$baseUrl$questionUrl', body, headers ,context);
       if (response.statusCode == 200) {
-        QuestionApiData tm = questionApiDataFromJson(response.body);
-        return tm;
+        apiQuestion.value = questionApiDataFromJson(response.body);
+                 isLoading.value =false;
+                       print('inside try suc');
+
+
+        
       } else {
-        // Map<String, dynamic> data = json.decode(response.body);
-        // String message = data['message'];
-        // print(message);
+                 isLoading.value =false;
+
+        
         if (context.mounted) {
           Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
         }
-        return QuestionApiData();
+        
       }
     } catch (e) {
+               isLoading.value =false;
+
       print("error msg ${e.toString()}");
       if (context.mounted) {
-        // commonSnackBar(context: context, msg: "catch ${e.toString()}");
-        // Map<String, dynamic> error = json.decode(response.body);
         DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
       }
-      return QuestionApiData();
+      
+    }
+    finally{
+              isLoading.value =false;
+
     }
   }
 }

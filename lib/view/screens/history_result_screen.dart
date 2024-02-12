@@ -54,7 +54,7 @@ class HistoryDetail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildResultCard('Total Qusetion',
-                '${controller.totalQuestions}', screenWidth, screenHeight),
+                chapterHistory.totalQuestions.toString(), screenWidth, screenHeight),
             _buildResultCard('Right Ans', chapterHistory.totalRightQuestions.toString(),
                 screenWidth, screenHeight),
             _buildResultCard('Wrong Ans', chapterHistory.totalWrongQuestions.toString(),

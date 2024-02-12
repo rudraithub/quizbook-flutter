@@ -42,7 +42,7 @@ class AppbarBottomBarScreen extends StatelessWidget {
             if (index == 0) {
               return const StudyScreen();
             } else if (index == 1) {
-              return History();
+              return const History();
             } else
               return SignUpScreen(
                 firstName: logInModel?.data?.firstName ?? '',

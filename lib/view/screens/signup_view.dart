@@ -12,7 +12,6 @@ import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
-import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
 import 'package:rudra_it_hub/widgets/common_text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -44,6 +43,8 @@ class SignUpScreen extends StatelessWidget {
   // final DateTime dateTime;
 
   // final String /;
+  final InputBorder focusBorder =const UnderlineInputBorder(
+      borderSide:  BorderSide(color: purpleColor, width: 1));
 
   final SignUpController signUpCantroller = Get.put(SignUpController());
 
@@ -77,8 +78,12 @@ class SignUpScreen extends StatelessWidget {
       btnText = "Update";
       _firstNameController.text = firstName.isEmpty ? '' : firstName;
       _lastNameController.text = lastName.isEmpty ? '' : lastName;
-       signUpCantroller.lastNameobx.value == '' ?  signUpCantroller.lastNameobx.value = lastName  : null;
-      signUpCantroller.firstNameobx.value == '' ?  signUpCantroller.firstNameobx.value = firstName  : null;
+      signUpCantroller.lastNameobx.value == ''
+          ? signUpCantroller.lastNameobx.value = lastName
+          : null;
+      signUpCantroller.firstNameobx.value == ''
+          ? signUpCantroller.firstNameobx.value = firstName
+          : null;
 
       _emailController.text = email.isEmpty ? '' : email;
       _mobileController.text = mobileNo.isEmpty ? '' : mobileNo;
@@ -87,7 +92,6 @@ class SignUpScreen extends StatelessWidget {
       selectedDesignation.value = desi.isEmpty ? '' : desi;
       signUpCantroller.changeBirthDate(date);
       signUpCantroller.isValid.value = true;
-      
     }
 
     return Scaffold(
@@ -131,9 +135,12 @@ class SignUpScreen extends StatelessWidget {
                     }),
                   ),
                   Obx(() {
-                         _firstNameController.text = signUpCantroller.firstNameobx.value;
+                    signUpCantroller.firstNameobx.value.isEmpty
+                        ? null
+                        : _firstNameController.text =
+                            signUpCantroller.firstNameobx.value;
 
-                    return   CommonTextFormField(
+                    return CommonTextFormField(
                       controller: _firstNameController,
                       label: 'First Name',
                       errorMessage: 'Enter Your First Name',
@@ -141,23 +148,26 @@ class SignUpScreen extends StatelessWidget {
                       formatter: [],
                       length: 60,
                       onTap: () {},
+                      
                     );
                   }),
 
-                 Obx(() {
+                  Obx(() {
+                    signUpCantroller.lastNameobx.value.isEmpty
+                        ? null
+                        : _lastNameController.text =
+                            signUpCantroller.lastNameobx.value;
 
-                    _lastNameController.text = signUpCantroller.lastNameobx.value;
-
-                  return CommonTextFormField(
-                    controller: _lastNameController,
-                    label: 'Last Name',
-                    errorMessage: 'Enter Your Last Name',
-                    inputType: TextInputType.text,
-                    formatter: [],
-                    length: 60,
-                    onTap: () {},
-                  );
-                 }) ,
+                    return CommonTextFormField(
+                      controller: _lastNameController,
+                      label: 'Last Name',
+                      errorMessage: 'Enter Your Last Name',
+                      inputType: TextInputType.text,
+                      formatter: [],
+                      length: 60,
+                      onTap: () {},
+                    );
+                  }),
                   CommonTextFormField(
                     controller: _emailController,
                     label: 'Email ID',
@@ -167,6 +177,7 @@ class SignUpScreen extends StatelessWidget {
                     length: 60,
                     onTap: () {},
                     isEmailField: true,
+                    isReadOnly: isProfile,
                   ),
                   CommonTextFormField(
                     controller: _mobileController,
@@ -191,17 +202,23 @@ class SignUpScreen extends StatelessWidget {
                               value: selectedGender.value.isEmpty
                                   ? null
                                   : selectedGender.value,
-                              decoration: const InputDecoration(
+                                  
+                              decoration:  InputDecoration(
                                   labelText: 'Gender',
-                                  labelStyle: TextStyle(
-                                      color: greyColor, fontSize: 14 ,fontWeight: FontWeight.w500)
+                                            focusedBorder: focusBorder,
+                                           
+                                  labelStyle: const TextStyle(
+                                      color: greyColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500)
                                   // Add other styling properties here if needed
                                   ),
                               hint: const Text(
                                 "Select Gender",
-                                style: TextStyle(fontSize: 14 ,color: greyColor),
+                                style:
+                                    TextStyle(fontSize: 14, color: greyColor),
                               ),
-                              onChanged: (value) {
+                              onChanged:isProfile ? null : (value) {
                                 selectedGender(value);
                                 genderErrorMessage('');
                                 signUpCantroller.selectedGender.value = value!;
@@ -222,12 +239,11 @@ class SignUpScreen extends StatelessWidget {
                               // },
                               items: ['Male', 'Female', 'Others']
                                   .map<DropdownMenuItem<String>>(
-                                    (String value) =>
-                                        DropdownMenuItem<String>(
+                                    (String value) => DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(
                                         value,
-                                        style: const TextStyle(fontSize: 15),
+                                        style: const TextStyle(fontSize: 15 ,color: blackColor),
                                       ),
                                     ),
                                   )
@@ -265,8 +281,12 @@ class SignUpScreen extends StatelessWidget {
                                 // )
                                 InkWell(
                               onTap: () {
+                                if (isProfile) {
+                                    return;
+                                  }
                                 Utility.showDatePickerDialog()
                                     .then((pickedDate) {
+                                  
                                   if (pickedDate != null) {
                                     signUpCantroller.changeBirthDate(
                                         "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
@@ -274,20 +294,35 @@ class SignUpScreen extends StatelessWidget {
                                   }
                                 });
                               },
-                              child: InputDecorator(
+                              child: 
+                              
+                              InputDecorator(
                                   decoration: const InputDecoration(
                                       labelText: 'BirthDate',
                                       labelStyle: TextStyle(
-                                          color: greyColor, fontSize: 14 ,fontWeight: FontWeight.w500)),
-                                  child: Obx(() => Text(
+                                          color: greyColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500)),
+                                  child: Obx(() => 
+                                  signUpCantroller.selectedBirthDate.value == "Select Date"?Text(
                                         signUpCantroller
-                                            .selectedBirthDate.value,
-                                        maxLines: 1,
+                                            .selectedBirthDate.value ,maxLines: 1,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.w500,
+                                            overflow: TextOverflow.clip), 
+                                        
+                                      ) :
+                                  Text(
+                                        signUpCantroller
+                                            .selectedBirthDate.value ,maxLines: 1,
                                         style: const TextStyle(
                                             fontSize: 14,
                                             color: blackColor,
                                             fontWeight: FontWeight.w500,
-                                            overflow: TextOverflow.clip),
+                                            overflow: TextOverflow.clip), 
+                                        
                                       ))),
                             ),
                           ),
@@ -300,16 +335,20 @@ class SignUpScreen extends StatelessWidget {
                     child: Obx(
                       () => DropdownButtonFormField<String>(
                         padding: EdgeInsets.zero,
+                        
                         value: selectedDesignation.value.isEmpty
                             ? null
                             : selectedDesignation.value,
-                        decoration: const InputDecoration(
+                        decoration:  InputDecoration(
                             labelText: 'Select Designation',
-                            labelStyle:
-                                TextStyle(color: greyColor, fontSize: 14 ,fontWeight: FontWeight.w500)
+                             focusedBorder: focusBorder,
+                            labelStyle:const TextStyle(
+                                color: greyColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500)
                             // Add other styling properties here if needed
                             ),
-                        onChanged: (value) {
+                        onChanged:isProfile ? null :  (value) {
                           selectedDesignation(value);
                           desErrorMsg('');
                         },
@@ -325,7 +364,7 @@ class SignUpScreen extends StatelessWidget {
                                 value: value,
                                 child: Text(
                                   value,
-                                  style: const TextStyle(fontSize: 15),
+                                  style: const TextStyle(fontSize: 15,color: blackColor),
                                 ),
                               ),
                             )
@@ -339,8 +378,7 @@ class SignUpScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
                           desErrorMsg.value,
-                          style:
-                              const TextStyle(color: redColor, fontSize: 13),
+                          style: const TextStyle(color: redColor, fontSize: 13),
                         ),
                       );
                     } else {
@@ -376,7 +414,8 @@ class SignUpScreen extends StatelessWidget {
               //  _controller.verifyOtp();
               if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                 // commonSnackBar(context: context, msg: "Please select date");
-                DialogUtils.showCustomDialog(context, "Empty Filed", "Please Select Date");
+                DialogUtils.showCustomDialog(
+                    context, "Empty Filed", "Please Select Date");
               } else {
                 // print('else calll');
                 if (isProfile) {
