@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/quiz_controller.dart';
 import 'package:rudra_it_hub/widgets/answer_card.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
-import '../../model/question_api_data.dart';
 import '../../utils/constants.dart';
 import '../../widgets/commo_alert_dilog.dart';
 
@@ -33,18 +32,12 @@ class _QuizScreenState extends State<QuizScreen> {
   QuestionController questionController = QuestionController();
 
   Future<void> fetchData() async {
-    // Simulate an asynchronous operation (e.g., API call)
-    // RemoteServices.getQuestionList(widget.stdId, widget.subId, widget.chapterId, context);
-    // QuestionApiData tm = await RemoteServices.getQuestionList(4, 1, 1, context);
      questionController.getQuestionList(
         stdId: widget.stdId,
         subId: widget.subId,
         chapterId: widget.chapterId,
         context: context);
     setState(() {
-      // print(tm!.data!.toString());
-      // apiQuestion = tm;
-      // print("fetchData is ${apiQuestion!.data![0].option}");
     });
   }
 
@@ -116,7 +109,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         shrinkWrap: true,
                 
                         itemCount:
-                            questionController.apiQuestion.value?.data?[questionIndex].option?.length ?? 0,
+                            questionController.apiQuestion.value.data?[questionIndex].option?.length ?? 0,
                         itemBuilder: (context, index) {
                          
                           return Padding(
@@ -124,17 +117,17 @@ class _QuizScreenState extends State<QuizScreen> {
                             child: InkWell(
                                 onTap: selectedAnswerIndex == null
                                     ? () => pickAnswer(index, selectedAnswerIndex,
-                                        questionController.apiQuestion.value!.data![questionIndex].queid!)
+                                        questionController.apiQuestion.value.data![questionIndex].queid!)
                                     : null,
                                 child: AnswerCard(
                                   currentIndex: index,
                                   question: questionController.apiQuestion.value
-                                          ?.data?[questionIndex].option?[index] ??
+                                          .data?[questionIndex].option?[index] ??
                                       '',
                                   isSelected: selectedAnswerIndex == index,
                                   selectedAnswerIndex: selectedAnswerIndex,
                                   correctAnswerIndex:
-                                      questionController.apiQuestion.value?.data?[questionIndex].rightAns,
+                                      questionController.apiQuestion.value.data?[questionIndex].rightAns,
                                 )),
                           );
                         },
@@ -168,8 +161,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     questionIndex = questionIndex + 1;
                     selectedAnswerIndex = null;
                   } else {
-                    // commonSnackBar(
-                    //     context: context, msg: "Please select question");
+                    
                     DialogUtils.showCustomDialog(context, "Empty Answer", "Please Select Question");
                   }
                   setState(() {});
