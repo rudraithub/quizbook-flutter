@@ -422,6 +422,7 @@ class SignUpScreen extends StatelessWidget {
                   signUpCantroller.updateUser(_firstNameController.text,
                       _lastNameController.text, context);
                 } else {
+                  print('button pressed');
                   signUpCantroller.signUp(
                       _firstNameController.text,
                       _lastNameController.text,
@@ -430,6 +431,7 @@ class SignUpScreen extends StatelessWidget {
                       selectedDate,
                       _mobileController.text,
                       professionId,
+                      photoController.selectedImage.value!,
                       context);
                 }
               }

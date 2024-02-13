@@ -22,9 +22,7 @@ class PhotoController extends GetxController {
     if (pickedFile != null) {
       final picker = ImagePicker();
       selectedImage.value = File(pickedFile.path);
-      if (context.mounted) {
-        uploadImage(context);
-      }
+      
     }
   }
 

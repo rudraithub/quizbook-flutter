@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print, unused_local_variable, unused_element, non_constant_identifier_names, file_names
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
+import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/login_model_alpesh.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
@@ -22,8 +24,7 @@ class SignUpController extends GetxController {
   final RxString selectedDesignation = 'Select Designation'.obs;
   RxList<String> genders = ["Select Gender", "Male", "Female", "Other"].obs;
   Rx<String> firstNameobx = ''.obs;
-    Rx<String> lastNameobx = ''.obs;
-
+  Rx<String> lastNameobx = ''.obs;
 
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
@@ -37,7 +38,6 @@ class SignUpController extends GetxController {
     isValid.value = value.isNotEmpty; // Update the validation state
   }
 
-
   Future<bool> updateUser(
       String firstName, String lastName, BuildContext context) async {
     final Map<String, dynamic> requestBody = {
@@ -48,21 +48,23 @@ class SignUpController extends GetxController {
       'Content-Type': 'application/json',
       'Authorization': userBearerToken!,
     };
+    PhotoController photoController = PhotoController();
     final users = LogInModel(
-        status: userData!.status,
-        message: userData!.message,
-        data: Data(
-          id: userData!.data!.id,
-          firstName: firstName,
-          lastName: lastName,
-          email: userData!.data!.email,
-          gender: userData!.data!.gender,
-          dob: userData!.data!.dob,
-          mobileNumber: userData!.data!.mobileNumber,
-          profession: userData!.data!.profession,
-          userId: userData!.data!.userId,
-        ),
-        token: userBearerToken);
+      status: userData!.status,
+      message: userData!.message,
+      data: Data(
+        id: userData!.data.id,
+        firstName: firstName,
+        lastName: lastName,
+        email: userData!.data.email,
+        gender: userData!.data.gender,
+        dob: userData!.data.dob,
+        mobileNumber: userData!.data.mobileNumber,
+        profession: userData!.data.profession,
+        userProfile: userData!.data.userProfile,
+        tokens: userBearerToken!,
+      ),
+    );
 
     var sharedPreferences = await SharedPreferences.getInstance();
     SharedPreferencesHelper sharedPreferencesHelper =
@@ -75,13 +77,10 @@ class SignUpController extends GetxController {
         print('here');
         await sharedPreferencesHelper.putString(
             Preferences.userFullDetails, jsonEncode(users));
-            firstNameobx.value = firstName;
-                        lastNameobx.value =lastName;
-
+        firstNameobx.value = firstName;
+        lastNameobx.value = lastName;
 
         if (context.mounted) {
-          // commonSnackBar(context: context, msg: "Data Updated");
-          // Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Success", "User Data Updated");
         }
         return true;
@@ -92,7 +91,6 @@ class SignUpController extends GetxController {
         if (context.mounted) {
           Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
-          // commonSnackBar(context: context, msg: error['message']);
         }
         return false;
       }
@@ -110,12 +108,16 @@ class SignUpController extends GetxController {
       DateTime dob,
       String mobileNo,
       int professionId,
+      File file,
       BuildContext context) async {
     print(dob.toString());
 
     String formattedDate =
         "${dob.day.toString().padLeft(2, '0')}/${dob.month.toString().padLeft(2, '0')}/${dob.year.toString()}";
     print(formattedDate);
+    List<int> fileBytes = await file.readAsBytes();
+    String base64Image = base64Encode(fileBytes);
+print(base64Image);
     final Map<String, dynamic> requestBody = {
       "firstName": firstName,
       "lastName": lastName,
@@ -125,32 +127,31 @@ class SignUpController extends GetxController {
       "DOB": formattedDate,
       "mobileNumber": mobileNo,
       "professionId": professionId,
+      // "userProfile": '/9j/4QEuRXhpZgAATU0AKgAAAAgABQEAAAMAAAABCWAAAAEBAAMAAAABBDgAAAExAAIAAAAYAAAASodpAAQAAAABAAAAYgESAAQAAAABAAAAAAAAAABBbmRyb2lkIFJNWDIxNTZfMTFfRi4xMwAABZADAAIAAAAUAAAApJKRAAIAAAAENDkwAKQgAAIAAAAlAAAAuJARAAIAAAAHAAAA3ZIIAAQAAAABAAAAAAAAAAAyMDI0OjAyOjEyIDIxOjAzOjI5AGMzNWY5NDVlLThjY2UtNDNhMi05OGI3LTY0OWFkZjE5ZGMyMgArMDU6MzAAAAMBAAADAAAAAQlgAAABMQACAAAAGAAAAQ4BAQADAAAAAQQ4AAAAAAAAQW5kcm9pZCBSTVgyMTU2XzExX0YuMTMA/+AAEEpGSUYAAQEAAAEAAQAA/+ICBElDQ19QUk9GSUxFAAEBAAAB9GFwcGwEAAAAbW50clJHQiBYWVogB+IABgAYAA0AFgAgYWNzcEFQUEwAAAAAT1BQTwAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1hcHBsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJZGVzYwAAAPAAAABoY3BydAAAAVgAAAAkd3RwdAAAAXwAAAAUclhZWgAAAZAAAAAUZ1hZWgAAAaQAAAAUYlhZWgAAAbgAAAAUclRSQwAAAcwAAAAoZ1RSQwAAAcwAAAAoYlRSQwAAAcwAAAAoZGVzYwAAAAAAAAAEc1JHQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0ZXh0AAAAAENvcHlyaWdodCBBcHBsZSBJbmMuLCAyMDE3AABYWVogAAAAAAAA9tYAAQAAAADTLVhZWiAAAAAAAABvogAAOPUAAAOQWFlaIAA'
     };
+
     final Map<String, String> headers = {'Content-Type': 'application/json'};
-    // const uri = 'http://192.168.1.22:3000/users/signup';
-    const url = '$baseUrl$signupUrl';
-    var response = await postMethod(url, requestBody, headers, context);
-    if (response.statusCode == 200) {
-      print('response success');
-      if (context.mounted) {
-        // commonSnackBar(
-        //     context: context, msg: jsonDecode(response.body)['message']);
-        Map<String, dynamic> error = json.decode(response.body);
-        DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+
+    try {
+      const url = '$baseUrl$signupUrl';
+      var response = await postMethod(url, requestBody, headers, context);
+
+      if (response.statusCode == 200) {
+        print('response success');
+        if (context.mounted) {
+          Map<String, dynamic> error = json.decode(response.body);
+          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+        }
+
+        Get.offAll(LoginScreen());
+      } else {
+        if (context.mounted) {
+          Map<String, dynamic> error = json.decode(response.body);
+          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+        }
       }
-
-      Get.offAll(LoginScreen());
-    } else {
-      // Map<String, dynamic> error = json.decode(response.body);
-      // print(error['message']);
-
-      if (context.mounted) {
-        // commonSnackBar(context: context, msg: error['message']);
-        Map<String, dynamic> error = json.decode(response.body);
-        DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
-      }
-
-      // print('${response.body.toString()}');
+    } catch (e) {
+      print(e.toString());
     }
   }
 
