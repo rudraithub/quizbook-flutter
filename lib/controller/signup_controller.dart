@@ -8,7 +8,7 @@ import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/login_model_alpesh.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
-import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../splash_screen.dart';

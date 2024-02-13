@@ -10,7 +10,6 @@ import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 
 import '../view/screens/otp_view.dart';
 import '../widgets/commo_alert_dilog.dart';
-import '../widgets/common_snack_bar.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;

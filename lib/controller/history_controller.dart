@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
-import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
+
 
 import '../model/history_model_data.dart';
 import '../widgets/commo_alert_dilog.dart';
@@ -25,7 +25,7 @@ class HistoryController extends GetxController {
   String getCorrectAnswer(int index) => _model.options[index - 1][0];
 
   void loadData(BuildContext context) async {
-    print(userBearerToken!);
+    // print(userBearerToken!);
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': userBearerToken!,
@@ -34,15 +34,15 @@ class HistoryController extends GetxController {
     try {
       
       isLoading.value =true;
-      print("inside try");
+      // print("inside try");
       var response = await getMethode(url, context, headers);
       if (response.statusCode == 200) {
         historyModel.value = historyFromJson(response.body);
-        print('Respones Success');
+        // print('Respones Success');
 
       } else {
         Map<String, dynamic> error = json.decode(response.body);
-        print('error[' 'message' ']');
+        // print('error[' 'message' ']');
         isLoading(false);
         if (context.mounted) {
           DialogUtils.showCustomDialog(context, "Sorry", error['message']);
@@ -52,10 +52,10 @@ class HistoryController extends GetxController {
       }
     } catch (e) {
       isLoading.value =false;
-      print(e.toString());
+      // print(e.toString());
       isLoading(false);
     } finally {
-      print('finally');
+      // print('finally');
       isLoading(false);
     }
   }

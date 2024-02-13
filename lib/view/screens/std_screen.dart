@@ -40,8 +40,7 @@ class _StudyScreenState extends State<StudyScreen> {
           elevation: 2,
           shadowColor: Colors.grey,
         ),
-        body:
-        
+        body:        
         RefreshIndicator(
           color: Colors.purple,
           strokeWidth: 2,

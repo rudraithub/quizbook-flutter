@@ -8,7 +8,7 @@ import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
-import 'package:rudra_it_hub/widgets/common_snack_bar.dart';
+
 
 class ChapterController extends GetxController {
   var isLoading = true.obs;
@@ -26,17 +26,15 @@ class ChapterController extends GetxController {
       var response =
           await postMethod('$baseUrl$chapterUrl', body, headers, context);
 
-      // var products = await RemoteServices.fatchChapter(stdId, subId);
       if (response.statusCode == 200) {
         var jsonString = response.body;
         stdList.value = chapterFromJson(jsonString);
       } else {
+        isLoading(false);
         if (context.mounted) {
           var responseData = json.decode(response.body);
     String message = responseData['message'];
-          // CommonAlertDialog(message: message,);
           DialogUtils.showCustomDialog(context,"Ops!!!",message);
-          // print('erro');
         }
       }
     } finally {
