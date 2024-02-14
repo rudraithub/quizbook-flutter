@@ -2,34 +2,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/history_view.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
 import 'package:rudra_it_hub/view/screens/std_screen.dart';
 import '../../controller/dashboard_controller.dart';
-import '../../model/login_model_alpesh.dart';
 
 class AppbarBottomBarScreen extends StatelessWidget {
   final AppbarBottomBarController _controller =
       Get.put(AppbarBottomBarController());
-  AppbarBottomBarScreen({super.key, this.logInModel});
-  final LogInModel? logInModel;
+  AppbarBottomBarScreen({super.key,});
+  // final LogInModel? logInModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: PreferredSize(
-      //     preferredSize: const Size.fromHeight(60.0),
-      //     child: Obx(
-      //           () => _controller.currentIndex.value == 2
-      //           ? const SizedBox.shrink()
-      //           : CommonAppBarScreen(
-      //         title: _controller.getPageName(),
-      //         backgroundColor: whiteColor,
-      //         automaticallyImplyLeading:
-      //         _controller.currentIndex.value == 2,
-      //         isBackArrow: _controller.currentIndex.value == 2,
-      //       ),
-      //     )),
+    
       body: PageView.builder(
           itemCount: 3,
           scrollDirection: Axis.horizontal,
@@ -45,14 +33,14 @@ class AppbarBottomBarScreen extends StatelessWidget {
               return const History();
             } else
               return SignUpScreen(
-                firstName: logInModel?.data?.firstName ?? '',
+                firstName: userData?.data?.firstName ?? '',
                 isProfile: true,
-                lastName: logInModel?.data?.lastName ?? '',
-                email: logInModel?.data?.email ?? '',
-                mobileNo: logInModel?.data?.mobileNumber ?? '',
-                gender: logInModel?.data?.gender?[0].name ?? "",
-                desi: logInModel?.data?.profession?[0].name ?? "",
-                date: logInModel?.data?.dob ?? "",
+                lastName: userData?.data?.lastName ?? '',
+                email: userData?.data?.email ?? '',
+                mobileNo: userData?.data?.mobileNumber ?? '',
+                gender: userData?.data?.gender?[0].name ?? "",
+                desi: userData?.data?.profession?[0].name ?? "",
+                date: userData?.data?.dob ?? "",
               );
           }),
       bottomNavigationBar: Obx(

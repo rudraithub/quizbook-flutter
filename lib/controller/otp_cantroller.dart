@@ -1,4 +1,3 @@
-
 // ignore_for_file: unused_local_variable, body_might_complete_normally_catch_error
 
 import 'dart:convert';
@@ -32,10 +31,23 @@ class OTPController extends GetxController {
           .signInWithCredential(credential)
           .catchError((onError) async {
         // commonSnackBar(context: context, msg: 'Please enter correct otp');
-        DialogUtils.showCustomDialog(context, "Wrong OTP", 'Please enter correct otp');
-
+        DialogUtils.showCustomDialog(
+            context, "Wrong OTP", 'Please enter correct otp');
       }).then((value) async {
-        LogInModel users = LogInModel();
+        LogInModel users = LogInModel(
+            data: Data(
+                id: 0,
+                firstName: '',
+                lastName: '',
+                email: '',
+                gender: [],
+                dob: '',
+                mobileNumber: '',
+                profession: [],
+                userProfile: '',
+                tokens: ''),
+            message: '',
+            status: 0);
 
         final Map<String, dynamic> requestBody = {
           "mobileNumber": moNumber,
@@ -51,13 +63,15 @@ class OTPController extends GetxController {
           if (response.statusCode == 200) {
             // print("Prashant" + response.body);
             LogInModel users = logInModelFromJson(response.body);
-            userBearerToken = users.token!;
+            userData = users;
+            userBearerToken = users.data.tokens;
             userData = users;
             var sharedPreferences = await SharedPreferences.getInstance();
             SharedPreferencesHelper sharedPreferencesHelper =
                 SharedPreferencesHelper(sharedPreferences);
             sharedPreferencesHelper.putBool(Preferences.userLogin, true);
-            sharedPreferencesHelper.putString(Preferences.token, users.token!);
+            sharedPreferencesHelper.putString(
+                Preferences.token, users.data.tokens);
             await sharedPreferencesHelper.putString(
                 Preferences.userFullDetails, jsonEncode(users));
 
@@ -65,9 +79,7 @@ class OTPController extends GetxController {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AppbarBottomBarScreen(
-                      logInModel: users,
-                    ),
+                    builder: (context) => AppbarBottomBarScreen(),
                   ),
                   (route) => false);
             }
@@ -78,25 +90,18 @@ class OTPController extends GetxController {
               // commonSnackBar(context: context, msg: "catch ${response.body}");
               Map<String, dynamic> error = json.decode(response.body);
               DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
-
-
             }
           }
         } catch (e) {
           if (context.mounted) {
             // commonSnackBar(context: context, msg: "catch ${e.toString()}");
             DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
-
           }
         }
       });
     } catch (e) {
       if (context.mounted) {
-        // commonSnackBar(context: context, msg:"SOmnething Went Wrong");
         DialogUtils.showCustomDialog(context, "Ops!!!", 'Something Went Wrong');
-
-
-
       }
     }
   }

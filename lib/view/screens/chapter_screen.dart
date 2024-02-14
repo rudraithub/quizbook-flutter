@@ -1,10 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
+import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 
-ChapterController chProvider = ChapterController();
+// ChapterController chProvider = ChapterController();
+final ChapterController chProvider = Get.put(ChapterController());
+
 
 class ChapterScreen extends StatefulWidget {
   const ChapterScreen({super.key, 
@@ -25,11 +29,18 @@ class ChapterScreen extends StatefulWidget {
   }
 }
 
+
 class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void initState() {
     chProvider.fetchChapter(widget.stdId, widget.subId, context);
     super.initState();
+  }
+  @override
+  void dispose() {
+    chProvider.clearModel();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -52,14 +63,10 @@ class _ChapterScreenState extends State<ChapterScreen> {
             ),
           ),
           body: ListView.builder(
-            itemCount: chProvider.stdList.value.data.length,
+            itemCount: chProvider.chapterList.value.data.length,
             itemBuilder: (context, index) {
-              final item = chProvider.stdList.value.data[index];
-              if (chProvider.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
+              final item = chProvider.chapterList.value.data[index];
+           
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -82,7 +89,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
                     min: item.minute,
                   ),
                 );
-              }
+              
             },
           ),
         ),

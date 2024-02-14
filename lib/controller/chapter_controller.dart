@@ -1,4 +1,3 @@
-// ignore_for_file: override_on_non_overriding_member
 
 import 'dart:convert';
 
@@ -11,10 +10,14 @@ import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 
 
 class ChapterController extends GetxController {
-  var isLoading = true.obs;
-  Rx<Chapter> stdList = Chapter(status: 0, data: [], message: '').obs;
+  var isLoading = false.obs;
+  Rx<Chapter> chapterList = Chapter(status: 0, data: [], message: '').obs;
+  void clearModel(){
+    print('call this');
+    chapterList.value = Chapter(status: 0, data: [], message: '');
+  }
+  
 
-  @override
   void fetchChapter(int stdId, int subId, BuildContext context) async {
     try {
       isLoading(true);
@@ -27,8 +30,9 @@ class ChapterController extends GetxController {
           await postMethod('$baseUrl$chapterUrl', body, headers, context);
 
       if (response.statusCode == 200) {
+        isLoading(false);
         var jsonString = response.body;
-        stdList.value = chapterFromJson(jsonString);
+        chapterList.value = chapterFromJson(jsonString);
       } else {
         isLoading(false);
         if (context.mounted) {
@@ -37,7 +41,13 @@ class ChapterController extends GetxController {
           DialogUtils.showCustomDialog(context,"Ops!!!",message);
         }
       }
-    } finally {
+    }
+    catch(e){
+           chapterList.value = Chapter(status: 0, data: [], message: '');
+
+      isLoading(false);
+    }
+     finally {
       isLoading(false);
     }
   }
