@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'model/login_model_alpesh.dart';
 
 String? userBearerToken;
-LogInModel? userData;
+LoginModel? userData;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,10 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
         bool loginStatus =
             SharedPreferencesHelper(prefs).getBool(Preferences.userLogin);
         if (loginStatus == true) {
-           userData = logInModelFromJson(
+           userData = loginModelFromJson(
               SharedPreferencesHelper(prefs)
                   .getString(Preferences.userFullDetails));
-          userBearerToken = userData!.data.tokens;
+          userBearerToken = userData!.token;
           // print(userData!.token);
           // print("userBearerToken $userBearerToken");
           Navigator.pushReplacement(

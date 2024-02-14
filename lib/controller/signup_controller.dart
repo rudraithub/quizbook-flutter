@@ -3,20 +3,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/login_model_alpesh.dart';
+import 'package:rudra_it_hub/splash_screen.dart';
+import 'package:rudra_it_hub/utils/preference_helper.dart';
+import 'package:rudra_it_hub/utils/prefrences.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
-
+import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../splash_screen.dart';
-import '../utils/preference_helper.dart';
-import '../utils/prefrences.dart';
-import '../widgets/commo_alert_dilog.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpController extends GetxController {
   final RxString selectedGender = 'Select Gender'.obs;
@@ -49,8 +49,9 @@ class SignUpController extends GetxController {
       'Authorization': userBearerToken!,
     };
     PhotoController photoController = PhotoController();
-    final users = LogInModel(
+    final users = LoginModel(
       status: userData!.status,
+      token: userBearerToken!,
       message: userData!.message,
       data: Data(
         id: userData!.data.id,
@@ -62,7 +63,6 @@ class SignUpController extends GetxController {
         mobileNumber: userData!.data.mobileNumber,
         profession: userData!.data.profession,
         userProfile: userData!.data.userProfile,
-        tokens: userBearerToken!,
       ),
     );
 
@@ -115,43 +115,58 @@ class SignUpController extends GetxController {
     String formattedDate =
         "${dob.day.toString().padLeft(2, '0')}/${dob.month.toString().padLeft(2, '0')}/${dob.year.toString()}";
     print(formattedDate);
-    List<int> fileBytes = await file.readAsBytes();
-    String base64Image = base64Encode(fileBytes);
-print(base64Image);
-    final Map<String, dynamic> requestBody = {
+
+    final Map<String, String> requestBody = {
       "firstName": firstName,
       "lastName": lastName,
       "email": email,
-      "password": 'Password Is here',
-      "genderID": gender,
+      "genderID": '$gender',
       "DOB": formattedDate,
       "mobileNumber": mobileNo,
-      "professionId": professionId,
-      // "userProfile": '/9j/4QEuRXhpZgAATU0AKgAAAAgABQEAAAMAAAABCWAAAAEBAAMAAAABBDgAAAExAAIAAAAYAAAASodpAAQAAAABAAAAYgESAAQAAAABAAAAAAAAAABBbmRyb2lkIFJNWDIxNTZfMTFfRi4xMwAABZADAAIAAAAUAAAApJKRAAIAAAAENDkwAKQgAAIAAAAlAAAAuJARAAIAAAAHAAAA3ZIIAAQAAAABAAAAAAAAAAAyMDI0OjAyOjEyIDIxOjAzOjI5AGMzNWY5NDVlLThjY2UtNDNhMi05OGI3LTY0OWFkZjE5ZGMyMgArMDU6MzAAAAMBAAADAAAAAQlgAAABMQACAAAAGAAAAQ4BAQADAAAAAQQ4AAAAAAAAQW5kcm9pZCBSTVgyMTU2XzExX0YuMTMA/+AAEEpGSUYAAQEAAAEAAQAA/+ICBElDQ19QUk9GSUxFAAEBAAAB9GFwcGwEAAAAbW50clJHQiBYWVogB+IABgAYAA0AFgAgYWNzcEFQUEwAAAAAT1BQTwAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1hcHBsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJZGVzYwAAAPAAAABoY3BydAAAAVgAAAAkd3RwdAAAAXwAAAAUclhZWgAAAZAAAAAUZ1hZWgAAAaQAAAAUYlhZWgAAAbgAAAAUclRSQwAAAcwAAAAoZ1RSQwAAAcwAAAAoYlRSQwAAAcwAAAAoZGVzYwAAAAAAAAAEc1JHQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0ZXh0AAAAAENvcHlyaWdodCBBcHBsZSBJbmMuLCAyMDE3AABYWVogAAAAAAAA9tYAAQAAAADTLVhZWiAAAAAAAABvogAAOPUAAAOQWFlaIAA'
+      "professionId": '$professionId',
     };
 
-    final Map<String, String> headers = {'Content-Type': 'application/json'};
+    final Map<String, String> headers = {'Content-Type': 'multipart/form-data'};
 
     try {
+      List<int> imageBytes = await file.readAsBytes();
+
+      String fileName = file.path.split('/').last;
+
+      var imagePart = await http.MultipartFile.fromPath(
+        'userProfile',
+        file.path,
+      );
+
+      final request =
+          http.MultipartRequest('POST', Uri.parse('$baseUrl$signupUrl'));
+      request.files.add(imagePart);
+
+      request.fields.addAll(requestBody);
+
+      final response = await request.send();
       const url = '$baseUrl$signupUrl';
-      var response = await postMethod(url, requestBody, headers, context);
+
+      var response2 = await http.Response.fromStream(response);
+      final result = jsonDecode(response2.body) as Map<String, dynamic>;
 
       if (response.statusCode == 200) {
-        print('response success');
         if (context.mounted) {
-          Map<String, dynamic> error = json.decode(response.body);
-          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+          DialogUtils.showCustomDialog(
+              context, "Success", 'Registration Successfull');
         }
 
         Get.offAll(LoginScreen());
       } else {
         if (context.mounted) {
-          Map<String, dynamic> error = json.decode(response.body);
+          Map<String, dynamic> error = json.decode(response2.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
         }
       }
     } catch (e) {
-      print(e.toString());
+      print("Catch$e");
+    } finally {
+      print("Finally");
     }
   }
 
@@ -174,6 +189,4 @@ print(base64Image);
 
     void verifyOtp() {}
   }
-
-//----------------------------------
 }

@@ -33,14 +33,14 @@ class AppbarBottomBarScreen extends StatelessWidget {
               return const History();
             } else
               return SignUpScreen(
-                firstName: userData?.data?.firstName ?? '',
+                firstName: userData?.data.firstName ?? '',
                 isProfile: true,
-                lastName: userData?.data?.lastName ?? '',
-                email: userData?.data?.email ?? '',
-                mobileNo: userData?.data?.mobileNumber ?? '',
-                gender: userData?.data?.gender?[0].name ?? "",
-                desi: userData?.data?.profession?[0].name ?? "",
-                date: userData?.data?.dob ?? "",
+                lastName: userData?.data.lastName ?? '',
+                email: userData?.data.email ?? '',
+                mobileNo: userData?.data.mobileNumber ?? '',
+                gender: userData?.data.gender[0].name ?? "",
+                desi: userData?.data.profession[0].name ?? "",
+                date: userData?.data.dob ?? "",
               );
           }),
       bottomNavigationBar: Obx(

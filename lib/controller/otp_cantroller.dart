@@ -34,7 +34,7 @@ class OTPController extends GetxController {
         DialogUtils.showCustomDialog(
             context, "Wrong OTP", 'Please enter correct otp');
       }).then((value) async {
-        LogInModel users = LogInModel(
+        LoginModel users = LoginModel(
             data: Data(
                 id: 0,
                 firstName: '',
@@ -45,9 +45,10 @@ class OTPController extends GetxController {
                 mobileNumber: '',
                 profession: [],
                 userProfile: '',
-                tokens: ''),
+                ),
+                
             message: '',
-            status: 0);
+            status: 0, token: '');
 
         final Map<String, dynamic> requestBody = {
           "mobileNumber": moNumber,
@@ -55,23 +56,22 @@ class OTPController extends GetxController {
         final Map<String, String> headers = {
           'Content-Type': 'application/json'
         };
-        // const uri = 'http://192.168.1.22:3000/users/login';
         const uri = '$baseUrl$loginUrl';
         var response = await postMethod(uri, requestBody, headers, context);
 
         try {
           if (response.statusCode == 200) {
-            // print("Prashant" + response.body);
-            LogInModel users = logInModelFromJson(response.body);
+            LoginModel users = loginModelFromJson(response.body);
             userData = users;
-            userBearerToken = users.data.tokens;
+            userBearerToken = users.token;
             userData = users;
             var sharedPreferences = await SharedPreferences.getInstance();
             SharedPreferencesHelper sharedPreferencesHelper =
                 SharedPreferencesHelper(sharedPreferences);
+            
             sharedPreferencesHelper.putBool(Preferences.userLogin, true);
             sharedPreferencesHelper.putString(
-                Preferences.token, users.data.tokens);
+                Preferences.token, users.token);
             await sharedPreferencesHelper.putString(
                 Preferences.userFullDetails, jsonEncode(users));
 

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
-import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 
