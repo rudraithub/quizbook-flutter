@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:rudra_it_hub/controller/history_controller.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
@@ -30,7 +31,6 @@ class _HistoryState extends State<History> {
     double percent = noOfCorrectAnswer / noOfTotalQuestion;
     double screenHeight = getScreenHeight(context);
     double screenWidth = getScreenWidth(context);
-
     return RefreshIndicator(
       color: Colors.purple,
       strokeWidth: 2,
@@ -71,8 +71,7 @@ class _HistoryState extends State<History> {
                               left: 10, right: 10, top: screenHeight * 0.025),
                           child: InkWell(
                             onTap: () {
-                              // historyController.loadData(context);
-                              // print("HIstory Tap");
+                             
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => HistoryDetail(chapterHistory :historyController.historyModel.value.data[index] ),
                               ));
@@ -137,7 +136,7 @@ class _HistoryState extends State<History> {
                                               ),
                                               Center(
                                                 child: Text(
-                                                  '3 minutes ago',
+                                                  formatTimestamp(historyController.historyModel.value.data[index].submitTime),
                                                   style: TextStyle(
                                                     fontSize:
                                                         screenHeight * 0.017,
@@ -200,5 +199,23 @@ class _HistoryState extends State<History> {
                   )),
       ),
     );
+  }
+  
+  String formatTimestamp(DateTime submitTime) {
+     final now = DateTime.now();
+    final difference = now.difference(submitTime);
+
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+    } else {
+      return DateFormat('yyyy-MM-dd').format(submitTime);
+    }
+  
   }
 }

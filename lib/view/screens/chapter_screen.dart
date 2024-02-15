@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
-import 'package:rudra_it_hub/model/chap_of_sub_model.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 
@@ -39,7 +38,6 @@ class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void dispose() {
     chProvider.clearModel();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -118,7 +116,6 @@ class CustomItem extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
     double screenWidth = getScreenWidth(context);
-    print(screenHeight.toString());
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Card(
