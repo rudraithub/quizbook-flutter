@@ -1,14 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_print, file_names, must_be_immutable
 
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
+import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/utils/utility.dart';
-import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
@@ -94,350 +92,355 @@ class SignUpScreen extends StatelessWidget {
       signUpCantroller.isValid.value = true;
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60.0),
-        child: CommonAppBarScreen(
-          title: 'Update Profile',
-          backgroundColor: whiteColor, // Customize the color here
-          centerTitle: true,
-          isBackArrow: isBackArrow,
+    return Obx((){
+      var profile = photoController.selectedImage.value;
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60.0),
+          child: CommonAppBarScreen(
+            title: 'Update Profile',
+            backgroundColor: whiteColor, // Customize the color here
+            centerTitle: true,
+            isBackArrow: isBackArrow,
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _key,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      photoController.pickImage(context);
-                    },
-                    child: Obx(() {
-                      return (photoController.selectedImage.value == null)
-                          ? CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.grey,
-                              child: Image.asset(changeProfile),
-                            )
-                          : CircleAvatar(
-                              radius: 50,
-                              backgroundImage: FileImage(
-                                  photoController.selectedImage.value!),
-                            );
-                    }),
-                  ),
-                  Obx(() {
-                    signUpCantroller.firstNameobx.value.isEmpty
-                        ? null
-                        : _firstNameController.text =
-                            signUpCantroller.firstNameobx.value;
-
-                    return CommonTextFormField(
-                      controller: _firstNameController,
-                      label: 'First Name',
-                      errorMessage: 'Enter Your First Name',
-                      inputType: TextInputType.text,
-                      formatter: [],
-                      length: 60,
-                      onTap: () {},
-                      
-                    );
-                  }),
-
-                  Obx(() {
-                    signUpCantroller.lastNameobx.value.isEmpty
-                        ? null
-                        : _lastNameController.text =
-                            signUpCantroller.lastNameobx.value;
-
-                    return CommonTextFormField(
-                      controller: _lastNameController,
-                      label: 'Last Name',
-                      errorMessage: 'Enter Your Last Name',
-                      inputType: TextInputType.text,
-                      formatter: [],
-                      length: 60,
-                      onTap: () {},
-                    );
-                  }),
-                  CommonTextFormField(
-                    controller: _emailController,
-                    label: 'Email ID',
-                    errorMessage: 'Please enter valid Email Id',
-                    inputType: TextInputType.text,
-                    formatter: [],
-                    length: 60,
-                    onTap: () {},
-                    isEmailField: true,
-                    isReadOnly: isProfile,
-                  ),
-                  CommonTextFormField(
-                    controller: _mobileController,
-                    label: 'Mobile Number',
-                    errorMessage: 'Please enter valid Number',
-                    inputType: TextInputType.number,
-                    formatter: [mobileLengthFormatter, mobileNumberFormat],
-                    length: 10,
-                    onTap: () {},
-                    isMobileNumber: true,
-                    isReadOnly: isProfile,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: SizedBox(
-                          width: (MediaQuery.of(context).size.width / 2 - 10),
-                          child: Obx(
-                            () => DropdownButtonFormField<String>(
-                              value: selectedGender.value.isEmpty
-                                  ? null
-                                  : selectedGender.value,
-                                  
-                              decoration:  InputDecoration(
-                                  labelText: 'Gender',
-                                            focusedBorder: focusBorder,
-                                           
-                                  labelStyle: const TextStyle(
-                                      color: greyColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500)
-                                  // Add other styling properties here if needed
-                                  ),
-                              hint: const Text(
-                                "Select Gender",
-                                style:
-                                    TextStyle(fontSize: 14, color: greyColor),
-                              ),
-                              onChanged:isProfile ? null : (value) {
-                                selectedGender(value);
-                                genderErrorMessage('');
-                                signUpCantroller.selectedGender.value = value!;
-                                signUpCantroller.onItemSelected(value);
-                                signUpCantroller.isValid.value == true;
-                              },
-                              // Call the method from the controller
-                              validator: (value) {
-                                return signUpCantroller.isValid.value
-                                    ? null
-                                    : 'Please select Gender';
-                              },
-                              // validator: (value) {
-                              //   if (value == null || value.isEmpty) {
-                              //     return "Please select a gender";
-                              //   }
-                              //   return null;
-                              // },
-                              items: ['Male', 'Female', 'Others']
-                                  .map<DropdownMenuItem<String>>(
-                                    (String value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: const TextStyle(fontSize: 15 ,color: blackColor),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Obx(() {
-                        if (genderErrorMessage.value.isNotEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 0),
-                            child: Text(
-                              genderErrorMessage.value,
-                              style: const TextStyle(
-                                  color: redColor, fontSize: 13),
-                            ),
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      }),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Flexible(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 3),
-                            child:
-                                //  CommonTextFormField(
-                                //   controller: _pickDAte,
-                                //   errorMessage: "Please Select The Date ",
-                                //   onTap: Utility.showDatePickerDialog(),
-                                // )
-                                InkWell(
-                              onTap: () {
-                                if (isProfile) {
-                                    return;
-                                  }
-                                Utility.showDatePickerDialog()
-                                    .then((pickedDate) {
-                                  
-                                  if (pickedDate != null) {
-                                    signUpCantroller.changeBirthDate(
-                                        "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
-                                    selectedDate = pickedDate;
-                                  }
-                                });
-                              },
-                              child: 
-                              
-                              InputDecorator(
-                                  decoration: const InputDecoration(
-                                      labelText: 'BirthDate',
-                                      labelStyle: TextStyle(
-                                          color: greyColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500)),
-                                  child: Obx(() => 
-                                  signUpCantroller.selectedBirthDate.value == "Select Date"?Text(
-                                        signUpCantroller
-                                            .selectedBirthDate.value ,maxLines: 1,
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.w500,
-                                            overflow: TextOverflow.clip), 
-                                        
-                                      ) :
-                                  Text(
-                                        signUpCantroller
-                                            .selectedBirthDate.value ,maxLines: 1,
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            color: blackColor,
-                                            fontWeight: FontWeight.w500,
-                                            overflow: TextOverflow.clip), 
-                                        
-                                      ))),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 1,
-                    child: Obx(
-                      () => DropdownButtonFormField<String>(
-                        padding: EdgeInsets.zero,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Form(
+              key: _key,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 18,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        photoController.pickImage(context);
+                      },
+                      child:  
+                         (photoController.selectedImage.value == null) ? (isProfile ? CircleAvatar(
+                                radius: 50,
+                                child : Image.network(
+                                    userData!.data.userProfile),
+                              ) : 
                         
-                        value: selectedDesignation.value.isEmpty
-                            ? null
-                            : selectedDesignation.value,
-                        decoration:  InputDecoration(
-                            labelText: 'Select Designation',
-                             focusedBorder: focusBorder,
-                            labelStyle:const TextStyle(
-                                color: greyColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500)
-                            // Add other styling properties here if needed
-                            ),
-                        onChanged:isProfile ? null :  (value) {
-                          selectedDesignation(value);
-                          desErrorMsg('');
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please Select ";
-                          }
-                          return null;
-                        },
-                        items: ["student", "teacher", "admin"]
-                            .map<DropdownMenuItem<String>>(
-                              (String value) => DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(fontSize: 15,color: blackColor),
+                         CircleAvatar(
+                                radius: 50,
+                                
+                                backgroundColor: Colors.grey,
+                                child: Image.asset(changeProfile),
+                              ))
+                            : CircleAvatar(
+                                radius: 50,
+                                backgroundImage: FileImage(
+                                    photoController.selectedImage.value!),
+                              )
+                      
+                    ),
+                    Obx(() {
+                      signUpCantroller.firstNameobx.value.isEmpty
+                          ? null
+                          : _firstNameController.text =
+                              signUpCantroller.firstNameobx.value;
+      
+                      return CommonTextFormField(
+                        controller: _firstNameController,
+                        label: 'First Name',
+                        errorMessage: 'Enter Your First Name',
+                        inputType: TextInputType.text,
+                        formatter: [],
+                        length: 60,
+                        onTap: () {},
+                        
+                      );
+                    }),
+      
+                    Obx(() {
+                      signUpCantroller.lastNameobx.value.isEmpty
+                          ? null
+                          : _lastNameController.text =
+                              signUpCantroller.lastNameobx.value;
+      
+                      return CommonTextFormField(
+                        controller: _lastNameController,
+                        label: 'Last Name',
+                        errorMessage: 'Enter Your Last Name',
+                        inputType: TextInputType.text,
+                        formatter: [],
+                        length: 60,
+                        onTap: () {},
+                      );
+                    }),
+                    CommonTextFormField(
+                      controller: _emailController,
+                      label: 'Email ID',
+                      errorMessage: 'Please enter valid Email Id',
+                      inputType: TextInputType.text,
+                      formatter: [],
+                      length: 60,
+                      onTap: () {},
+                      isEmailField: true,
+                      isReadOnly: isProfile,
+                    ),
+                    CommonTextFormField(
+                      controller: _mobileController,
+                      label: 'Mobile Number',
+                      errorMessage: 'Please enter valid Number',
+                      inputType: TextInputType.number,
+                      formatter: [mobileLengthFormatter, mobileNumberFormat],
+                      length: 10,
+                      onTap: () {},
+                      isMobileNumber: true,
+                      isReadOnly: isProfile,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: SizedBox(
+                            width: (MediaQuery.of(context).size.width / 2 - 10),
+                            child: Obx(
+                              () => DropdownButtonFormField<String>(
+                                value: selectedGender.value.isEmpty
+                                    ? null
+                                    : selectedGender.value,
+                                    
+                                decoration:  InputDecoration(
+                                    labelText: 'Gender',
+                                              focusedBorder: focusBorder,
+                                             
+                                    labelStyle: const TextStyle(
+                                        color: greyColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500)
+                                    // Add other styling properties here if needed
+                                    ),
+                                hint: const Text(
+                                  "Select Gender",
+                                  style:
+                                      TextStyle(fontSize: 14, color: greyColor),
                                 ),
+                                onChanged:isProfile ? null : (value) {
+                                  selectedGender(value);
+                                  genderErrorMessage('');
+                                  signUpCantroller.selectedGender.value = value!;
+                                  signUpCantroller.onItemSelected(value);
+                                  signUpCantroller.isValid.value == true;
+                                },
+                                // Call the method from the controller
+                                validator: (value) {
+                                  return signUpCantroller.isValid.value
+                                      ? null
+                                      : 'Please select Gender';
+                                },
+                                // validator: (value) {
+                                //   if (value == null || value.isEmpty) {
+                                //     return "Please select a gender";
+                                //   }
+                                //   return null;
+                                // },
+                                items: ['Male', 'Female', 'Others']
+                                    .map<DropdownMenuItem<String>>(
+                                      (String value) => DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(fontSize: 15 ,color: blackColor),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
                               ),
-                            )
-                            .toList(),
+                            ),
+                          ),
+                        ),
+                        Obx(() {
+                          if (genderErrorMessage.value.isNotEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 0),
+                              child: Text(
+                                genderErrorMessage.value,
+                                style: const TextStyle(
+                                    color: redColor, fontSize: 13),
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 3),
+                              child:
+                              
+                                  InkWell(
+                                onTap: () {
+                                  if (isProfile) {
+                                      return;
+                                    }
+                                  Utility.showDatePickerDialog()
+                                      .then((pickedDate) {
+                                    
+                                    if (pickedDate != null) {
+                                      signUpCantroller.changeBirthDate(
+                                          "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
+                                      selectedDate = pickedDate;
+                                    }
+                                  });
+                                },
+                                child: 
+                                
+                                InputDecorator(
+                                    decoration: const InputDecoration(
+                                        labelText: 'BirthDate',
+                                        labelStyle: TextStyle(
+                                            color: greyColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500)),
+                                    child: Obx(() => 
+                                    signUpCantroller.selectedBirthDate.value == "Select Date"?Text(
+                                          signUpCantroller
+                                              .selectedBirthDate.value ,maxLines: 1,
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: greyColor,
+                                              fontWeight: FontWeight.w500,
+                                              overflow: TextOverflow.clip), 
+                                          
+                                        ) :
+                                    Text(
+                                          signUpCantroller
+                                              .selectedBirthDate.value ,maxLines: 1,
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: blackColor,
+                                              fontWeight: FontWeight.w500,
+                                              overflow: TextOverflow.clip), 
+                                          
+                                        ))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 1,
+                      child: Obx(
+                        () => DropdownButtonFormField<String>(
+                          padding: EdgeInsets.zero,
+                          
+                          value: selectedDesignation.value.isEmpty
+                              ? null
+                              : selectedDesignation.value,
+                          decoration:  InputDecoration(
+                              labelText: 'Select Designation',
+                               focusedBorder: focusBorder,
+                              labelStyle:const TextStyle(
+                                  color: greyColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500)
+                              // Add other styling properties here if needed
+                              ),
+                          onChanged:isProfile ? null :  (value) {
+                            selectedDesignation(value);
+                            desErrorMsg('');
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please Select ";
+                            }
+                            return null;
+                          },
+                          items: ["student", "teacher", "admin"]
+                              .map<DropdownMenuItem<String>>(
+                                (String value) => DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(fontSize: 15,color: blackColor),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
-                  ),
-                  Obx(() {
-                    if (desErrorMsg.value.isNotEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          desErrorMsg.value,
-                          style: const TextStyle(color: redColor, fontSize: 13),
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }),
-                  // const SizedBox(height: 200,)
-                ],
+                    Obx(() {
+                      if (desErrorMsg.value.isNotEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            desErrorMsg.value,
+                            style: const TextStyle(color: redColor, fontSize: 13),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }),
+                    // const SizedBox(height: 200,)
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: CommonButton(
-          onPress: () async {
-            int professionId = 1;
-            if (selectedDesignation.value == 'student') {
-              professionId = 1;
-            } else if (selectedDesignation.value == 'teacher') {
-              professionId == 2;
-            } else {
-              professionId = 3;
-            }
-            int genderId = 1;
-            if (selectedDesignation.value == 'male') {
-              genderId = 1;
-            } else if (selectedDesignation.value == 'female') {
-              genderId == 2;
-            } else {
-              genderId = 3;
-            }
-            if (_key.currentState!.validate()) {
-              //  _controller.verifyOtp();
-              if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
-                // commonSnackBar(context: context, msg: "Please select date");
-                DialogUtils.showCustomDialog(
-                    context, "Empty Filed", "Please Select Date");
+        bottomNavigationBar: CommonButton(
+            onPress: () async {
+              int professionId = 1;
+              if (selectedDesignation.value == 'student') {
+                professionId = 1;
+              } else if (selectedDesignation.value == 'teacher') {
+                professionId == 2;
               } else {
-                // print('else calll');
-                if (isProfile) {
-                  signUpCantroller.updateUser(_firstNameController.text,
-                      _lastNameController.text, context);
-                } else {
-                  print('button pressed');
-                  signUpCantroller.signUp(
-                      _firstNameController.text,
-                      _lastNameController.text,
-                      _emailController.text,
-                      genderId,
-                      selectedDate,
-                      _mobileController.text,
-                      professionId,
-                      photoController.selectedImage.value!,
-                      context);
-                }
+                professionId = 3;
               }
-            }
-          },
-          title: btnText),
+              int genderId = 1;
+              if (selectedDesignation.value == 'male') {
+                genderId = 1;
+              } else if (selectedDesignation.value == 'female') {
+                genderId == 2;
+              } else {
+                genderId = 3;
+              }
+              // if (_key.currentState!.validate()) {
+              //   //  _controller.verifyOtp();
+              //   if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
+              //     // commonSnackBar(context: context, msg: "Please select date");
+              //     DialogUtils.showCustomDialog(
+              //         context, "Empty Filed", "Please Select Date");
+              //   } else {
+                  // print('else calll');
+                  if (isProfile) {
+                    signUpCantroller.updateUser(_firstNameController.text,
+                        _lastNameController.text, context);
+                  } else {
+                    print('button pressed');
+                    signUpCantroller.signUp(
+                        _firstNameController.text,
+                        _lastNameController.text,
+                        _emailController.text,
+                        genderId,
+                        selectedDate,
+                        _mobileController.text,
+                        professionId,
+                        photoController.selectedImage.value!,
+                        context);
+              //     }
+              //   }
+              }
+            },
+            title: btnText),
+      );}
     );
   }
 }
