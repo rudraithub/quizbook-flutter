@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_print, file_names, must_be_immutable
 
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/utils/utility.dart';
-import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
@@ -108,7 +108,9 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
+
                        isProfile? null: photoController.pickImage(context);
+
                       },
                       child:  
                          (photoController.selectedImage.value == null) ? (isProfile ? CircleAvatar(
@@ -207,6 +209,7 @@ class SignUpScreen extends StatelessWidget {
                                         color: greyColor,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500)
+
                                     ),
                                 hint: const Text(
                                   "Select Gender",
@@ -349,7 +352,9 @@ class SignUpScreen extends StatelessWidget {
                             }
                             return null;
                           },
+
                           items: ["Student", "Teacher", "Admin"]
+
                               .map<DropdownMenuItem<String>>(
                                 (String value) => DropdownMenuItem<String>(
                                   value: value,
@@ -389,18 +394,22 @@ class SignUpScreen extends StatelessWidget {
               if (selectedDesignation.value == 'Student') {
                 professionId = 1;
               } else if (selectedDesignation.value == 'Teacher') {
+
                 professionId == 2;
               } else {
                 professionId = 3;
               }
               int genderId = 1;
+
               if (selectedDesignation.value == 'Male') {
                 genderId = 1;
               } else if (selectedDesignation.value == 'Female') {
+
                 genderId == 2;
               } else {
                 genderId = 3;
               }
+
               if (_key.currentState!.validate()) {
                 //  _controller.verifyOtp();
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
@@ -409,14 +418,17 @@ class SignUpScreen extends StatelessWidget {
                       context, "Empty Filed", "Please Select Date");
                 } else {
                   print('else calll');
+
                   if (isProfile) {
                     signUpCantroller.updateUser(_firstNameController.text,
                         _lastNameController.text, context);
                   } else {
+
                     if(photoController.selectedImage.value == null){
                        DialogUtils.showCustomDialog(
                       context, "Empty Filed", "Please Select Profile Photo");
                     }
+
                     print('button pressed');
                     signUpCantroller.signUp(
                         _firstNameController.text,
@@ -430,6 +442,7 @@ class SignUpScreen extends StatelessWidget {
                         context);
                   }
                 }
+
               }
             },
             title: btnText),

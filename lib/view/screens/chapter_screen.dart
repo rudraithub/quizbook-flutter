@@ -38,6 +38,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void dispose() {
     chProvider.clearModel();
+
     super.dispose();
   }
 

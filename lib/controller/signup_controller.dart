@@ -139,11 +139,13 @@ class SignUpController extends GetxController {
       );
 
       final request =
+
           http.MultipartRequest('POST', Uri.parse("$baseUrl$signupUrl"));
       request.files.add(imagePart);
 
       request.fields.addAll(requestBody);
       print(requestBody.toString());
+
 
       final response = await request.send();
       const url = '$baseUrl$signupUrl';
@@ -151,6 +153,7 @@ class SignUpController extends GetxController {
      
       print(response);
       print("try");
+
       if (response.statusCode == 200) {
         if (context.mounted) {
           DialogUtils.showCustomDialog(
@@ -160,11 +163,13 @@ class SignUpController extends GetxController {
         Get.offAll(LoginScreen());
       } else {
         if (context.mounted) {
+
          var response3 = await response.stream.bytesToString();
          Map<String , dynamic> responseMap = json.decode(response3);
         //  print();
         DialogUtils.showCustomDialog(context,"Alert!!" , responseMap['message']);
         }
+
 
       }
     } catch (e) {
