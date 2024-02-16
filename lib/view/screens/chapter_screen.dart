@@ -38,7 +38,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void dispose() {
     chProvider.clearModel();
-    // TODO: implement dispose
+
     super.dispose();
   }
 
@@ -117,7 +117,6 @@ class CustomItem extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = getScreenHeight(context);
     double screenWidth = getScreenWidth(context);
-    print(screenHeight.toString());
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Card(

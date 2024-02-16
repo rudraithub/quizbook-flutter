@@ -13,7 +13,7 @@ class ChapterController extends GetxController {
   var isLoading = false.obs;
   Rx<Chapter> chapterList = Chapter(status: 0, data: [], message: '').obs;
   void clearModel(){
-    print('call this');
+
     chapterList.value = Chapter(status: 0, data: [], message: '');
   }
   

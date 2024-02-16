@@ -21,7 +21,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // SharedPreferences preferences = SharedPreferences.getInstance();
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -33,8 +32,6 @@ class _SplashScreenState extends State<SplashScreen> {
               SharedPreferencesHelper(prefs)
                   .getString(Preferences.userFullDetails));
           userBearerToken = userData!.token;
-          // print(userData!.token);
-          // print("userBearerToken $userBearerToken");
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

@@ -7,10 +7,12 @@ import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/utils/utility.dart';
+import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
 import 'package:rudra_it_hub/widgets/common_text_field.dart';
+
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({
@@ -26,7 +28,6 @@ class SignUpScreen extends StatelessWidget {
     this.email = '',
   });
 
-  // final _key = GlobalKey<FormState>();
   static final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   final bool isBackArrow;
@@ -38,30 +39,20 @@ class SignUpScreen extends StatelessWidget {
   final String gender;
   final String date;
   final String desi;
-  // final DateTime dateTime;
 
-  // final String /;
   final InputBorder focusBorder =const UnderlineInputBorder(
       borderSide:  BorderSide(color: purpleColor, width: 1));
 
   final SignUpController signUpCantroller = Get.put(SignUpController());
-
   final TextEditingController _firstNameController = TextEditingController();
-
   final TextEditingController _lastNameController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _mobileController = TextEditingController();
-  // final TextEditingController _pickDAte = TextEditingController();
   DateTime selectedDate = DateTime.now();
   final PhotoController photoController = Get.put(PhotoController());
-
   final RxString selectedGender = ''.obs;
-
   final RxString selectedDesignation = ''.obs;
-
-  RxString selectedValue = ''.obs; // Observable string for the selected value
+  RxString selectedValue = ''.obs; 
   RxBool isValid = false.obs;
 
   final RxString genderErrorMessage = RxString('');
@@ -118,7 +109,9 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        photoController.pickImage(context);
+
+                       isProfile? null: photoController.pickImage(context);
+
                       },
                       child:  
                          (photoController.selectedImage.value == null) ? (isProfile ? CircleAvatar(
@@ -217,7 +210,7 @@ class SignUpScreen extends StatelessWidget {
                                         color: greyColor,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500)
-                                    // Add other styling properties here if needed
+
                                     ),
                                 hint: const Text(
                                   "Select Gender",
@@ -360,7 +353,9 @@ class SignUpScreen extends StatelessWidget {
                             }
                             return null;
                           },
-                          items: ["student", "teacher", "admin"]
+
+                          items: ["Student", "Teacher", "Admin"]
+
                               .map<DropdownMenuItem<String>>(
                                 (String value) => DropdownMenuItem<String>(
                                   value: value,
@@ -397,33 +392,44 @@ class SignUpScreen extends StatelessWidget {
         bottomNavigationBar: CommonButton(
             onPress: () async {
               int professionId = 1;
-              if (selectedDesignation.value == 'student') {
+              if (selectedDesignation.value == 'Student') {
                 professionId = 1;
-              } else if (selectedDesignation.value == 'teacher') {
+              } else if (selectedDesignation.value == 'Teacher') {
+
                 professionId == 2;
               } else {
                 professionId = 3;
               }
               int genderId = 1;
-              if (selectedDesignation.value == 'male') {
+
+              if (selectedDesignation.value == 'Male') {
                 genderId = 1;
-              } else if (selectedDesignation.value == 'female') {
+              } else if (selectedDesignation.value == 'Female') {
+
                 genderId == 2;
               } else {
                 genderId = 3;
               }
-              // if (_key.currentState!.validate()) {
-              //   //  _controller.verifyOtp();
-              //   if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
-              //     // commonSnackBar(context: context, msg: "Please select date");
-              //     DialogUtils.showCustomDialog(
-              //         context, "Empty Filed", "Please Select Date");
-              //   } else {
-                  // print('else calll');
+
+              if (_key.currentState!.validate()) {
+                //  _controller.verifyOtp();
+                if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
+                  // commonSnackBar(context: context, msg: "Please select date");
+                  DialogUtils.showCustomDialog(
+                      context, "Empty Filed", "Please Select Date");
+                } else {
+                  print('else calll');
+
                   if (isProfile) {
                     signUpCantroller.updateUser(_firstNameController.text,
                         _lastNameController.text, context);
                   } else {
+
+                    if(photoController.selectedImage.value == null){
+                       DialogUtils.showCustomDialog(
+                      context, "Empty Filed", "Please Select Profile Photo");
+                    }
+
                     print('button pressed');
                     signUpCantroller.signUp(
                         _firstNameController.text,
@@ -435,8 +441,9 @@ class SignUpScreen extends StatelessWidget {
                         professionId,
                         photoController.selectedImage.value!,
                         context);
-              //     }
-              //   }
+                  }
+                }
+
               }
             },
             title: btnText),

@@ -70,7 +70,7 @@ class _QuizScreenState extends State<QuizScreen> {
        Scaffold(
         
         body: SafeArea( 
-          child:  questionController.isLoading.value ? Center(child:CircularProgressIndicator(),) : questionController.apiQuestion.value.data!.isEmpty  ?Center(child: Text("No Data"),) :
+          child:  questionController.isLoading.value ? const Center(child:CircularProgressIndicator(),) : questionController.apiQuestion.value.data!.isEmpty  ? const Center(child: Text("No Data"),) :
           
            SingleChildScrollView(
             child:
