@@ -132,25 +132,23 @@ class SignUpController extends GetxController {
       List<int> imageBytes = await file.readAsBytes();
 
       String fileName = file.path.split('/').last;
-
+      String encodedFilePath = Uri.encodeFull(file.path);
       var imagePart = await http.MultipartFile.fromPath(
         'userProfile',
-        file.path,
+        encodedFilePath,
       );
+      print("hit vslll");
 
       final request =
-
           http.MultipartRequest('POST', Uri.parse("$baseUrl$signupUrl"));
       request.files.add(imagePart);
 
       request.fields.addAll(requestBody);
       print(requestBody.toString());
 
-
       final response = await request.send();
       const url = '$baseUrl$signupUrl';
 
-     
       print(response);
       print("try");
 
@@ -162,16 +160,18 @@ class SignUpController extends GetxController {
 
         Get.offAll(LoginScreen());
       } else {
+        print("Here Elese Call ");
         if (context.mounted) {
-
-         var response3 = await response.stream.bytesToString();
-         Map<String , dynamic> responseMap = json.decode(response3);
-        //  print();
-        DialogUtils.showCustomDialog(context,"Alert!!" , responseMap['message']);
+          var response3 = await response.stream.bytesToString();
+          Map<String, dynamic> responseMap = json.decode(response3);
+          //  print();
+          DialogUtils.showCustomDialog(
+              context, "Alert!!", responseMap['message']);
         }
-
-
       }
+    } on FormatException {
+      DialogUtils.showCustomDialog(
+          context, "Ops!!!", "Please upload valid photo ");
     } catch (e) {
       print("Catch$e");
     } finally {

@@ -25,9 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
       Future.delayed(const Duration(seconds: 2), () {
+        // bool loginStatus = prefs.getBool(Preferences.userLogin) ?? false;
         bool loginStatus =
             SharedPreferencesHelper(prefs).getBool(Preferences.userLogin);
         if (loginStatus == true) {
+          print('true');
            userData = loginModelFromJson(
               SharedPreferencesHelper(prefs)
                   .getString(Preferences.userFullDetails));
@@ -39,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     AppbarBottomBarScreen(),
               ));
         } else {
+          print('false');
           // Get.to(LoginScreen());
           Navigator.pushReplacement(
               context,

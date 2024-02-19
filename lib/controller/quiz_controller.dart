@@ -86,7 +86,8 @@ class QuestionController extends GetxController {
         }
         print('object');
       }
-    } catch (e) {
+    }
+    catch (e) {
       if (context.mounted) {
       
       }

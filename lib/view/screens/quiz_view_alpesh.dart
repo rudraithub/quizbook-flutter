@@ -25,11 +25,11 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   int? selectedAnswerIndex;
   int questionIndex = 0;
-  // QuestionApiData? apiQuestion;
   bool? isLastQuestion;
   int score = 0;
   List<Map<String, dynamic>> resultData = [];
   QuestionController questionController = QuestionController();
+  
 
   Future<void> fetchData() async {
      questionController.getQuestionList(
@@ -82,7 +82,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       ((screenWidth * 5) / 100), ((screenWidth * 5) / 100)),
                   decoration: BoxDecoration(
                       color:
-                          purpleColor, // Set the background color of the Container
+                          purpleColor, 
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular((screenWidth * 5) / 100),
                           bottomRight: Radius.circular((screenWidth * 5) / 100))),
@@ -111,7 +111,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         itemCount:
                             questionController.apiQuestion.value.data?[questionIndex].option?.length ?? 0,
                         itemBuilder: (context, index) {
-                         
+                         String letter = String.fromCharCode(65 + index); 
                           return Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: InkWell(
@@ -121,9 +121,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                     : null,
                                 child: AnswerCard(
                                   currentIndex: index,
-                                  question: questionController.apiQuestion.value
-                                          .data?[questionIndex].option?[index] ??
-                                      '',
+                                  question: "$letter: ${questionController.apiQuestion.value
+                                          .data?[questionIndex].option?[index]}" ,
                                   isSelected: selectedAnswerIndex == index,
                                   selectedAnswerIndex: selectedAnswerIndex,
                                   correctAnswerIndex:
@@ -148,9 +147,6 @@ class _QuizScreenState extends State<QuizScreen> {
                         questions: resultData);
                   } else {
                     DialogUtils.showCustomDialog(context, "Empty Answer", "Please Select Question");
-      
-                    // commonSnackBar(
-                    //     context: context, msg: "Please select question");
                   }
                 },
                 title: 'Finish',

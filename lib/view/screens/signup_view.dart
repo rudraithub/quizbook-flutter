@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, avoid_print, file_names, must_be_immutable
-
+// ignore_for_file: prefer_const_literals_to_create_immutables, avoid_print, file_names, must_be_immutable, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +11,6 @@ import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
 import 'package:rudra_it_hub/widgets/common_text_field.dart';
-
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({
@@ -40,8 +38,8 @@ class SignUpScreen extends StatelessWidget {
   final String date;
   final String desi;
 
-  final InputBorder focusBorder =const UnderlineInputBorder(
-      borderSide:  BorderSide(color: purpleColor, width: 1));
+  final InputBorder focusBorder = const UnderlineInputBorder(
+      borderSide: BorderSide(color: purpleColor, width: 1));
 
   final SignUpController signUpCantroller = Get.put(SignUpController());
   final TextEditingController _firstNameController = TextEditingController();
@@ -52,7 +50,7 @@ class SignUpScreen extends StatelessWidget {
   final PhotoController photoController = Get.put(PhotoController());
   final RxString selectedGender = ''.obs;
   final RxString selectedDesignation = ''.obs;
-  RxString selectedValue = ''.obs; 
+  RxString selectedValue = ''.obs;
   RxBool isValid = false.obs;
 
   final RxString genderErrorMessage = RxString('');
@@ -63,7 +61,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isProfile) {
-      // Here
+      // Here  gg
       btnText = "Update";
       _firstNameController.text = firstName.isEmpty ? '' : firstName;
       _lastNameController.text = lastName.isEmpty ? '' : lastName;
@@ -83,7 +81,7 @@ class SignUpScreen extends StatelessWidget {
       signUpCantroller.isValid.value = true;
     }
 
-    return Obx((){
+    return Obx(() {
       var profile = photoController.selectedImage.value;
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -108,37 +106,32 @@ class SignUpScreen extends StatelessWidget {
                       height: 18,
                     ),
                     GestureDetector(
-                      onTap: () {
-
-                       isProfile? null: photoController.pickImage(context);
-
-                      },
-                      child:  
-                         (photoController.selectedImage.value == null) ? (isProfile ? CircleAvatar(
-                                radius: 50,
-                                child : Image.network(
-                                    userData!.data.userProfile),
-                              ) : 
-                        
-                         CircleAvatar(
-                                radius: 50,
-                                
-                                backgroundColor: Colors.grey,
-                                child: Image.asset(changeProfile),
-                              ))
+                        onTap: () {
+                          isProfile ? null : photoController.pickImage(context);
+                        },
+                        child: (photoController.selectedImage.value == null)
+                            ? (isProfile
+                                ? CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: NetworkImage(
+                                        userData!.data.userProfile),
+                                  )
+                                : CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: Colors.grey,
+                                    child: Image.asset(changeProfile),
+                                  ))
                             : CircleAvatar(
                                 radius: 50,
                                 backgroundImage: FileImage(
                                     photoController.selectedImage.value!),
-                              )
-                      
-                    ),
+                              )),
                     Obx(() {
                       signUpCantroller.firstNameobx.value.isEmpty
                           ? null
                           : _firstNameController.text =
                               signUpCantroller.firstNameobx.value;
-      
+
                       return CommonTextFormField(
                         controller: _firstNameController,
                         label: 'First Name',
@@ -147,16 +140,15 @@ class SignUpScreen extends StatelessWidget {
                         formatter: [],
                         length: 60,
                         onTap: () {},
-                        
                       );
                     }),
-      
+
                     Obx(() {
                       signUpCantroller.lastNameobx.value.isEmpty
                           ? null
                           : _lastNameController.text =
                               signUpCantroller.lastNameobx.value;
-      
+
                       return CommonTextFormField(
                         controller: _lastNameController,
                         label: 'Last Name',
@@ -188,8 +180,7 @@ class SignUpScreen extends StatelessWidget {
                       onTap: () {},
                       isMobileNumber: true,
                       isReadOnly: isProfile,
-                    ),
-                    Row(
+                    ),Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -252,6 +243,7 @@ class SignUpScreen extends StatelessWidget {
                           ),
                         ),
                         Obx(() {
+                          print(MediaQuery.of(context).size.height);
                           if (genderErrorMessage.value.isNotEmpty) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 0),
@@ -271,7 +263,7 @@ class SignUpScreen extends StatelessWidget {
                         Flexible(
                           child: SizedBox(
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 3),
+                              padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height *0.00475),
                               child:
                               
                                   InkWell(
@@ -330,38 +322,37 @@ class SignUpScreen extends StatelessWidget {
                       child: Obx(
                         () => DropdownButtonFormField<String>(
                           padding: EdgeInsets.zero,
-                          
                           value: selectedDesignation.value.isEmpty
                               ? null
                               : selectedDesignation.value,
-                          decoration:  InputDecoration(
+                          decoration: InputDecoration(
                               labelText: 'Select Designation',
-                               focusedBorder: focusBorder,
-                              labelStyle:const TextStyle(
+                              focusedBorder: focusBorder,
+                              labelStyle: const TextStyle(
                                   color: greyColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500)
-                              // Add other styling properties here if needed
                               ),
-                          onChanged:isProfile ? null :  (value) {
-                            selectedDesignation(value);
-                            desErrorMsg('');
-                          },
+                          onChanged: isProfile
+                              ? null
+                              : (value) {
+                                  selectedDesignation(value);
+                                  desErrorMsg('');
+                                },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please Select ";
                             }
                             return null;
                           },
-
                           items: ["Student", "Teacher", "Admin"]
-
                               .map<DropdownMenuItem<String>>(
                                 (String value) => DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(
                                     value,
-                                    style: const TextStyle(fontSize: 15,color: blackColor),
+                                    style: const TextStyle(
+                                        fontSize: 15, color: blackColor),
                                   ),
                                 ),
                               )
@@ -375,14 +366,14 @@ class SignUpScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             desErrorMsg.value,
-                            style: const TextStyle(color: redColor, fontSize: 13),
+                            style:
+                                const TextStyle(color: redColor, fontSize: 13),
                           ),
                         );
                       } else {
                         return const SizedBox.shrink();
                       }
                     }),
-                    // const SizedBox(height: 200,)
                   ],
                 ),
               ),
@@ -395,41 +386,32 @@ class SignUpScreen extends StatelessWidget {
               if (selectedDesignation.value == 'Student') {
                 professionId = 1;
               } else if (selectedDesignation.value == 'Teacher') {
-
                 professionId == 2;
               } else {
                 professionId = 3;
               }
               int genderId = 1;
-
-              if (selectedDesignation.value == 'Male') {
+              if (selectedGender.value == 'Male') {
                 genderId = 1;
-              } else if (selectedDesignation.value == 'Female') {
-
+              } else if (selectedGender.value == 'Female') {
                 genderId == 2;
               } else {
                 genderId = 3;
               }
-
               if (_key.currentState!.validate()) {
-                //  _controller.verifyOtp();
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
-                  // commonSnackBar(context: context, msg: "Please select date");
                   DialogUtils.showCustomDialog(
                       context, "Empty Filed", "Please Select Date");
                 } else {
                   print('else calll');
-
                   if (isProfile) {
                     signUpCantroller.updateUser(_firstNameController.text,
                         _lastNameController.text, context);
                   } else {
-
-                    if(photoController.selectedImage.value == null){
-                       DialogUtils.showCustomDialog(
-                      context, "Empty Filed", "Please Select Profile Photo");
+                    if (photoController.selectedImage.value == null) {
+                      DialogUtils.showCustomDialog(context, "Empty Filed",
+                          "Please Select Profile Photo");
                     }
-
                     print('button pressed');
                     signUpCantroller.signUp(
                         _firstNameController.text,
@@ -443,11 +425,10 @@ class SignUpScreen extends StatelessWidget {
                         context);
                   }
                 }
-
               }
             },
             title: btnText),
-      );}
-    );
+      );
+    });
   }
 }
