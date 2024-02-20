@@ -240,18 +240,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   signUpCantroller.onItemSelected(value);
                                   signUpCantroller.isValid.value == true;
                                 },
-                                // Call the method from the controller
-                                validator: (value) {
-                                  return signUpCantroller.isValid.value
-                                      ? null
-                                      : 'Please select Gender';
-                                },
                                 // validator: (value) {
-                                //   if (value == null || value.isEmpty) {
-                                //     return "Please select a gender";
-                                //   }
-                                //   return null;
+                                //   return signUpCantroller.isValid.value
+                                //       ? null
+                                //       : 'Please select Gender';
                                 // },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please select a gender";
+                                  }
+                                  return null;
+                                },
                                 items: ['Male', 'Female', 'Others']
                                     .map<DropdownMenuItem<String>>(
                                       (String value) => DropdownMenuItem<String>(
