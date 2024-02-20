@@ -12,7 +12,7 @@ import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
 import 'package:rudra_it_hub/widgets/common_text_field.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({
     super.key,
     this.isBackArrow = false,
@@ -38,46 +38,70 @@ class SignUpScreen extends StatelessWidget {
   final String date;
   final String desi;
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final InputBorder focusBorder = const UnderlineInputBorder(
       borderSide: BorderSide(color: purpleColor, width: 1));
 
   final SignUpController signUpCantroller = Get.put(SignUpController());
+
   final TextEditingController _firstNameController = TextEditingController();
+
   final TextEditingController _lastNameController = TextEditingController();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _mobileController = TextEditingController();
+
   DateTime selectedDate = DateTime.now();
+
   final PhotoController photoController = Get.put(PhotoController());
+
   final RxString selectedGender = ''.obs;
+
   final RxString selectedDesignation = ''.obs;
+
   RxString selectedValue = ''.obs;
+
   RxBool isValid = false.obs;
 
   final RxString genderErrorMessage = RxString('');
 
   final RxString desErrorMsg = RxString('');
-  String btnText = 'Next';
 
+  String btnText = 'Next';
+@override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    signUpCantroller.selectedBirthDate.value == "Select Date";
+    photoController.clear();
+     signUpCantroller.clear();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    if (isProfile) {
+    if (widget.isProfile) {
       // Here  gg
       btnText = "Update";
-      _firstNameController.text = firstName.isEmpty ? '' : firstName;
-      _lastNameController.text = lastName.isEmpty ? '' : lastName;
+      _firstNameController.text = widget.firstName.isEmpty ? '' : widget.firstName;
+      _lastNameController.text = widget.lastName.isEmpty ? '' : widget.lastName;
       signUpCantroller.lastNameobx.value == ''
-          ? signUpCantroller.lastNameobx.value = lastName
+          ? signUpCantroller.lastNameobx.value = widget.lastName
           : null;
       signUpCantroller.firstNameobx.value == ''
-          ? signUpCantroller.firstNameobx.value = firstName
+          ? signUpCantroller.firstNameobx.value = widget.firstName
           : null;
 
-      _emailController.text = email.isEmpty ? '' : email;
-      _mobileController.text = mobileNo.isEmpty ? '' : mobileNo;
+      _emailController.text = widget.email.isEmpty ? '' : widget.email;
+      _mobileController.text = widget.mobileNo.isEmpty ? '' : widget.mobileNo;
 
-      selectedGender.value = gender.isEmpty ? '' : gender;
-      selectedDesignation.value = desi.isEmpty ? '' : desi;
-      signUpCantroller.changeBirthDate(date);
+      selectedGender.value = widget.gender.isEmpty ? '' : widget.gender;
+      selectedDesignation.value = widget.desi.isEmpty ? '' : widget.desi;
+      signUpCantroller.changeBirthDate(widget.date);
       signUpCantroller.isValid.value = true;
     }
 
@@ -91,13 +115,14 @@ class SignUpScreen extends StatelessWidget {
             title: 'Update Profile',
             backgroundColor: whiteColor, // Customize the color here
             centerTitle: true,
-            isBackArrow: isBackArrow,
+            isBackArrow: widget.isBackArrow,
+            isProfile: widget.isProfile,
           ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Form(
-              key: _key,
+              key: SignUpScreen._key,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -107,10 +132,10 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                         onTap: () {
-                          isProfile ? null : photoController.pickImage(context);
+                          widget.isProfile ? null : photoController.pickImage(context);
                         },
                         child: (photoController.selectedImage.value == null)
-                            ? (isProfile
+                            ? (widget.isProfile
                                 ? CircleAvatar(
                                     radius: 50,
                                     backgroundImage: NetworkImage(
@@ -168,7 +193,7 @@ class SignUpScreen extends StatelessWidget {
                       length: 60,
                       onTap: () {},
                       isEmailField: true,
-                      isReadOnly: isProfile,
+                      isReadOnly: widget.isProfile,
                     ),
                     CommonTextFormField(
                       controller: _mobileController,
@@ -179,7 +204,7 @@ class SignUpScreen extends StatelessWidget {
                       length: 10,
                       onTap: () {},
                       isMobileNumber: true,
-                      isReadOnly: isProfile,
+                      isReadOnly: widget.isProfile,
                     ),Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +233,7 @@ class SignUpScreen extends StatelessWidget {
                                   style:
                                       TextStyle(fontSize: 14, color: greyColor),
                                 ),
-                                onChanged:isProfile ? null : (value) {
+                                onChanged:widget.isProfile ? null : (value) {
                                   selectedGender(value);
                                   genderErrorMessage('');
                                   signUpCantroller.selectedGender.value = value!;
@@ -268,7 +293,7 @@ class SignUpScreen extends StatelessWidget {
                               
                                   InkWell(
                                 onTap: () {
-                                  if (isProfile) {
+                                  if (widget.isProfile) {
                                       return;
                                     }
                                   Utility.showDatePickerDialog()
@@ -333,7 +358,7 @@ class SignUpScreen extends StatelessWidget {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500)
                               ),
-                          onChanged: isProfile
+                          onChanged: widget.isProfile
                               ? null
                               : (value) {
                                   selectedDesignation(value);
@@ -398,13 +423,13 @@ class SignUpScreen extends StatelessWidget {
               } else {
                 genderId = 3;
               }
-              if (_key.currentState!.validate()) {
+              if (SignUpScreen._key.currentState!.validate()) {
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                   DialogUtils.showCustomDialog(
                       context, "Empty Filed", "Please Select Date");
                 } else {
                   print('else calll');
-                  if (isProfile) {
+                  if (widget.isProfile) {
                     signUpCantroller.updateUser(_firstNameController.text,
                         _lastNameController.text, context);
                   } else {

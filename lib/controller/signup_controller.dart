@@ -37,6 +37,11 @@ class SignUpController extends GetxController {
     selectedValue.value = value; // Update the selected value
     isValid.value = value.isNotEmpty; // Update the validation state
   }
+  void clear(){
+    firstNameobx.value = '';
+   lastNameobx.value = '';
+   selectedBirthDate .value= 'Select Date';
+  }
 
   Future<bool> updateUser(
       String firstName, String lastName, BuildContext context) async {
@@ -198,4 +203,6 @@ class SignUpController extends GetxController {
 
     void verifyOtp() {}
   }
+
+  
 }
