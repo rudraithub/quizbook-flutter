@@ -29,8 +29,10 @@ class QuestionController extends GetxController {
         option: Option(a: 'a', b: 'b', c: 'c', d: 'd'),
         rightAns: '')
   ].obs;
+    Rx<QuestionApiData>? apiQuestions;
 
-  Rx<QuestionApiData>? apiQuestions;
+void clearModel(){
+apiQuestion.value =QuestionApiData(data: [],message: '',status: 0);}
 
   RxInt selectedOptionIndex = (-1).obs;
 
@@ -43,7 +45,7 @@ class QuestionController extends GetxController {
     required List questions,
   }) async {
     print('result send call');
-    // print(stdid.toString() + subid.toString() + chapterid.toString());
+    
     String url = '$baseUrl$resultUrl';
     try {
        Map <String, String>  headers = {
@@ -52,9 +54,9 @@ class QuestionController extends GetxController {
       };
       var body = <String, dynamic>{
         // "userID": userID,
-        "stdid": 1,
-        "subid": 1,
-        "chapterid": 1,
+        "stdid": stdid,
+        "subid": subid,
+        "chapterid": chapterid,
         "questions": questions
       };
       print('here');

@@ -32,6 +32,7 @@ class _QuizScreenState extends State<QuizScreen> {
   
 
   Future<void> fetchData() async {
+    print("${widget.stdId}" + "${widget.subId }"+ "${widget.chapterId}");
      questionController.getQuestionList(
         stdId: widget.stdId,
         subId: widget.subId,
@@ -43,16 +44,26 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
+    print(widget.chapterId.toString());
     fetchData();
     super.initState();
   }
+@override
+  void dispose() {
+    print("Disspose Call");
+    //  resultData.dispose();
+         questionController.clearModel();
+print(resultData.toString());
 
+    super.dispose();
+  }
   void pickAnswer(int value, answerIndex, int queId) {
+    print(resultData.length);
+
     Map<String, int> value1 = {"queid": queId, "user_answer": value};
     resultData.add(value1);
 
     selectedAnswerIndex = value;
-
     if (selectedAnswerIndex == answerIndex) {
       score++;
     }
@@ -139,6 +150,10 @@ class _QuizScreenState extends State<QuizScreen> {
             ? CommonButton(
                 onPress: () async {
                   if (selectedAnswerIndex != null) {
+                                        print(widget.stdId.toString());
+                                        print(widget.subId.toString());
+                                        print(widget.chapterId.toString());
+
                     questionController.resultDataSend(
                         context: context,
                         stdid: widget.stdId,

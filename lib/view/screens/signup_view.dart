@@ -112,8 +112,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CommonAppBarScreen(
-            title: 'Update Profile',
-            backgroundColor: whiteColor, // Customize the color here
+            title:widget.isProfile ?  'Update Profile' : "Sign Up",
+            backgroundColor: whiteColor, 
             centerTitle: true,
             isBackArrow: widget.isBackArrow,
             isProfile: widget.isProfile,
@@ -164,6 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         inputType: TextInputType.text,
                         formatter: [],
                         length: 60,
+                        autoFocus: false,
                         onTap: () {},
                       );
                     }),
@@ -423,14 +424,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 genderId = 3;
               }
               if (SignUpScreen._key.currentState!.validate()) {
+                
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                   DialogUtils.showCustomDialog(
                       context, "Empty Filed", "Please Select Date");
                 } else {
                   print('else calll');
                   if (widget.isProfile) {
-                    signUpCantroller.updateUser(_firstNameController.text,
+                            FocusScope.of(context).unfocus();
+
+                   bool av= await signUpCantroller.updateUser(_firstNameController.text,
                         _lastNameController.text, context);
+                        if (av ) {
+                                        FocusScope.of(context).unfocus();
+                                        print("Av True");
+
+                        }
                   } else {
                     if (photoController.selectedImage.value == null) {
                       DialogUtils.showCustomDialog(context, "Empty Filed",

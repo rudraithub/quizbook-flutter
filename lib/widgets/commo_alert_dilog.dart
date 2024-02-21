@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:rudra_it_hub/view/screens/signup_view.dart';
 
 import '../utils/constants.dart';
 
@@ -8,6 +10,7 @@ class DialogUtils {
 
 
   static void showCustomDialog(BuildContext context,String title ,  String msg,) {
+
     showDialog(
         context: context,
         builder: (_) {
@@ -19,7 +22,11 @@ class DialogUtils {
               Center(
                 child:  InkWell(
               onTap: (){
+
                 Navigator.pop(context);
+                // Get.to(SignUpScreen());
+                // Navigator.pop(context);
+
               },
 
                   child: Container(

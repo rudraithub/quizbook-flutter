@@ -83,6 +83,7 @@ class CommonTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      // focusNode: focusNode,
       style:const TextStyle(
         color: Colors.black,
         fontSize: 15.1,
