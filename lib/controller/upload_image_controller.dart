@@ -14,6 +14,9 @@ import '../widgets/commo_alert_dilog.dart';
 
 class PhotoController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
+  void clear(){
+    selectedImage.value = null;
+  }
 
   Future<void> pickImage(BuildContext context) async {
     final picker = ImagePicker();

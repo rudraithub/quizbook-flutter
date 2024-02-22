@@ -8,8 +8,8 @@ import '../../controller/history_controller.dart';
 class HistoryDetail extends StatelessWidget {
   final HistoryController controller = Get.put(HistoryController());
 
-  HistoryDetail({super.key ,required this.chapterHistory});
-  final ChapterHistory chapterHistory ;
+  HistoryDetail({super.key, required this.chapterHistory});
+  final ChapterHistory chapterHistory;
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +21,35 @@ class HistoryDetail extends StatelessWidget {
         title: const Text('Quiz Results'),
       ),
       body: ListView.builder(
-        itemCount: controller.totalQuestions + 1,
+        itemCount: chapterHistory.questions.length,
         itemBuilder: (context, index) {
           if (index == 0) {
-            return _buildPurpleCard(context, screenWidth, screenHeight);
+            return Column(
+              children: [
+                _buildPurpleCard(context, screenWidth, screenHeight),
+                _buildQuestionCard(
+                    context,
+                    screenWidth,
+                    chapterHistory.questions[index].questionName,
+                    chapterHistory.questions[index].option,
+                    chapterHistory.questions[index]
+                        .option[chapterHistory.questions[index].rightAnswer],
+                    screenHeight)
+              ],
+            );
           } else {
             return Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: screenHeight * 0.015,
-              ),
-              child:
-                  _buildQuestionCard(context, screenWidth, chapterHistory.questions[index].questionName, chapterHistory.questions[index].option, chapterHistory.questions[index].option[chapterHistory.questions[index].rightAnswer], screenHeight)
-            );
+                padding: EdgeInsets.symmetric(
+                  vertical: screenHeight * 0.015,
+                ),
+                child: _buildQuestionCard(
+                    context,
+                    screenWidth,
+                    chapterHistory.questions[index].questionName,
+                    chapterHistory.questions[index].option,
+                    chapterHistory.questions[index]
+                        .option[chapterHistory.questions[index].rightAnswer],
+                    screenHeight));
           }
         },
       ),
@@ -53,12 +70,21 @@ class HistoryDetail extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildResultCard('Total Qusetion',
-                chapterHistory.totalQuestions.toString(), screenWidth, screenHeight),
-            _buildResultCard('Right Ans', chapterHistory.totalRightQuestions.toString(),
-                screenWidth, screenHeight),
-            _buildResultCard('Wrong Ans', chapterHistory.totalWrongQuestions.toString(),
-                screenWidth, screenHeight)
+            _buildResultCard(
+                'Total Qusetion',
+                chapterHistory.totalQuestions.toString(),
+                screenWidth,
+                screenHeight),
+            _buildResultCard(
+                'Right Ans',
+                chapterHistory.totalRightQuestions.toString(),
+                screenWidth,
+                screenHeight),
+            _buildResultCard(
+                'Wrong Ans',
+                chapterHistory.totalWrongQuestions.toString(),
+                screenWidth,
+                screenHeight)
           ],
         ),
       ),
@@ -92,10 +118,13 @@ class HistoryDetail extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionCard(BuildContext context,  double screenWidth,String question, List<String> options ,  String correctAnswer ,
+  Widget _buildQuestionCard(
+      BuildContext context,
+      double screenWidth,
+      String question,
+      List<String> options,
+      String correctAnswer,
       double screenHeight) {
-   
-
     return Card(
       elevation: 5,
       margin: EdgeInsets.all(screenWidth * 0.02),
@@ -110,18 +139,21 @@ class HistoryDetail extends StatelessWidget {
                   question,
                   style: TextStyle(
                     fontSize:
-                        screenHeight * 0.028, // Adjusted based on screenHeight
+                        screenHeight * 0.028, 
                     color: Colors.black,
                   ),
                   textAlign: TextAlign.start,
                 ),
                 SizedBox(height: screenHeight * 0.01),
-                HsAnswerCard(option: "A : ${options[0]}"),
-                HsAnswerCard(option: "B : ${options[1]}"),
-                HsAnswerCard(option: "C : ${options[2]}"),
-                HsAnswerCard(option: "D : ${options[3]}"),
-                // HsAnswerCard(option: "A : ${options[0]}"),
-             
+                ListView.builder(
+                  itemCount: options.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    String letter = String.fromCharCode(65 + index);
+
+                    return HsAnswerCard(option: "$letter : ${options[0]}");
+                  },
+                ),
               ],
             ),
           ),
@@ -130,7 +162,7 @@ class HistoryDetail extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-               "User Answer : $correctAnswer",
+                "User Answer : $correctAnswer",
                 style: TextStyle(
                   color: Colors.red,
                   fontSize: screenHeight * 0.0220,
