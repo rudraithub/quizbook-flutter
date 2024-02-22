@@ -37,6 +37,11 @@ class SignUpController extends GetxController {
     selectedValue.value = value; // Update the selected value
     isValid.value = value.isNotEmpty; // Update the validation state
   }
+  void clear(){
+    firstNameobx.value = '';
+   lastNameobx.value = '';
+   selectedBirthDate .value= 'Select Date';
+  }
 
   void clear() {
     firstNameobx.value = '';
@@ -142,6 +147,7 @@ class SignUpController extends GetxController {
       List<int> imageBytes = await file.readAsBytes();
 
       // String fileName = file.path.split('/').last;
+
       String encodedFilePath = Uri.encodeFull(file.path);
       var imagePart = await http.MultipartFile.fromPath(
         'userProfile',
@@ -208,4 +214,6 @@ class SignUpController extends GetxController {
 
     void verifyOtp() {}
   }
+
+  
 }

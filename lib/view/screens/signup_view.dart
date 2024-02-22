@@ -424,13 +424,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 genderId = 3;
               }
               if (SignUpScreen._key.currentState!.validate()) {
-                
+
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                   DialogUtils.showCustomDialog(
                       context, "Empty Filed", "Please Select Date");
                 } else {
                   print('else calll');
                   if (widget.isProfile) {
+
                             FocusScope.of(context).unfocus();
 
                    bool av= await signUpCantroller.updateUser(_firstNameController.text,
@@ -440,6 +441,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         print("Av True");
 
                         }
+
                   } else {
                     if (photoController.selectedImage.value == null) {
                       DialogUtils.showCustomDialog(context, "Empty Filed",
