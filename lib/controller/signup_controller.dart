@@ -43,8 +43,17 @@ class SignUpController extends GetxController {
    selectedBirthDate .value= 'Select Date';
   }
 
+  void clear() {
+    firstNameobx.value = '';
+    lastNameobx.value = '';
+    selectedBirthDate.value = 'Select Date';
+  }
+
   Future<bool> updateUser(
-      String firstName, String lastName, BuildContext context) async {
+      String firstName, String lastName, BuildContext context)
+      
+      
+       async {
     final Map<String, dynamic> requestBody = {
       "firstName": firstName,
       "lastName": lastName,
@@ -88,6 +97,7 @@ class SignUpController extends GetxController {
         if (context.mounted) {
           DialogUtils.showCustomDialog(context, "Success", "User Data Updated");
         }
+
         return true;
       } else {
         Map<String, dynamic> error = json.decode(response.body);
@@ -136,7 +146,8 @@ class SignUpController extends GetxController {
     try {
       List<int> imageBytes = await file.readAsBytes();
 
-      String fileName = file.path.split('/').last;
+      // String fileName = file.path.split('/').last;
+
       String encodedFilePath = Uri.encodeFull(file.path);
       var imagePart = await http.MultipartFile.fromPath(
         'userProfile',

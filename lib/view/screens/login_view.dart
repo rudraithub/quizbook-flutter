@@ -114,7 +114,6 @@ class LoginScreen extends StatelessWidget {
               onPressed: () async {
                 if (_key.currentState!.validate()) {
                   loginController.logInUser(context, _mobileController);
-                  // print(_mobileController.text.toString());
                   loginController.changeLoading(true, context);
 
                   loginController.isLoading.value
@@ -128,22 +127,9 @@ class LoginScreen extends StatelessWidget {
                             ));
                           })
                       : null;
-
-                  // FocusScope.of(context).unfocus();
-                  // loginController.LogInUser(context, _mobileController);
                 }
               },
-              child:
-                  // loginController.isLoading.value
-                  //     ? const Padding(
-                  //         padding: EdgeInsets.only(top: 5, bottom: 5),
-                  //         child: CircularProgressIndicator(
-                  //           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  //           strokeWidth: 3,
-                  //         ),
-                  //       )
-                  //     :
-                  const Text(
+              child: const Text(
                 'Send OTP',
                 style: TextStyle(
                   color: whiteColor,
@@ -151,14 +137,6 @@ class LoginScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               )),
-//           CommonButton(
-//               onPress: () async {
-//                 loginController.ChangeLoading(false);
-//
-//                 // _controller.verifyOtp();;
-// // Navigator.of(context).push(MaterialPageRoute(builder:  (context) => StudyScreen(),));
-//               },
-//               title: 'Send OTP')
         ],
       ),
       // ),
