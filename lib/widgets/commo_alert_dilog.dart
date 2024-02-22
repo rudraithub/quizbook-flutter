@@ -3,13 +3,14 @@ import 'package:get/get.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
 
 import '../utils/constants.dart';
+typedef VoidFunction = void Function();
 
 class DialogUtils {
 
   DialogUtils.internal();
 
 
-  static void showCustomDialog(BuildContext context,String title ,  String msg,) {
+  static void showCustomDialog(BuildContext context,String title ,  String msg, {VoidFunction? optionalFunction}) {
 
     showDialog(
         context: context,
@@ -22,8 +23,12 @@ class DialogUtils {
               Center(
                 child:  InkWell(
               onTap: (){
-
-                Navigator.pop(context);
+                if (optionalFunction != null) {
+                  optionalFunction(); // Call the optional function if provided
+                }
+               else{
+                 Navigator.pop(context);
+               }
                 // Get.to(SignUpScreen());
                 // Navigator.pop(context);
 

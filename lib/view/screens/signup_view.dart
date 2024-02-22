@@ -138,8 +138,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ? (widget.isProfile
                                 ? CircleAvatar(
                                     radius: 50,
-                                    backgroundImage: NetworkImage(
-                                        userData!.data.userProfile),
+                                    // backgroundImage: NetworkImage(
+                                    //     userData!.data.userProfile),
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        userData!.data.userProfile,height: 100,width: 100,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          } else {
+                                            return Center(
+                                              child: CircularProgressIndicator(), 
+                                            );
+                                          }
+                                        },
+                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                          return Image.asset(imgLogo ,height: 70,width: 70,fit: BoxFit.cover,);
+                                        },
+                                      ),
+                                    ),
                                   )
                                 : CircleAvatar(
                                     radius: 50,
@@ -419,29 +437,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               if (selectedGender.value == 'Male') {
                 genderId = 1;
               } else if (selectedGender.value == 'Female') {
-                genderId == 2;
+                genderId = 2;
               } else {
                 genderId = 3;
               }
               if (SignUpScreen._key.currentState!.validate()) {
-
+                
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                   DialogUtils.showCustomDialog(
                       context, "Empty Filed", "Please Select Date");
                 } else {
                   print('else calll');
                   if (widget.isProfile) {
-
                             FocusScope.of(context).unfocus();
 
                    bool av= await signUpCantroller.updateUser(_firstNameController.text,
-                        _lastNameController.text, context);
+                        _lastNameController.text, context );
                         if (av ) {
                                         FocusScope.of(context).unfocus();
                                         print("Av True");
 
                         }
-
                   } else {
                     if (photoController.selectedImage.value == null) {
                       DialogUtils.showCustomDialog(context, "Empty Filed",

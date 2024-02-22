@@ -80,35 +80,51 @@ class StudyItem extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                // print(
-                                //     "${model.sub[index].subName} Std ${model.std}");
-                                // print("this is std id  " +
-                                //     model.data!..toString());
-                                // print("this is sub id  " +
-                                //     model.sub[index].subId.toString());
-
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ChapterScreen(
                                           stdId: model.stdid,
                                           subId: model.subjects[index].subid,
                                           std: model.std,
-                                          subject: model
-                                              .subjects[index].subjectName,
+                                          subject:
+                                              model.subjects[index].subjectName,
                                         )));
                               },
-                              child: ClipRRect(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                                                  color: greyColor,
+
                                   borderRadius: BorderRadius.circular(45),
-
-                                  // borderRadius: BorderRadius.circular(90),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(45),
                                   child: Image.network(
-                                    // Add dummy Url because the api url not working
-
                                     model.subjects[index].img,
-
                                     height: screenHeight * 0.12,
                                     width: screenHeight * 0.12,
                                     fit: BoxFit.cover,
-                                  )),
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
+                                      return Image.asset(
+                                        placeHolder,
+                                        height: screenHeight * 0.12,
+                                        width: screenHeight * 0.12,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
                             SizedBox(
                               height: screenHeight * 0.009,

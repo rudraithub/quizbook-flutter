@@ -17,6 +17,7 @@ const String imgLogo = 'assets/images/logo.png';
 const String changeProfile = 'assets/images/add_pic_icon.png';
 const String trophyImage = 'assets/images/trophy.png';
 const String quizBook = 'assets/images/quiz_book.png';
+const String placeHolder = 'assets/images/place_holder.jpg';
 //common colors
 const Color greyColor = Colors.grey;
 const Color feedbackEmojiColor = Color(0xFFe9dcff);

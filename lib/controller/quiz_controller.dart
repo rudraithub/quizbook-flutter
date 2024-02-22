@@ -10,6 +10,7 @@ import 'package:rudra_it_hub/model/question2_model.dart';
 import 'package:rudra_it_hub/model/result.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/view/screens/congratulation_view.dart';
+import 'package:rudra_it_hub/widgets/common_appbar.dart';
 
 import '../model/question_api_data.dart';
 import '../widgets/commo_alert_dilog.dart';
@@ -17,7 +18,8 @@ import '../widgets/commo_alert_dilog.dart';
 class QuestionController extends GetxController {
   RxInt currentQuestionIndex = 1.obs;
   RxBool isLoading = false.obs;
-  Rx<QuestionApiData> apiQuestion =QuestionApiData(data: [],message: '',status: 0).obs;
+  Rx<QuestionApiData> apiQuestion =
+      QuestionApiData(data: [], message: '', status: 0).obs;
   RxList<Question2> questions2 = <Question2>[
     Question2(
         queid: 0,
@@ -29,15 +31,15 @@ class QuestionController extends GetxController {
         option: Option(a: 'a', b: 'b', c: 'c', d: 'd'),
         rightAns: '')
   ].obs;
-    Rx<QuestionApiData>? apiQuestions;
+  Rx<QuestionApiData>? apiQuestions;
 
-void clearModel(){
-apiQuestion.value =QuestionApiData(data: [],message: '',status: 0);}
+  void clearModel() {
+    apiQuestion.value = QuestionApiData(data: [], message: '', status: 0);
+  }
 
   RxInt selectedOptionIndex = (-1).obs;
 
   Future<void> resultDataSend({
-
     required BuildContext context,
     required int stdid,
     required int subid,
@@ -45,12 +47,12 @@ apiQuestion.value =QuestionApiData(data: [],message: '',status: 0);}
     required List questions,
   }) async {
     print('result send call');
-    
+
     String url = '$baseUrl$resultUrl';
     try {
-       Map <String, String>  headers = {
-        'Content-Type' :'application/json',
-        'Authorization' : userBearerToken!,
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': userBearerToken!,
       };
       var body = <String, dynamic>{
         // "userID": userID,
@@ -63,13 +65,12 @@ apiQuestion.value =QuestionApiData(data: [],message: '',status: 0);}
 
       // var encodedBody = jsonEncode(body);
 
-      var response = await postMethod(url, body, headers ,context);
+      var response = await postMethod(url, body, headers, context);
       print('here');
       print(userBearerToken);
       var finalResult = resultFromJson(response.body);
 
       if (response.statusCode == 200) {
-        
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -80,19 +81,19 @@ apiQuestion.value =QuestionApiData(data: [],message: '',status: 0);}
             ),
           );
         }
-      } else {
+      } 
+      else if(response.statusCode == 404){
+        logOut(context , null);
+      }
+      else {
         if (context.mounted) {
-          
           Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
         }
         print('object');
       }
-    }
-    catch (e) {
-      if (context.mounted) {
-      
-      }
+    } catch (e) {
+      if (context.mounted) {}
       print(e.toString());
     }
   }
@@ -104,7 +105,7 @@ apiQuestion.value =QuestionApiData(data: [],message: '',status: 0);}
       required BuildContext context}) async {
     try {
       print('inside try');
-               isLoading.value =true;
+      isLoading.value = true;
 
       var body = <String, dynamic>{
         "stdid": stdId,
@@ -113,36 +114,38 @@ apiQuestion.value =QuestionApiData(data: [],message: '',status: 0);}
       };
       final Map<String, String> headers = {'Content-Type': 'application/json'};
 
-      var response = await postMethod('$baseUrl$questionUrl', body, headers ,context);
+      var response =
+          await postMethod('$baseUrl$questionUrl', body, headers, context);
       if (response.statusCode == 200) {
         apiQuestion.value = questionApiDataFromJson(response.body);
-                 isLoading.value =false;
-                       print('inside try suc');
+        isLoading.value = false;
+        print('inside try suc');
+      } 
+      else if(response.statusCode == 403){
+        isLoading.value = false;
 
+        if (context.mounted) {
+          json.decode(response.body);
+          DialogUtils.showCustomDialog(context, "Ops!!!", "No Question Available");
+        }
+      }
+      else {
+        isLoading.value = false;
 
-        
-      } else {
-                 isLoading.value =false;
-
-        
         if (context.mounted) {
           Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
         }
-        
       }
     } catch (e) {
-               isLoading.value =false;
+      isLoading.value = false;
 
       print("error msg ${e.toString()}");
       if (context.mounted) {
         DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
       }
-      
-    }
-    finally{
-              isLoading.value =false;
-
+    } finally {
+      isLoading.value = false;
     }
   }
 }
