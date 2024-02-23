@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
@@ -73,21 +74,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final RxString desErrorMsg = RxString('');
 
   String btnText = 'Next';
-@override
+  @override
   void dispose() {
+    print("dispose call");
     _firstNameController.dispose();
     _lastNameController.dispose();
-    signUpCantroller.selectedBirthDate.value == "Select Date";
+    // signUpCantroller.selectedBirthDate.value == "Select Date";
     photoController.clear();
-     signUpCantroller.clear();
+    signUpCantroller.clear();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     if (widget.isProfile) {
       // Here  gg
       btnText = "Update";
-      _firstNameController.text = widget.firstName.isEmpty ? '' : widget.firstName;
+      _firstNameController.text =
+          widget.firstName.isEmpty ? '' : widget.firstName;
       _lastNameController.text = widget.lastName.isEmpty ? '' : widget.lastName;
       signUpCantroller.lastNameobx.value == ''
           ? signUpCantroller.lastNameobx.value = widget.lastName
@@ -95,13 +99,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
       signUpCantroller.firstNameobx.value == ''
           ? signUpCantroller.firstNameobx.value = widget.firstName
           : null;
+      signUpCantroller.emailobx.value == ''
+          ? signUpCantroller.emailobx.value = widget.email
+          : null;
+      signUpCantroller.selectedBirthDate.value == 'Select Date'
+          ? signUpCantroller.selectedBirthDate.value = widget.date
+          : null;
 
       _emailController.text = widget.email.isEmpty ? '' : widget.email;
       _mobileController.text = widget.mobileNo.isEmpty ? '' : widget.mobileNo;
+      print(signUpCantroller.selectedGender.value);
+      signUpCantroller.selectedDesignation.value == 'Select Designation'
+          ? widget.desi
+          : null;
 
-      selectedGender.value = widget.gender.isEmpty ? '' : widget.gender;
-      selectedDesignation.value = widget.desi.isEmpty ? '' : widget.desi;
-      signUpCantroller.changeBirthDate(widget.date);
+      signUpCantroller.selectedGender.value == 'Select Gender'
+          ? widget.gender
+          : null;
+      selectedGender.value =
+          signUpCantroller.selectedGender.value == 'Select Gender'
+              ? widget.gender
+              : signUpCantroller.selectedGender.value;
+      print(signUpCantroller.selectedGender.value);
+
+      selectedDesignation.value =
+          signUpCantroller.selectedDesignation.value == 'Select Designation'
+              ? widget.desi
+              : signUpCantroller.selectedDesignation.value;
+      print(selectedGender.value);
+      print(selectedDesignation.value);
       signUpCantroller.isValid.value = true;
     }
 
@@ -112,8 +138,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CommonAppBarScreen(
-            title:widget.isProfile ?  'Update Profile' : "Sign Up",
-            backgroundColor: whiteColor, 
+            title: widget.isProfile ? 'Update Profile' : "Sign Up",
+            backgroundColor: whiteColor,
             centerTitle: true,
             isBackArrow: widget.isBackArrow,
             isProfile: widget.isProfile,
@@ -132,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     GestureDetector(
                         onTap: () {
-                          widget.isProfile ? null : photoController.pickImage(context);
+                          photoController.pickImage(context);
                         },
                         child: (photoController.selectedImage.value == null)
                             ? (widget.isProfile
@@ -142,19 +168,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     //     userData!.data.userProfile),
                                     child: ClipOval(
                                       child: Image.network(
-                                        userData!.data.userProfile,height: 100,width: 100,
+                                        userData!.data.userProfile,
+                                        height: 100,
+                                        width: 100,
                                         fit: BoxFit.cover,
-                                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
                                           if (loadingProgress == null) {
                                             return child;
                                           } else {
                                             return Center(
-                                              child: CircularProgressIndicator(), 
+                                              child:
+                                                  CircularProgressIndicator(),
                                             );
                                           }
                                         },
-                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                          return Image.asset(imgLogo ,height: 70,width: 70,fit: BoxFit.cover,);
+                                        errorBuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return Image.asset(
+                                            imgLogo,
+                                            height: 70,
+                                            width: 70,
+                                            fit: BoxFit.cover,
+                                          );
                                         },
                                       ),
                                     ),
@@ -186,7 +224,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onTap: () {},
                       );
                     }),
-
                     Obx(() {
                       signUpCantroller.lastNameobx.value.isEmpty
                           ? null
@@ -203,17 +240,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onTap: () {},
                       );
                     }),
-                    CommonTextFormField(
-                      controller: _emailController,
-                      label: 'Email ID',
-                      errorMessage: 'Please enter valid Email Id',
-                      inputType: TextInputType.text,
-                      formatter: [],
-                      length: 60,
-                      onTap: () {},
-                      isEmailField: true,
-                      isReadOnly: widget.isProfile,
-                    ),
+                    Obx(() {
+                      signUpCantroller.emailobx.value.isEmpty
+                          ? null
+                          : _emailController.text =
+                              signUpCantroller.emailobx.value;
+                      return CommonTextFormField(
+                        controller: _emailController,
+                        label: 'Email ID',
+                        errorMessage: 'Please enter valid Email Id',
+                        inputType: TextInputType.text,
+                        formatter: [],
+                        length: 60,
+                        onTap: () {},
+                        isEmailField: true,
+                      );
+                    }),
                     CommonTextFormField(
                       controller: _mobileController,
                       label: 'Mobile Number',
@@ -224,7 +266,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onTap: () {},
                       isMobileNumber: true,
                       isReadOnly: widget.isProfile,
-                    ),Row(
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -236,28 +279,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 value: selectedGender.value.isEmpty
                                     ? null
                                     : selectedGender.value,
-                                    
-                                decoration:  InputDecoration(
+
+                                decoration: InputDecoration(
                                     labelText: 'Gender',
-                                              focusedBorder: focusBorder,
-                                             
+                                    focusedBorder: focusBorder,
                                     labelStyle: const TextStyle(
                                         color: greyColor,
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w500)
-
-                                    ),
+                                        fontWeight: FontWeight.w500)),
                                 hint: const Text(
                                   "Select Gender",
                                   style:
                                       TextStyle(fontSize: 14, color: greyColor),
                                 ),
-                                onChanged:widget.isProfile ? null : (value) {
+                                onChanged: (value) {
                                   selectedGender(value);
                                   genderErrorMessage('');
-                                  signUpCantroller.selectedGender.value = value!;
-                                  signUpCantroller.onItemSelected(value);
-                                  signUpCantroller.isValid.value == true;
+                                  signUpCantroller.selectedGender.value =
+                                      value!;
                                 },
                                 // validator: (value) {
                                 //   return signUpCantroller.isValid.value
@@ -272,11 +311,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                                 items: ['Male', 'Female', 'Others']
                                     .map<DropdownMenuItem<String>>(
-                                      (String value) => DropdownMenuItem<String>(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(
                                           value,
-                                          style: const TextStyle(fontSize: 15 ,color: blackColor),
+                                          style: const TextStyle(
+                                              fontSize: 15, color: blackColor),
                                         ),
                                       ),
                                     )
@@ -306,54 +347,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Flexible(
                           child: SizedBox(
                             child: Padding(
-                              padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height *0.00475),
-                              child:
-                              
-                                  InkWell(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      0.00475),
+                              child: InkWell(
                                 onTap: () {
-                                  if (widget.isProfile) {
-                                      return;
-                                    }
+                                  // if (widget.isProfile) {
+                                  //   return;
+                                  // }
                                   Utility.showDatePickerDialog()
                                       .then((pickedDate) {
-                                    
                                     if (pickedDate != null) {
                                       signUpCantroller.changeBirthDate(
-                                          "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year.toString()}");
+                                          "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year.toString()}");
                                       selectedDate = pickedDate;
                                     }
                                   });
                                 },
-                                child: 
-                                
-                                InputDecorator(
+                                child: Obx(
+                                  () => InputDecorator(
                                     decoration: const InputDecoration(
                                         labelText: 'BirthDate',
                                         labelStyle: TextStyle(
                                             color: greyColor,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500)),
-                                    child: Obx(() => 
-                                    signUpCantroller.selectedBirthDate.value == "Select Date"?Text(
-                                          signUpCantroller
-                                              .selectedBirthDate.value ,maxLines: 1,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              fontWeight: FontWeight.w500,
-                                              overflow: TextOverflow.clip), 
-                                          
-                                        ) :
-                                    Text(
-                                          signUpCantroller
-                                              .selectedBirthDate.value ,maxLines: 1,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              color: blackColor,
-                                              fontWeight: FontWeight.w500,
-                                              overflow: TextOverflow.clip), 
-                                          
-                                        ))),
+                                    child: signUpCantroller
+                                                .selectedBirthDate.value ==
+                                            "Select Date"
+                                        ? Text(
+                                            signUpCantroller
+                                                .selectedBirthDate.value,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.w500,
+                                                overflow: TextOverflow.clip),
+                                          )
+                                        : Text(
+                                            signUpCantroller
+                                                .selectedBirthDate.value,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: blackColor,
+                                                fontWeight: FontWeight.w500,
+                                                overflow: TextOverflow.clip),
+                                          ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -374,14 +417,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               labelStyle: const TextStyle(
                                   color: greyColor,
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w500)
-                              ),
-                          onChanged: widget.isProfile
-                              ? null
-                              : (value) {
-                                  selectedDesignation(value);
-                                  desErrorMsg('');
-                                },
+                                  fontWeight: FontWeight.w500)),
+                          onChanged: (value) {
+                            selectedDesignation(value);
+                            desErrorMsg('');
+                            signUpCantroller.selectedDesignation.value = value!;
+                            selectedDesignation(value);
+                          },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please Select ";
@@ -425,11 +467,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         bottomNavigationBar: CommonButton(
             onPress: () async {
-              int professionId = 1;
+              int professionId  =1;
               if (selectedDesignation.value == 'Student') {
                 professionId = 1;
               } else if (selectedDesignation.value == 'Teacher') {
-                professionId == 2;
+                professionId = 2;
               } else {
                 professionId = 3;
               }
@@ -442,22 +484,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 genderId = 3;
               }
               if (SignUpScreen._key.currentState!.validate()) {
-                
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
                   DialogUtils.showCustomDialog(
                       context, "Empty Filed", "Please Select Date");
                 } else {
                   print('else calll');
                   if (widget.isProfile) {
-                            FocusScope.of(context).unfocus();
+                    FocusScope.of(context).unfocus();
 
-                   bool av= await signUpCantroller.updateUser(_firstNameController.text,
-                        _lastNameController.text, context );
-                        if (av ) {
-                                        FocusScope.of(context).unfocus();
-                                        print("Av True");
-
-                        }
+                    bool av = await signUpCantroller.updateUser(
+                        _firstNameController.text,
+                        _lastNameController.text,
+                        _emailController.text,
+                        genderId,
+                        professionId,
+                        selectedDate,
+                        photoController.selectedImage.value,
+                        context);
+                    if (av) {
+                      FocusScope.of(context).unfocus();
+                    }
                   } else {
                     if (photoController.selectedImage.value == null) {
                       DialogUtils.showCustomDialog(context, "Empty Filed",
@@ -471,7 +517,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         genderId,
                         selectedDate,
                         _mobileController.text,
-                        professionId,
+                        professionId!,
                         photoController.selectedImage.value!,
                         context);
                   }

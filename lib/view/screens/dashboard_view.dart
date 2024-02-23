@@ -12,12 +12,12 @@ import '../../controller/dashboard_controller.dart';
 class AppbarBottomBarScreen extends StatelessWidget {
   final AppbarBottomBarController _controller =
       Get.put(AppbarBottomBarController());
-  AppbarBottomBarScreen({super.key,});
-  // final LogInModel? logInModel;
+  AppbarBottomBarScreen({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: PageView.builder(
           itemCount: 3,
           scrollDirection: Axis.horizontal,
@@ -55,7 +55,6 @@ class AppbarBottomBarScreen extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(
-                // color: Colors.grey,
                 Icons.home,
               ),
               label: 'Home',
@@ -63,14 +62,12 @@ class AppbarBottomBarScreen extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.watch_later_outlined,
-                // color: Colors.grey,
               ),
               label: 'History',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.person,
-                // color: Colors.grey,
               ),
               label: 'Profile',
             ),

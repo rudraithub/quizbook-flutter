@@ -25,7 +25,7 @@ class SubjectProvider extends GetxController {
       if (response.statusCode == 200) {
         stdList.value = temperaturesFromJson(response.body);
       } else {
-        // print('Error to load Data');
+        
       }
     } finally {
       isLoading(false);
