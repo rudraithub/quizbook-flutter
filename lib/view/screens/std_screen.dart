@@ -26,6 +26,7 @@ class _StudyScreenState extends State<StudyScreen> {
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,14 +41,12 @@ class _StudyScreenState extends State<StudyScreen> {
           elevation: 2,
           shadowColor: Colors.grey,
         ),
-        body:        
-        RefreshIndicator(
+        body: RefreshIndicator(
           color: Colors.purple,
           strokeWidth: 2,
           displacement: 180,
-          onRefresh: ()async{
+          onRefresh: () async {
             setState(() {
-              print('app Refreshed');
               provider.fetchStudyModel(context);
             });
           },
@@ -55,21 +54,36 @@ class _StudyScreenState extends State<StudyScreen> {
             () {
               if (provider.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
+              } else if (provider.stdList.value.data.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "Currently No Quiz Available",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                );
               } else {
-                // if(provider.stdList.isEmpty){
-                //   return  const Center(child: Text("The  server is not responding please try again later."  ,textAlign: TextAlign.center,),) ;
-                // }
-
-                return ListView.builder(
+                bool anySubjectNotEmpty = provider.stdList.value.data.any((element) => element.subjects.isNotEmpty);
+                if (anySubjectNotEmpty) {
+                  return ListView.builder(
                   itemCount: provider.stdList.value.data.length,
                   itemBuilder: (context, index) {
-                    return
-                      // Text('hi');
-                      StudyItem(
+                    if (provider.stdList.value.data[index].subjects.isEmpty) {
+                      return null;
+                    }
+                    return StudyItem(
                       model: provider.stdList.value.data[index],
                     );
                   },
                 );
+                }
+                else{
+                   return const Center(
+                  child: Text(
+                    "Currently No Quiz Available",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                );
+                }
               }
             },
           ),

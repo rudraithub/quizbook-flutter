@@ -61,7 +61,11 @@ class _ChapterScreenState extends State<ChapterScreen> {
               style: TextStyle(fontSize: getScreenHeight(context) * 0.035),
             ),
           ),
-          body: ListView.builder(
+          body: chProvider.isLoading.value ?  Center(child: CircularProgressIndicator(),):
+          chProvider.chapterList.value.data.isEmpty ?const  Center(child: Text(" Currently no data available  " ,style: TextStyle(fontSize: 20)),):
+          
+          
+          ListView.builder(
             itemCount: chProvider.chapterList.value.data.length,
             itemBuilder: (context, index) {
               final item = chProvider.chapterList.value.data[index];

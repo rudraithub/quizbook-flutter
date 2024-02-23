@@ -15,6 +15,7 @@ import 'package:rudra_it_hub/utils/preference_helper.dart';
 import 'package:rudra_it_hub/utils/prefrences.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
 import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
+import 'package:rudra_it_hub/widgets/common_appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,22 +26,21 @@ class SignUpController extends GetxController {
   RxList<String> genders = ["Select Gender", "Male", "Female", "Other"].obs;
   Rx<String> firstNameobx = ''.obs;
   Rx<String> lastNameobx = ''.obs;
+  Rx<String> emailobx = ''.obs;
+  Rx<String> birthdatheobx = ''.obs;
+  // Rx<String> lastNameobx = ''.obs;
+  // Rx<String> lastNameobx = ''.obs;
 
   RxList<String> designations =
       ["Select Designation", "Teacher", "Engineer", "Principal"].obs;
 
-  RxString selectedValue = ''.obs; // Observable string for the selected value
+  RxString selectedValue = ''.obs;
 
-  RxBool isValid = false.obs; // Observable boolean for validation state
+  RxBool isValid = false.obs;
 
   void onItemSelected(String value) {
-    selectedValue.value = value; // Update the selected value
-    isValid.value = value.isNotEmpty; // Update the validation state
-  }
-  void clear(){
-    firstNameobx.value = '';
-   lastNameobx.value = '';
-   selectedBirthDate .value= 'Select Date';
+    selectedValue.value = value;
+    isValid.value = value.isNotEmpty;
   }
 
   void clear() {
@@ -50,10 +50,7 @@ class SignUpController extends GetxController {
   }
 
   Future<bool> updateUser(
-      String firstName, String lastName, BuildContext context)
-      
-      
-       async {
+      String firstName, String lastName, BuildContext context) async {
     final Map<String, dynamic> requestBody = {
       "firstName": firstName,
       "lastName": lastName,
@@ -63,6 +60,13 @@ class SignUpController extends GetxController {
       'Authorization': userBearerToken!,
     };
     PhotoController photoController = PhotoController();
+    var sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferencesHelper sharedPreferencesHelper =
+        SharedPreferencesHelper(sharedPreferences);
+    LoginModel mainUser = loginModelFromJson(
+        sharedPreferencesHelper.getString(Preferences.userFullDetails));
+
+        
     final users = LoginModel(
       status: userData!.status,
       token: userBearerToken!,
@@ -80,10 +84,6 @@ class SignUpController extends GetxController {
       ),
     );
 
-    var sharedPreferences = await SharedPreferences.getInstance();
-    SharedPreferencesHelper sharedPreferencesHelper =
-        SharedPreferencesHelper(sharedPreferences);
-    // ignore: use_build_context_synchronously
     final response = await postMethod(
         '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
     try {
@@ -99,6 +99,12 @@ class SignUpController extends GetxController {
         }
 
         return true;
+      } else if (response.statusCode == 404) {
+        if (context.mounted) {
+          logOut(context, null);
+        }
+
+        return false;
       } else {
         Map<String, dynamic> error = json.decode(response.body);
         print(error['message']);
@@ -147,27 +153,22 @@ class SignUpController extends GetxController {
       List<int> imageBytes = await file.readAsBytes();
 
       // String fileName = file.path.split('/').last;
-
       String encodedFilePath = Uri.encodeFull(file.path);
       var imagePart = await http.MultipartFile.fromPath(
         'userProfile',
         encodedFilePath,
       );
-      print("hit vslll");
 
       final request =
           http.MultipartRequest('POST', Uri.parse("$baseUrl$signupUrl"));
       request.files.add(imagePart);
 
       request.fields.addAll(requestBody);
-      print(requestBody.toString());
 
       final response = await request.send();
       const url = '$baseUrl$signupUrl';
 
-      print(response);
-      print("try");
-
+      
       if (response.statusCode == 200) {
         if (context.mounted) {
           DialogUtils.showCustomDialog(
@@ -214,6 +215,4 @@ class SignUpController extends GetxController {
 
     void verifyOtp() {}
   }
-
-  
 }

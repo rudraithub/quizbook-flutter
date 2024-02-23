@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
+import 'package:rudra_it_hub/model/quiz_model.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
+import 'package:rudra_it_hub/widgets/common_appbar.dart';
 
 
 import '../model/history_model_data.dart';
@@ -39,21 +41,28 @@ class HistoryController extends GetxController {
       if (response.statusCode == 200) {
         historyModel.value = historyFromJson(response.body);
         
-        // print('Respones Success');
 
-      } else {
+      } 
+      else if(response.statusCode == 404){
+        logOut(context,null);
+      }
+      else {
+
         Map<String, dynamic> error = json.decode(response.body);
         // print('error[' 'message' ']');
         isLoading(false);
         if (context.mounted) {
           DialogUtils.showCustomDialog(context, "Sorry", error['message']);
 
-          // commonSnackBar(context: context, msg: error['message']);
         }
       }
     } catch (e) {
       isLoading.value =false;
       // print(e.toString());
+        if (context.mounted) {
+          DialogUtils.showCustomDialog(context, "Sorry", e.toString());
+
+        }
       isLoading(false);
     } finally {
       // print('finally');

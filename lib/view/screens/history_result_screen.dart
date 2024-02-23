@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/model/history_model_data.dart';
+import 'package:rudra_it_hub/model/quiz_model.dart';
 import 'package:rudra_it_hub/widgets/common_card.dart';
 import '../../controller/history_controller.dart';
 
