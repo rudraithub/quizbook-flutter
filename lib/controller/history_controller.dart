@@ -9,7 +9,6 @@ import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 
 
-import '../model/history_model_data.dart';
 import '../widgets/commo_alert_dilog.dart';
 
 class HistoryController extends GetxController {
@@ -65,7 +64,6 @@ class HistoryController extends GetxController {
         }
       isLoading(false);
     } finally {
-      // print('finally');
       isLoading(false);
     }
   }

@@ -38,14 +38,20 @@ class SignUpController extends GetxController {
   RxString selectedValue = ''.obs;
 
   RxBool isValid = false.obs;
+  RxBool isBirthValid = false.obs;
 
   void onItemSelected(String value) {
     selectedValue.value = value;
     isValid.value = value.isNotEmpty;
   }
+  // void isBirthDateValid(String value){
+  //   selectedBirthDate.value = value;
+  //   isBirthValid.value = value.isNotEmpty;
+  // }
 
   void clear() {
     firstNameobx.value = '';
+    emailobx.value = '';
     lastNameobx.value = '';
     selectedBirthDate.value = 'Select Date';
   }
@@ -69,13 +75,16 @@ class SignUpController extends GetxController {
       "genderID": "$genderid",
       "professionId": "$profwshionId"
     };
-    final Map<String, String> headers = {'Content-Type': 'multipart/form-data','Authorization': userBearerToken!,};
-    
+    final Map<String, String> headers = {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': userBearerToken!,
+    };
+
     PhotoController photoController = PhotoController();
     var sharedPreferences = await SharedPreferences.getInstance();
     SharedPreferencesHelper sharedPreferencesHelper =
         SharedPreferencesHelper(sharedPreferences);
-    
+
     String gender = '';
     String desi = '';
     if (genderid == 1) {
@@ -92,10 +101,10 @@ class SignUpController extends GetxController {
     } else {
       desi = "Admin";
     }
-   
-    final request =
-          http.MultipartRequest('POST', Uri.parse("$baseUrl$userProfileUpdateUrl"));
-   if (file != null) {
+
+    final request = http.MultipartRequest(
+        'POST', Uri.parse("$baseUrl$userProfileUpdateUrl"));
+    if (file != null) {
       List<int> imageBytes = await file.readAsBytes();
 
       String encodedFilePath = Uri.encodeFull(file.path);
@@ -103,37 +112,38 @@ class SignUpController extends GetxController {
         'userProfile',
         encodedFilePath,
       );
-     
-      request.files.add(imagePart);
-   }
-request.headers.addAll(headers);
-      request.fields.addAll(requestBody);
 
-      final response = await request.send();
+      request.files.add(imagePart);
+    }
+    request.headers.addAll(headers);
+    request.fields.addAll(requestBody);
+
+    final response = await request.send();
     // final response = await postMethod(
     //     '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
     try {
       if (response.statusCode == 200) {
         print(gender);
-         var response3 = await response.stream.bytesToString();
+        var response3 = await response.stream.bytesToString();
         var user3 = updateFromJson(response3);
         print(user3.data.userProfile);
-         final users = LoginModel(
-      status: userData!.status,
-      token: userBearerToken!,
-      message: userData!.message,
-      data: Data(
-        id: userData!.data.id,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        gender: [Gender(id: genderid, name: gender)],
-        dob: formattedDate,
-        mobileNumber: userData!.data.mobileNumber,
-        profession: [Gender(id: profwshionId, name: desi)],
-        userProfile: user3.data.userProfile,
-      ),
-    );
+        final users = LoginModel(
+          status: userData!.status,
+          token: userBearerToken!,
+          message: userData!.message,
+          data: Data(
+            id: userData!.data.id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            gender: [Gender(id: genderid, name: gender)],
+            dob: formattedDate,
+            mobileNumber: userData!.data.mobileNumber,
+            profession: [Gender(id: profwshionId, name: desi)],
+            userProfile: user3.data.userProfile,
+          ),
+        );
+        userData = users;
         await sharedPreferencesHelper.putString(
             Preferences.userFullDetails, jsonEncode(users));
         firstNameobx.value = firstName;
@@ -142,8 +152,7 @@ request.headers.addAll(headers);
         selectedBirthDate.value = formattedDate;
         selectedDesignation.value = desi;
         selectedGender.value = gender;
-       
-        
+
         if (context.mounted) {
           DialogUtils.showCustomDialog(context, "Success", "User Data Updated");
         }
@@ -156,8 +165,7 @@ request.headers.addAll(headers);
 
         return false;
       } else {
-        
-       if (context.mounted) {
+        if (context.mounted) {
           var response3 = await response.stream.bytesToString();
           Map<String, dynamic> responseMap = json.decode(response3);
           //  print();
@@ -222,8 +230,11 @@ request.headers.addAll(headers);
 
       if (response.statusCode == 200) {
         if (context.mounted) {
-          DialogUtils.showCustomDialog(
-              context, "Success", 'Registration Successfull');
+          Navigator.pushReplacement(
+                
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
         }
 
         Get.offAll(LoginScreen());
@@ -256,6 +267,8 @@ request.headers.addAll(headers);
 
   void changeBirthDate(String Date) {
     selectedBirthDate.value = Date;
+     isBirthValid.value = Date.isNotEmpty;
+
   }
 
   void changeDesignation(String Designation) {

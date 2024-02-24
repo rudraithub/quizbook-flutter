@@ -14,6 +14,7 @@ class QuizScreen extends StatefulWidget {
     required this.chapterId,
     required this.titleName,
   });
+
   final int stdId;
   final int subId;
   final int chapterId;
@@ -31,7 +32,7 @@ class _QuizScreenState extends State<QuizScreen> {
   QuestionController questionController = QuestionController();
 
   Future<void> fetchData() async {
-    print("${widget.stdId}" + "${widget.subId}" + "${widget.chapterId}");
+   
     questionController.getQuestionList(
         stdId: widget.stdId,
         subId: widget.subId,
@@ -42,17 +43,16 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
-    print(widget.chapterId.toString());
     fetchData();
     super.initState();
   }
 
   @override
   void dispose() {
-    print("Disspose Call");
+    // print("Disspose Call");
     //  resultData.dispose();
     questionController.clearModel();
-    print(resultData.toString());
+    // print(resultData.toString());
 
     super.dispose();
   }
@@ -86,11 +86,14 @@ class _QuizScreenState extends State<QuizScreen> {
                 )
               : questionController.apiQuestion.value.data!.isEmpty
                   ? Scaffold(
-                    appBar: AppBar(),
-                    body: const Center(
-                      child: Text("Quetion Not Availbale ",style: TextStyle(fontSize: 20),),
-                    ),
-                  )
+                      appBar: AppBar(),
+                      body: const Center(
+                        child: Text(
+                          "Quetion Not Availbale ",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    )
                   : SingleChildScrollView(
                       child: Column(
                         children: [
@@ -176,10 +179,6 @@ class _QuizScreenState extends State<QuizScreen> {
                 ? CommonButton(
                     onPress: () async {
                       if (selectedAnswerIndex != null) {
-                        print(widget.stdId.toString());
-                        print(widget.subId.toString());
-                        print(widget.chapterId.toString());
-
                         questionController.resultDataSend(
                             context: context,
                             stdid: widget.stdId,
@@ -188,7 +187,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             questions: resultData);
                       } else {
                         DialogUtils.showCustomDialog(
-                            context, "Empty Answer", "Please Select Question");
+                            context, "Empty Answer", "Please Select Option");
                       }
                     },
                     title: 'Finish',
@@ -200,7 +199,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         selectedAnswerIndex = null;
                       } else {
                         DialogUtils.showCustomDialog(
-                            context, "Empty Answer", "Please Select Question");
+                            context, "Empty Answer", "Please Select Option");
                       }
                       setState(() {});
                     },

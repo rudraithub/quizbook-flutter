@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
@@ -72,21 +71,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final RxString genderErrorMessage = RxString('');
 
   final RxString desErrorMsg = RxString('');
+  String? dateErro ;
+    final FocusNode _focusNode = FocusNode();
+
 
   String btnText = 'Next';
+  
   @override
   void dispose() {
     print("dispose call");
     _firstNameController.dispose();
     _lastNameController.dispose();
-    // signUpCantroller.selectedBirthDate.value == "Select Date";
+    _emailController.dispose();
     photoController.clear();
     signUpCantroller.clear();
+    _focusNode.dispose();
     super.dispose();
   }
-
+void _onFocusChange() {
+   
+    if (!_focusNode.hasFocus) {
+   
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
+    print("Building Screen");
     if (widget.isProfile) {
       // Here  gg
       btnText = "Update";
@@ -108,7 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       _emailController.text = widget.email.isEmpty ? '' : widget.email;
       _mobileController.text = widget.mobileNo.isEmpty ? '' : widget.mobileNo;
-      print(signUpCantroller.selectedGender.value);
+     
       signUpCantroller.selectedDesignation.value == 'Select Designation'
           ? widget.desi
           : null;
@@ -120,14 +132,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           signUpCantroller.selectedGender.value == 'Select Gender'
               ? widget.gender
               : signUpCantroller.selectedGender.value;
-      print(signUpCantroller.selectedGender.value);
-
+     
       selectedDesignation.value =
           signUpCantroller.selectedDesignation.value == 'Select Designation'
               ? widget.desi
               : signUpCantroller.selectedDesignation.value;
-      print(selectedGender.value);
-      print(selectedDesignation.value);
+     
       signUpCantroller.isValid.value = true;
     }
 
@@ -189,8 +199,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             StackTrace? stackTrace) {
                                           return Image.asset(
                                             imgLogo,
-                                            height: 70,
-                                            width: 70,
+                                            height: 100,
+                                            width: 100,
                                             fit: BoxFit.cover,
                                           );
                                         },
@@ -220,7 +230,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         inputType: TextInputType.text,
                         formatter: [],
                         length: 60,
-                        autoFocus: false,
                         onTap: () {},
                       );
                     }),
@@ -231,6 +240,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               signUpCantroller.lastNameobx.value;
 
                       return CommonTextFormField(
+                        // focusNode: _focusNode,
                         controller: _lastNameController,
                         label: 'Last Name',
                         errorMessage: 'Enter Your Last Name',
@@ -282,6 +292,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                                 decoration: InputDecoration(
                                     labelText: 'Gender',
+                                    errorText: genderErrorMessage.value,
                                     focusedBorder: focusBorder,
                                     labelStyle: const TextStyle(
                                         color: greyColor,
@@ -293,16 +304,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       TextStyle(fontSize: 14, color: greyColor),
                                 ),
                                 onChanged: (value) {
-                                  selectedGender(value);
+                                  setState(() {
+                                    selectedGender(value);
                                   genderErrorMessage('');
                                   signUpCantroller.selectedGender.value =
                                       value!;
+                                  });
                                 },
-                                // validator: (value) {
-                                //   return signUpCantroller.isValid.value
-                                //       ? null
-                                //       : 'Please select Gender';
-                                // },
+                                
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "Please select a gender";
@@ -327,7 +336,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         Obx(() {
-                          print(MediaQuery.of(context).size.height);
+                         
                           if (genderErrorMessage.value.isNotEmpty) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 0),
@@ -361,13 +370,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       signUpCantroller.changeBirthDate(
                                           "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year.toString()}");
                                       selectedDate = pickedDate;
+                                      setState(() {
+                                        dateErro = null;
+                                      });
                                     }
                                   });
                                 },
                                 child: Obx(
                                   () => InputDecorator(
-                                    decoration: const InputDecoration(
+                                    
+                                    decoration:  InputDecoration(
+
                                         labelText: 'BirthDate',
+                                       errorText: dateErro,
                                         labelStyle: TextStyle(
                                             color: greyColor,
                                             fontSize: 14,
@@ -467,7 +482,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         bottomNavigationBar: CommonButton(
             onPress: () async {
-              int professionId  =1;
+              int professionId = 1;
               if (selectedDesignation.value == 'Student') {
                 professionId = 1;
               } else if (selectedDesignation.value == 'Teacher') {
@@ -483,15 +498,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
               } else {
                 genderId = 3;
               }
+              if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
+                 
+                  setState(() {
+                    dateErro = "Please Select Date";
+                  });
+                } 
+                
               if (SignUpScreen._key.currentState!.validate()) {
                 if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
-                  DialogUtils.showCustomDialog(
-                      context, "Empty Filed", "Please Select Date");
+                  
                 } else {
                   print('else calll');
                   if (widget.isProfile) {
                     FocusScope.of(context).unfocus();
 
+    if (!_focusNode.hasFocus) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  
                     bool av = await signUpCantroller.updateUser(
                         _firstNameController.text,
                         _lastNameController.text,
@@ -502,7 +527,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         photoController.selectedImage.value,
                         context);
                     if (av) {
-                      FocusScope.of(context).unfocus();
+                      
                     }
                   } else {
                     if (photoController.selectedImage.value == null) {
@@ -517,7 +542,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         genderId,
                         selectedDate,
                         _mobileController.text,
-                        professionId!,
+                        professionId,
                         photoController.selectedImage.value!,
                         context);
                   }

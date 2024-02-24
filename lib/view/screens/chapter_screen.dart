@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
@@ -8,9 +7,9 @@ import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 // ChapterController chProvider = ChapterController();
 final ChapterController chProvider = Get.put(ChapterController());
 
-
 class ChapterScreen extends StatefulWidget {
-  const ChapterScreen({super.key, 
+  const ChapterScreen({
+    super.key,
     required this.subId,
     required this.stdId,
     required this.subject,
@@ -28,13 +27,13 @@ class ChapterScreen extends StatefulWidget {
   }
 }
 
-
 class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void initState() {
     chProvider.fetchChapter(widget.stdId, widget.subId, context);
     super.initState();
   }
+
   @override
   void dispose() {
     chProvider.clearModel();
@@ -61,40 +60,51 @@ class _ChapterScreenState extends State<ChapterScreen> {
               style: TextStyle(fontSize: getScreenHeight(context) * 0.035),
             ),
           ),
-          body: chProvider.isLoading.value ?  Center(child: CircularProgressIndicator(),):
-          chProvider.chapterList.value.data.isEmpty ?const  Center(child: Text(" Currently no data available  " ,style: TextStyle(fontSize: 20)),):
-          
-          
-          ListView.builder(
-            itemCount: chProvider.chapterList.value.data.length,
-            itemBuilder: (context, index) {
-              final item = chProvider.chapterList.value.data[index];
-           
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(
-                          stdId: widget.stdId,
-                          subId: widget.subId,
-                          chapterId: item.chapterid,
-                          titleName: item.content,
-                        ),
-                      ),
-                    );
-                  },
-                  child: CustomItem(
-                    logoIndex: item.chapterno.toString(),
-                    chName: item.content,
-                    teacherName: item.teacher,
-                    questionNo: item.que,
-                    min: item.minute,
-                  ),
-                );
-              
-            },
-          ),
+          body: chProvider.isLoading.value
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : chProvider.chapterList.value.data.isEmpty
+                  ? ListView.builder(
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: const Center(
+                              child: Text(" Currently no data available  ",
+                                  style: TextStyle(fontSize: 20)),
+                            ));
+                      },
+                    )
+                  : ListView.builder(
+                      itemCount: chProvider.chapterList.value.data.length,
+                      itemBuilder: (context, index) {
+                        final item = chProvider.chapterList.value.data[index];
+
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => QuizScreen(
+                                  stdId: widget.stdId,
+                                  subId: widget.subId,
+                                  chapterId: item.chapterid,
+                                  titleName: item.content,
+                                ),
+                              ),
+                            );
+                          },
+                          child: CustomItem(
+                            logoIndex: item.chapterno.toString(),
+                            chName: item.content,
+                            teacherName: item.teacher,
+                            questionNo: item.que,
+                            min: item.minute,
+                          ),
+                        );
+                      },
+                    ),
         ),
       ),
     );
@@ -108,8 +118,8 @@ class CustomItem extends StatelessWidget {
   final int questionNo;
   final String min;
 
-  const CustomItem({super.key, 
-    
+  const CustomItem({
+    super.key,
     required this.logoIndex,
     required this.chName,
     required this.teacherName,
@@ -127,11 +137,12 @@ class CustomItem extends StatelessWidget {
         color: Colors.white,
         child: Row(
           children: [
-
-            const SizedBox(width: 5,),
+            const SizedBox(
+              width: 5,
+            ),
             Container(
               width: screenHeight * 0.082908163,
-              decoration:const BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.blue,
               ),
@@ -141,14 +152,14 @@ class CustomItem extends StatelessWidget {
                   ClipOval(
                     child: Image.asset(
                       'assets/images/normal_number_bg.png',
-                      width:screenHeight * 0.082908163,
+                      width: screenHeight * 0.082908163,
                       height: screenHeight * 0.082908163,
                       fit: BoxFit.cover,
                     ),
                   ),
                   Text(
                     logoIndex,
-                    style:const TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -174,7 +185,8 @@ class CustomItem extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: screenHeight * 0.015,
-                      backgroundImage: const AssetImage('assets/images/logo.png'),
+                      backgroundImage:
+                          const AssetImage('assets/images/logo.png'),
                     ),
                     SizedBox(width: screenWidth * 0.01),
                     Text(
@@ -191,7 +203,7 @@ class CustomItem extends StatelessWidget {
                       height: screenHeight * 0.02,
                       width: screenHeight * 0.02,
                     ),
-                  const  SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Text(
                       'Question No: $questionNo',
                       style: TextStyle(fontSize: screenHeight * 0.02),
@@ -202,7 +214,7 @@ class CustomItem extends StatelessWidget {
                       height: screenHeight * 0.02,
                       width: screenHeight * 0.02,
                     ),
-                  const  SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Text(
                       min,
                       style: TextStyle(fontSize: screenHeight * 0.02),
