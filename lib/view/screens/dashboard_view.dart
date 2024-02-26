@@ -12,11 +12,15 @@ import '../../controller/dashboard_controller.dart';
 class AppbarBottomBarScreen extends StatelessWidget {
   final AppbarBottomBarController _controller =
       Get.put(AppbarBottomBarController());
+
+          
+
   AppbarBottomBarScreen({
     super.key,
   });
   @override
   Widget build(BuildContext context) {
+    _controller.currentIndex.value = 0;
     return Scaffold(
       body: PageView.builder(
           itemCount: 3,

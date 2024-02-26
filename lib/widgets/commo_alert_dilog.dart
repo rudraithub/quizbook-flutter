@@ -11,8 +11,10 @@ class DialogUtils {
       {VoidFunction? optionalFunction}) {
     showDialog(
         context: context,
+           barrierDismissible: false,
         builder: (_) {
           return AlertDialog(
+            
             title: Text(title, style: const TextStyle(fontSize: 25)),
             content: Text(
               msg,

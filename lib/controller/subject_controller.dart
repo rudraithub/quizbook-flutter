@@ -8,7 +8,9 @@ import '../appUrl/all_url.dart';
 class SubjectProvider extends GetxController {
   var isLoading = true.obs;
   Rx<Temperatures> stdList = Temperatures(data: [], message: '', status: 0).obs;
-
+void clearModel(){
+  stdList.value = Temperatures(data: [], message: '', status: 0);
+}
   @override
   void onInit() {
     BuildContext context = Get.context!;

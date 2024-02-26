@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_print, file_names, must_be_immutable, unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
@@ -70,32 +71,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final RxString genderErrorMessage = RxString('');
 
-  final RxString desErrorMsg = RxString('');
-  String? dateErro ;
-    final FocusNode _focusNode = FocusNode();
-
+  // final RxString desErrorMsg = RxString('');
+  String? dateErro;
+  String? desErrorMsg;
+  String? genErrorMsg;
+  final FocusNode _focusNode = FocusNode();
 
   String btnText = 'Next';
-  
+
   @override
   void dispose() {
     print("dispose call");
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
+    signUpCantroller.selectedGender.value = 'Select Gender';
+  signUpCantroller.selectedBirthDate.value = 'Select Date';
+  signUpCantroller.selectedDesignation.value = 'Select Designation';
+    genErrorMsg = null;
+    desErrorMsg = null;
     photoController.clear();
     signUpCantroller.clear();
     _focusNode.dispose();
     super.dispose();
   }
-void _onFocusChange() {
-   
+
+  void _onFocusChange() {
     if (!_focusNode.hasFocus) {
-   
       FocusManager.instance.primaryFocus?.unfocus();
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     print("Building Screen");
@@ -120,11 +126,15 @@ void _onFocusChange() {
 
       _emailController.text = widget.email.isEmpty ? '' : widget.email;
       _mobileController.text = widget.mobileNo.isEmpty ? '' : widget.mobileNo;
-     
+
       signUpCantroller.selectedDesignation.value == 'Select Designation'
-          ? widget.desi
+          ? signUpCantroller.selectedDesignation.value =widget.desi
+          : null;
+signUpCantroller.selectedGender.value == 'Select Gender'
+          ? signUpCantroller.selectedGender.value =widget.gender
           : null;
 
+          
       signUpCantroller.selectedGender.value == 'Select Gender'
           ? widget.gender
           : null;
@@ -132,12 +142,13 @@ void _onFocusChange() {
           signUpCantroller.selectedGender.value == 'Select Gender'
               ? widget.gender
               : signUpCantroller.selectedGender.value;
-     
+
+
       selectedDesignation.value =
           signUpCantroller.selectedDesignation.value == 'Select Designation'
               ? widget.desi
               : signUpCantroller.selectedDesignation.value;
-     
+
       signUpCantroller.isValid.value = true;
     }
 
@@ -289,10 +300,9 @@ void _onFocusChange() {
                                 value: selectedGender.value.isEmpty
                                     ? null
                                     : selectedGender.value,
-
                                 decoration: InputDecoration(
                                     labelText: 'Gender',
-                                    errorText: genderErrorMessage.value,
+                                    errorText: genErrorMsg,
                                     focusedBorder: focusBorder,
                                     labelStyle: const TextStyle(
                                         color: greyColor,
@@ -306,18 +316,19 @@ void _onFocusChange() {
                                 onChanged: (value) {
                                   setState(() {
                                     selectedGender(value);
-                                  genderErrorMessage('');
-                                  signUpCantroller.selectedGender.value =
-                                      value!;
+                                    setState(() {
+                                      genErrorMsg = null;
+                                    });
+                                    signUpCantroller.selectedGender.value =
+                                        value!;
                                   });
                                 },
-                                
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please select a gender";
-                                  }
-                                  return null;
-                                },
+                                // validator: (value) {
+                                //   if (value == null || value.isEmpty) {
+                                //     return "Please select a gender";
+                                //   }
+                                //   return null;
+                                // },
                                 items: ['Male', 'Female', 'Others']
                                     .map<DropdownMenuItem<String>>(
                                       (String value) =>
@@ -335,81 +346,80 @@ void _onFocusChange() {
                             ),
                           ),
                         ),
-                        Obx(() {
-                         
-                          if (genderErrorMessage.value.isNotEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: Text(
-                                genderErrorMessage.value,
-                                style: const TextStyle(
-                                    color: redColor, fontSize: 13),
-                              ),
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        }),
+                        // Obx(() {
+                        //   if (genderErrorMessage.value.isNotEmpty) {
+                        //     return Padding(
+                        //       padding: const EdgeInsets.only(top: 0),
+                        //       child: Text(
+                        //         genderErrorMessage.value,
+                        //         style: const TextStyle(
+                        //             color: redColor, fontSize: 13),
+                        //       ),
+                        //     );
+                        //   } else {
+                        //     return const SizedBox.shrink();
+                        //   }
+                        // }),
                         const SizedBox(
                           width: 5,
                         ),
                         Flexible(
-                          child: SizedBox(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height *
-                                      0.00475),
-                              child: InkWell(
-                                onTap: () {
-                                  // if (widget.isProfile) {
-                                  //   return;
-                                  // }
-                                  Utility.showDatePickerDialog()
-                                      .then((pickedDate) {
-                                    if (pickedDate != null) {
-                                      signUpCantroller.changeBirthDate(
-                                          "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year.toString()}");
-                                      selectedDate = pickedDate;
-                                      setState(() {
-                                        dateErro = null;
-                                      });
-                                    }
-                                  });
-                                },
-                                child: Obx(
-                                  () => InputDecorator(
-                                    
-                                    decoration:  InputDecoration(
-
-                                        labelText: 'BirthDate',
-                                       errorText: dateErro,
-                                        labelStyle: TextStyle(
-                                            color: greyColor,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500)),
-                                    child: signUpCantroller
-                                                .selectedBirthDate.value ==
-                                            "Select Date"
-                                        ? Text(
-                                            signUpCantroller
-                                                .selectedBirthDate.value,
-                                            maxLines: 1,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: greyColor,
-                                                fontWeight: FontWeight.w500,
-                                                overflow: TextOverflow.clip),
-                                          )
-                                        : Text(
-                                            signUpCantroller
-                                                .selectedBirthDate.value,
-                                            maxLines: 1,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: blackColor,
-                                                fontWeight: FontWeight.w500,
-                                                overflow: TextOverflow.clip),
-                                          ),
+                          child: Center(
+                            child: SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: MediaQuery.of(context).size.height *
+                                        0.00475),
+                                child: InkWell(
+                                  onTap: () {
+                                    // if (widget.isProfile) {
+                                    //   return;
+                                    // }
+                                    Utility.showDatePickerDialog()
+                                        .then((pickedDate) {
+                                      if (pickedDate != null) {
+                                        signUpCantroller.changeBirthDate(
+                                            "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year.toString()}");
+                                        selectedDate = pickedDate;
+                                        setState(() {
+                                          dateErro = null;
+                                        });
+                                      }
+                                    });
+                                  },
+                                  child: Obx(
+                                    () => InputDecorator(
+                                      decoration: InputDecoration(
+                                          labelText: 'BirthDate',
+                                          errorText: dateErro,
+                                          labelStyle: TextStyle(
+                                              color: greyColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500)),
+                                      child: signUpCantroller
+                                                  .selectedBirthDate.value ==
+                                              "Select Date"
+                                          ? Text(
+                                              signUpCantroller
+                                                  .selectedBirthDate.value,
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: greyColor,
+                                                  fontWeight: FontWeight.w500,
+                                                  overflow: TextOverflow.clip),
+                                            )
+                                          : Text(
+                                              signUpCantroller
+                                                  .selectedBirthDate.value,
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: blackColor,
+                                                  fontWeight: FontWeight.w500,
+                                                  overflow: TextOverflow.clip),
+                                            ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -428,23 +438,29 @@ void _onFocusChange() {
                               : selectedDesignation.value,
                           decoration: InputDecoration(
                               labelText: 'Select Designation',
+                              errorText: desErrorMsg,
                               focusedBorder: focusBorder,
                               labelStyle: const TextStyle(
                                   color: greyColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500)),
                           onChanged: (value) {
-                            selectedDesignation(value);
-                            desErrorMsg('');
-                            signUpCantroller.selectedDesignation.value = value!;
-                            selectedDesignation(value);
+                            setState(() {
+                              desErrorMsg = null;
+                              selectedDesignation(value);
+
+                              signUpCantroller.selectedDesignation.value =
+                                  value!;
+                              selectedDesignation(value);
+                              print("this is set State");
+                            });
                           },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please Select ";
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty && desErrorMsg != null) {
+                          //     return "Please Select ";
+                          //   }
+                          //   return null;
+                          // },
                           items: ["Student", "Teacher", "Admin"]
                               .map<DropdownMenuItem<String>>(
                                 (String value) => DropdownMenuItem<String>(
@@ -460,20 +476,30 @@ void _onFocusChange() {
                         ),
                       ),
                     ),
-                    Obx(() {
-                      if (desErrorMsg.value.isNotEmpty) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            desErrorMsg.value,
-                            style:
-                                const TextStyle(color: redColor, fontSize: 13),
-                          ),
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    }),
+                    // SizedBox(
+                    //   child: desErrorMsg != null
+                    //       ? Padding(
+                    //           padding: const EdgeInsets.only(top: 8.0),
+                    //           child: Text(
+                    //             desErrorMsg!,
+                    //             style: const TextStyle(
+                    //                 color: redColor, fontSize: 13),
+                    //           ),
+                    //         )
+                    //       : const SizedBox.shrink(),
+                    // if (desErrorMsg != null) {
+                    //   return Padding(
+                    //     padding: const EdgeInsets.only(top: 8.0),
+                    //     child: Text(
+                    //       desErrorMsg!,
+                    //       style:
+                    //           const TextStyle(color: redColor, fontSize: 13),
+                    //     ),
+                    //   );
+                    // } else {
+                    //   return const SizedBox.shrink();
+                    // }
+                    // ),
                   ],
                 ),
               ),
@@ -499,53 +525,57 @@ void _onFocusChange() {
                 genderId = 3;
               }
               if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
-                 
-                  setState(() {
-                    dateErro = "Please Select Date";
-                  });
-                } 
-                
-              if (SignUpScreen._key.currentState!.validate()) {
-                if (signUpCantroller.selectedBirthDate.value == 'Select Date') {
-                  
-                } else {
-                  print('else calll');
-                  if (widget.isProfile) {
-                    FocusScope.of(context).unfocus();
+                setState(() {
+                  dateErro = "Please Select Date";
+                });
+              }
+              if (signUpCantroller.selectedDesignation.value ==
+                  'Select Designation') {
+                setState(() {
+                  desErrorMsg = "Please Select Desi";
+                });
+              }
+              if (signUpCantroller.selectedGender.value == 'Select Gender') {
+                setState(() {
+                  genErrorMsg = "Please Select Gender";
+                });
+              }
 
-    if (!_focusNode.hasFocus) {
-      FocusManager.instance.primaryFocus?.unfocus();
-    }
-  
-                    bool av = await signUpCantroller.updateUser(
-                        _firstNameController.text,
-                        _lastNameController.text,
-                        _emailController.text,
-                        genderId,
-                        professionId,
-                        selectedDate,
-                        photoController.selectedImage.value,
-                        context);
-                    if (av) {
-                      
-                    }
-                  } else {
-                    if (photoController.selectedImage.value == null) {
-                      DialogUtils.showCustomDialog(context, "Empty Filed",
-                          "Please Select Profile Photo");
-                    }
-                    print('button pressed');
-                    signUpCantroller.signUp(
-                        _firstNameController.text,
-                        _lastNameController.text,
-                        _emailController.text,
-                        genderId,
-                        selectedDate,
-                        _mobileController.text,
-                        professionId,
-                        photoController.selectedImage.value!,
-                        context);
+              if (SignUpScreen._key.currentState!.validate() &&
+                  signUpCantroller.selectedDesignation.value !=
+                      'Select Designation' &&
+                  signUpCantroller.selectedBirthDate.value != 'Select Date' &&
+                  signUpCantroller.selectedGender.value != 'Select Gender') {
+                print('else calll');
+                if (widget.isProfile) {
+                  FocusScope.of(context).unfocus();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  signUpCantroller.updateUser(
+                      _firstNameController.text,
+                      _lastNameController.text,
+                      _emailController.text,
+                      genderId,
+                      professionId,
+                      selectedDate,
+                      photoController.selectedImage.value,
+                      context);
+                 
+                } else {
+                  if (photoController.selectedImage.value == null) {
+                    DialogUtils.showCustomDialog(
+                        context, "Empty Filed", "Please Select Profile Photo");
                   }
+                  
+                  signUpCantroller.signUp(
+                      _firstNameController.text,
+                      _lastNameController.text,
+                      _emailController.text,
+                      genderId,
+                      selectedDate,
+                      _mobileController.text,
+                      professionId,
+                      photoController.selectedImage.value!,
+                      context);
                 }
               }
             },

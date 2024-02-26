@@ -47,7 +47,9 @@ class _StudyScreenState extends State<StudyScreen> {
           displacement: 180,
           onRefresh: () async {
             setState(() {
+              provider.clearModel();
               provider.fetchStudyModel(context);
+              setState(() {});
             });
           },
           child: Obx(
@@ -77,7 +79,20 @@ class _StudyScreenState extends State<StudyScreen> {
                     itemCount: provider.stdList.value.data.length,
                     itemBuilder: (context, index) {
                       if (provider.stdList.value.data[index].subjects.isEmpty) {
-                        return null;
+                        return ListView.builder(
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: const Center(
+                                child: Text(
+                                  "Currently No Quiz Available",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       }
                       return StudyItem(
                         model: provider.stdList.value.data[index],
@@ -85,11 +100,19 @@ class _StudyScreenState extends State<StudyScreen> {
                     },
                   );
                 } else {
-                  return const Center(
-                    child: Text(
-                      "Currently No Quiz Available",
-                      style: TextStyle(fontSize: 20),
-                    ),
+                  return ListView.builder(
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: const Center(
+                          child: Text(
+                            "Currently No Quiz Available",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 }
               }

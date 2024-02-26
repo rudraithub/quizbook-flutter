@@ -38,7 +38,7 @@ class HistoryController extends GetxController {
       // print("inside try");
       var response = await getMethode(url, context, headers);
       if (response.statusCode == 200) {
-        historyModel.value = historyFromJson(response.body);
+        historyModel.value = historyModelFromJson(response.body);
         
 
       } 

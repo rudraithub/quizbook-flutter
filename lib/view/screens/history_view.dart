@@ -132,7 +132,7 @@ class _HistoryState extends State<History> {
                                             height: screenHeight * 0.009,
                                           ),
                                           Text(
-                                            '${historyController.historyModel.value.data[index].subjectName} - Chapter ${historyController.historyModel.value.data[index].chapterId}. ${historyController.historyModel.value.data[index].chapterName}',
+                                            '${historyController.historyModel.value.data[index].subjectName} - Chapter : ${historyController.historyModel.value.data[index].chapterNo}. ${historyController.historyModel.value.data[index].chapterName}',
                                             style: TextStyle(
                                               fontSize: screenHeight * 0.02,
                                             ),

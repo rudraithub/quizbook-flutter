@@ -11,6 +11,7 @@ import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/model/login_model_alpesh.dart';
 import 'package:rudra_it_hub/model/update_model.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/utils/preference_helper.dart';
 import 'package:rudra_it_hub/utils/prefrences.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
@@ -122,6 +123,7 @@ class SignUpController extends GetxController {
     // final response = await postMethod(
     //     '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
     try {
+      print("inside try");
       if (response.statusCode == 200) {
         print(gender);
         var response3 = await response.stream.bytesToString();
@@ -143,6 +145,7 @@ class SignUpController extends GetxController {
             userProfile: user3.data.userProfile,
           ),
         );
+        print("2nd ty");
         userData = users;
         await sharedPreferencesHelper.putString(
             Preferences.userFullDetails, jsonEncode(users));
@@ -152,11 +155,10 @@ class SignUpController extends GetxController {
         selectedBirthDate.value = formattedDate;
         selectedDesignation.value = desi;
         selectedGender.value = gender;
-
         if (context.mounted) {
           DialogUtils.showCustomDialog(context, "Success", "User Data Updated");
         }
-
+        print("3rd try");
         return true;
       } else if (response.statusCode == 404) {
         if (context.mounted) {
@@ -226,24 +228,51 @@ class SignUpController extends GetxController {
       request.fields.addAll(requestBody);
 
       final response = await request.send();
-      // const url = '$baseUrl$signupUrl';
 
       if (response.statusCode == 200) {
         if (context.mounted) {
-          Navigator.pushReplacement(
-                
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
+          Get.dialog(AlertDialog(
+            title: Text("Success", style: const TextStyle(fontSize: 25)),
+            content: Text(
+              "Registration successful",
+              style: const TextStyle(fontSize: 18),
+            ),
+            actions: <Widget>[
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    Get.back();
+                    Get.offAll(LoginScreen());
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: purpleColor.withOpacity(0.2),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15))),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.only(left: 7, right: 7, top: 2, bottom: 3),
+                      child: Text(
+                        'OK',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: purpleColor),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+            
+          )   ,     barrierDismissible: false,
+);
         }
-
-        Get.offAll(LoginScreen());
       } else {
         print("Here Elese Call ");
         if (context.mounted) {
           var response3 = await response.stream.bytesToString();
           Map<String, dynamic> responseMap = json.decode(response3);
-          //  print();
           DialogUtils.showCustomDialog(
               context, "Alert!!", responseMap['message']);
         }
@@ -267,8 +296,7 @@ class SignUpController extends GetxController {
 
   void changeBirthDate(String Date) {
     selectedBirthDate.value = Date;
-     isBirthValid.value = Date.isNotEmpty;
-
+    isBirthValid.value = Date.isNotEmpty;
   }
 
   void changeDesignation(String Designation) {
@@ -276,7 +304,6 @@ class SignUpController extends GetxController {
       selectedDesignation.value = Designation;
       designations.remove('Select Designation');
     }
-
     void verifyOtp() {}
   }
 }

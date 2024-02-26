@@ -1,8 +1,10 @@
 // ignore_for_file: sized_box_for_whitespace, avoid_print, file_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/dashboard_view.dart';
+import 'package:rudra_it_hub/view/screens/history_view.dart';
 
 
 class CongratulationScreen extends StatelessWidget {
@@ -116,7 +118,9 @@ class CongratulationScreen extends StatelessWidget {
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
                                   side: const BorderSide(color: whiteColor)))),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.off(()=>History());
+                      },
                       child:  Text(
                         'View the result',
                         style: TextStyle(color: purpleColor ,fontSize: screenHeight * 0.03 ,overflow: TextOverflow.ellipsis),

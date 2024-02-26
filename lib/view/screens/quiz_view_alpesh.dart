@@ -32,7 +32,6 @@ class _QuizScreenState extends State<QuizScreen> {
   QuestionController questionController = QuestionController();
 
   Future<void> fetchData() async {
-   
     questionController.getQuestionList(
         stdId: widget.stdId,
         subId: widget.subId,
@@ -49,10 +48,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void dispose() {
-    // print("Disspose Call");
-    //  resultData.dispose();
     questionController.clearModel();
-    // print(resultData.toString());
 
     super.dispose();
   }
@@ -78,133 +74,155 @@ class _QuizScreenState extends State<QuizScreen> {
     isLastQuestion = (questionIndex + 1) ==
         questionController.apiQuestion.value.data?.length;
     return Obx(
-      () => Scaffold(
-        body: SafeArea(
-          child: questionController.isLoading.value
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : questionController.apiQuestion.value.data!.isEmpty
-                  ? Scaffold(
-                      appBar: AppBar(),
-                      body: const Center(
-                        child: Text(
-                          "Quetion Not Availbale ",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    )
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: screenWidth,
-                            padding: EdgeInsets.fromLTRB(
-                                ((screenWidth * 5) / 100),
-                                0,
-                                ((screenWidth * 5) / 100),
-                                ((screenWidth * 5) / 100)),
-                            decoration: BoxDecoration(
-                                color: purpleColor,
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(
-                                        (screenWidth * 5) / 100),
-                                    bottomRight: Radius.circular(
-                                        (screenWidth * 5) / 100))),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: (screenHeight * 0.003),
-                                ),
-                                Text(
-                                  widget.titleName,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: (screenHeight * 0.028)),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(
-                                  height: (screenHeight * 0.004),
-                                ),
-                                Text(
-                                    questionController.apiQuestion.value
-                                            .data?[questionIndex].question ??
-                                        '',
+      () => RefreshIndicator(
+        strokeWidth: 2,
+        displacement: 180,
+        onRefresh: () async {
+          setState(() {
+            fetchData();
+          });
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: questionController.isLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : questionController.apiQuestion.value.data!.isEmpty
+                    ? Scaffold(
+                        appBar: AppBar(),
+                        body: ListView.builder(
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.8,
+                                child: const Center(
+                                  child: Text(
+                                    "Question Not Availbale ",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ));
+                          },
+                        ))
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: screenWidth,
+                              padding: EdgeInsets.fromLTRB(
+                                  ((screenWidth * 5) / 100),
+                                  0,
+                                  ((screenWidth * 5) / 100),
+                                  ((screenWidth * 5) / 100)),
+                              decoration: BoxDecoration(
+                                  color: purpleColor,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(
+                                          (screenWidth * 5) / 100),
+                                      bottomRight: Radius.circular(
+                                          (screenWidth * 5) / 100))),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: (screenHeight * 0.003),
+                                  ),
+                                  Text(
+                                    widget.titleName,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: (screenHeight * 0.025)),
-                                    textAlign: TextAlign.center),
-                              ],
+                                        fontSize: (screenHeight * 0.028)),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: (screenHeight * 0.004),
+                                  ),
+                                  Text(
+                                      questionController.apiQuestion.value
+                                              .data?[questionIndex].question ??
+                                          '',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: (screenHeight * 0.025)),
+                                      textAlign: TextAlign.center),
+                                ],
+                              ),
                             ),
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: questionController.apiQuestion.value
-                                    .data?[questionIndex].option?.length ??
-                                0,
-                            itemBuilder: (context, index) {
-                              String letter = String.fromCharCode(65 + index);
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 5),
-                                child: InkWell(
-                                    onTap: selectedAnswerIndex == null
-                                        ? () => pickAnswer(
-                                            index,
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: questionController.apiQuestion.value
+                                      .data?[questionIndex].option?.length ??
+                                  0,
+                              itemBuilder: (context, index) {
+                                String letter = String.fromCharCode(65 + index);
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: InkWell(
+                                      onTap: selectedAnswerIndex == null
+                                          ? () => pickAnswer(
+                                              index,
+                                              selectedAnswerIndex,
+                                              questionController
+                                                  .apiQuestion
+                                                  .value
+                                                  .data![questionIndex]
+                                                  .queid!)
+                                          : null,
+                                      child: AnswerCard(
+                                        currentIndex: index,
+                                        question:
+                                            "$letter: ${questionController.apiQuestion.value.data?[questionIndex].option?[index]}",
+                                        isSelected:
+                                            selectedAnswerIndex == index,
+                                        selectedAnswerIndex:
                                             selectedAnswerIndex,
-                                            questionController.apiQuestion.value
-                                                .data![questionIndex].queid!)
-                                        : null,
-                                    child: AnswerCard(
-                                      currentIndex: index,
-                                      question:
-                                          "$letter: ${questionController.apiQuestion.value.data?[questionIndex].option?[index]}",
-                                      isSelected: selectedAnswerIndex == index,
-                                      selectedAnswerIndex: selectedAnswerIndex,
-                                      correctAnswerIndex: questionController
-                                          .apiQuestion
-                                          .value
-                                          .data?[questionIndex]
-                                          .rightAns,
-                                    )),
-                              );
-                            },
-                          ),
-                        ],
+                                        correctAnswerIndex: questionController
+                                            .apiQuestion
+                                            .value
+                                            .data?[questionIndex]
+                                            .rightAns,
+                                      )),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
+          ),
+          bottomNavigationBar: questionController
+                  .apiQuestion.value.data!.isEmpty
+              ? null
+              : isLastQuestion ?? false
+                  ? CommonButton(
+                      onPress: () async {
+                        if (selectedAnswerIndex != null) {
+                          questionController.resultDataSend(
+                              context: context,
+                              stdid: widget.stdId,
+                              subid: widget.subId,
+                              chapterid: widget.chapterId,
+                              questions: resultData);
+                        } else {
+                          DialogUtils.showCustomDialog(
+                              context, "Empty Answer", "Please Select Option");
+                        }
+                      },
+                      title: 'Finish',
+                    )
+                  : CommonButton(
+                      onPress: () {
+                        if (selectedAnswerIndex != null) {
+                          questionIndex = questionIndex + 1;
+                          selectedAnswerIndex = null;
+                        } else {
+                          DialogUtils.showCustomDialog(
+                              context, "Empty Answer", "Please Select Option");
+                        }
+                        setState(() {});
+                      },
+                      title: 'Next',
                     ),
         ),
-        bottomNavigationBar: questionController.apiQuestion.value.data!.isEmpty
-            ? null
-            : isLastQuestion ?? false
-                ? CommonButton(
-                    onPress: () async {
-                      if (selectedAnswerIndex != null) {
-                        questionController.resultDataSend(
-                            context: context,
-                            stdid: widget.stdId,
-                            subid: widget.subId,
-                            chapterid: widget.chapterId,
-                            questions: resultData);
-                      } else {
-                        DialogUtils.showCustomDialog(
-                            context, "Empty Answer", "Please Select Option");
-                      }
-                    },
-                    title: 'Finish',
-                  )
-                : CommonButton(
-                    onPress: () {
-                      if (selectedAnswerIndex != null) {
-                        questionIndex = questionIndex + 1;
-                        selectedAnswerIndex = null;
-                      } else {
-                        DialogUtils.showCustomDialog(
-                            context, "Empty Answer", "Please Select Option");
-                      }
-                      setState(() {});
-                    },
-                    title: 'Next',
-                  ),
       ),
     );
   }
