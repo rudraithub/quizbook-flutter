@@ -63,11 +63,7 @@ class CommonTextFormField extends StatelessWidget {
     fontWeight: FontWeight.w500,
     
   );
-  // final TextStyle textStyle =const TextStyle(
-  //   fontSize: 14,
-  //   color: blackColor,
-  //   fontWeight: FontWeight.w500,
-  // );
+  
 
   final TextStyle mobileNumberStyle = const TextStyle(
     fontSize: 15,
@@ -88,6 +84,9 @@ class CommonTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       focusNode: focusNode,
+      onChanged: (value){
+
+      },
       style:const TextStyle(
         color: Colors.black,
         fontSize: 15.1,

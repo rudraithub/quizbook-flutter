@@ -20,7 +20,6 @@ class AppbarBottomBarScreen extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    _controller.currentIndex.value = 0;
     return Scaffold(
       body: PageView.builder(
           itemCount: 3,

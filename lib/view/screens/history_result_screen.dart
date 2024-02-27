@@ -35,6 +35,9 @@ class HistoryDetail extends StatelessWidget {
                     chapterHistory.questions[index].option,
                     chapterHistory.questions[index]
                         .option[chapterHistory.questions[index].rightAnswer],
+                        
+                    chapterHistory.questions[index].rightAnswer,
+
                     screenHeight)
               ],
             );
@@ -50,6 +53,7 @@ class HistoryDetail extends StatelessWidget {
                     chapterHistory.questions[index].option,
                     chapterHistory.questions[index]
                         .option[chapterHistory.questions[index].rightAnswer],
+                    chapterHistory.questions[index].rightAnswer,
                     screenHeight));
           }
         },
@@ -120,12 +124,14 @@ class HistoryDetail extends StatelessWidget {
   }
 
   Widget _buildQuestionCard(
-      BuildContext context,
-      double screenWidth,
-      String question,
-      List<String> options,
-      String correctAnswer,
-      double screenHeight) {
+    BuildContext context,
+    double screenWidth,
+    String question,
+    List<String> options,
+    String correctAnswer,
+    int correctAnswerIndex,
+    double screenHeight,
+  ) {
     return Card(
       elevation: 5,
       margin: EdgeInsets.all(screenWidth * 0.02),
@@ -139,8 +145,7 @@ class HistoryDetail extends StatelessWidget {
                 Text(
                   question,
                   style: TextStyle(
-                    fontSize:
-                        screenHeight * 0.028, 
+                    fontSize: screenHeight * 0.028,
                     color: Colors.black,
                   ),
                   textAlign: TextAlign.start,
@@ -152,7 +157,7 @@ class HistoryDetail extends StatelessWidget {
                   itemBuilder: (context, index) {
                     String letter = String.fromCharCode(65 + index);
 
-                    return HsAnswerCard(option: "$letter : ${options[0]}");
+                    return HsAnswerCard(option: "$letter : ${options[0]}" ,isTrue: index == correctAnswerIndex,);
                   },
                 ),
               ],

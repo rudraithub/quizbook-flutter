@@ -20,13 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // final OTPController _controller = Get.put(OTPController());
   final TextEditingController _mobileController = TextEditingController();
-   
+
   @override
   Widget build(BuildContext context) {
-    
     double mainHight = MediaQuery.of(context).size.height / 2.5;
-
-    
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -124,9 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
+                  //  FocusScope.of(context).unfocus();
                   loginController.logInUser(context, _mobileController);
                   loginController.changeLoading(true, context);
-
+                 
                   loginController.isLoading.value
                       ? showDialog(
                           context: context,

@@ -86,8 +86,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _lastNameController.dispose();
     _emailController.dispose();
     signUpCantroller.selectedGender.value = 'Select Gender';
-  signUpCantroller.selectedBirthDate.value = 'Select Date';
-  signUpCantroller.selectedDesignation.value = 'Select Designation';
+    signUpCantroller.selectedBirthDate.value = 'Select Date';
+    signUpCantroller.selectedDesignation.value = 'Select Designation';
     genErrorMsg = null;
     desErrorMsg = null;
     photoController.clear();
@@ -103,23 +103,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    print("Building Screen");
+  void initState() {
+    print("initcall");
     if (widget.isProfile) {
       // Here  gg
       btnText = "Update";
       _firstNameController.text =
           widget.firstName.isEmpty ? '' : widget.firstName;
       _lastNameController.text = widget.lastName.isEmpty ? '' : widget.lastName;
-      signUpCantroller.lastNameobx.value == ''
-          ? signUpCantroller.lastNameobx.value = widget.lastName
-          : null;
-      signUpCantroller.firstNameobx.value == ''
-          ? signUpCantroller.firstNameobx.value = widget.firstName
-          : null;
-      signUpCantroller.emailobx.value == ''
-          ? signUpCantroller.emailobx.value = widget.email
-          : null;
+      // signUpCantroller.lastNameobx.value == ''
+      //     ? signUpCantroller.lastNameobx.value = widget.lastName
+      //     : null;
+      // signUpCantroller.firstNameobx.value == ''
+      //     ? signUpCantroller.firstNameobx.value = widget.firstName
+      //     : null;
+      // signUpCantroller.emailobx.value == ''
+      //     ? signUpCantroller.emailobx.value = widget.email
+      //     : null;
       signUpCantroller.selectedBirthDate.value == 'Select Date'
           ? signUpCantroller.selectedBirthDate.value = widget.date
           : null;
@@ -128,13 +128,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _mobileController.text = widget.mobileNo.isEmpty ? '' : widget.mobileNo;
 
       signUpCantroller.selectedDesignation.value == 'Select Designation'
-          ? signUpCantroller.selectedDesignation.value =widget.desi
+          ? signUpCantroller.selectedDesignation.value = widget.desi
           : null;
-signUpCantroller.selectedGender.value == 'Select Gender'
-          ? signUpCantroller.selectedGender.value =widget.gender
+      signUpCantroller.selectedGender.value == 'Select Gender'
+          ? signUpCantroller.selectedGender.value = widget.gender
           : null;
 
-          
       signUpCantroller.selectedGender.value == 'Select Gender'
           ? widget.gender
           : null;
@@ -143,7 +142,6 @@ signUpCantroller.selectedGender.value == 'Select Gender'
               ? widget.gender
               : signUpCantroller.selectedGender.value;
 
-
       selectedDesignation.value =
           signUpCantroller.selectedDesignation.value == 'Select Designation'
               ? widget.desi
@@ -151,6 +149,12 @@ signUpCantroller.selectedGender.value == 'Select Gender'
 
       signUpCantroller.isValid.value = true;
     }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("Building Screen");
 
     return Obx(() {
       var profile = photoController.selectedImage.value;
@@ -228,13 +232,9 @@ signUpCantroller.selectedGender.value == 'Select Gender'
                                 backgroundImage: FileImage(
                                     photoController.selectedImage.value!),
                               )),
-                    Obx(() {
-                      signUpCantroller.firstNameobx.value.isEmpty
-                          ? null
-                          : _firstNameController.text =
-                              signUpCantroller.firstNameobx.value;
+                   
 
-                      return CommonTextFormField(
+                       CommonTextFormField(
                         controller: _firstNameController,
                         label: 'First Name',
                         errorMessage: 'Enter Your First Name',
@@ -242,16 +242,16 @@ signUpCantroller.selectedGender.value == 'Select Gender'
                         formatter: [],
                         length: 60,
                         onTap: () {},
-                      );
-                    }),
-                    Obx(() {
-                      signUpCantroller.lastNameobx.value.isEmpty
-                          ? null
-                          : _lastNameController.text =
-                              signUpCantroller.lastNameobx.value;
+                      ),
+                    
+                    // Obx(() {
+                    //   signUpCantroller.lastNameobx.value.isEmpty
+                    //       ? null
+                    //       : _lastNameController.text =
+                    //           signUpCantroller.lastNameobx.value;
 
-                      return CommonTextFormField(
-                        // focusNode: _focusNode,
+                    //   return 
+                      CommonTextFormField(
                         controller: _lastNameController,
                         label: 'Last Name',
                         errorMessage: 'Enter Your Last Name',
@@ -259,14 +259,10 @@ signUpCantroller.selectedGender.value == 'Select Gender'
                         formatter: [],
                         length: 60,
                         onTap: () {},
-                      );
-                    }),
-                    Obx(() {
-                      signUpCantroller.emailobx.value.isEmpty
-                          ? null
-                          : _emailController.text =
-                              signUpCantroller.emailobx.value;
-                      return CommonTextFormField(
+                      ),
+                    // }),
+                  
+                       CommonTextFormField(
                         controller: _emailController,
                         label: 'Email ID',
                         errorMessage: 'Please enter valid Email Id',
@@ -275,8 +271,8 @@ signUpCantroller.selectedGender.value == 'Select Gender'
                         length: 60,
                         onTap: () {},
                         isEmailField: true,
-                      );
-                    }),
+                      ),
+                    
                     CommonTextFormField(
                       controller: _mobileController,
                       label: 'Mobile Number',
@@ -559,13 +555,12 @@ signUpCantroller.selectedGender.value == 'Select Gender'
                       selectedDate,
                       photoController.selectedImage.value,
                       context);
-                 
                 } else {
                   if (photoController.selectedImage.value == null) {
                     DialogUtils.showCustomDialog(
                         context, "Empty Filed", "Please Select Profile Photo");
                   }
-                  
+
                   signUpCantroller.signUp(
                       _firstNameController.text,
                       _lastNameController.text,

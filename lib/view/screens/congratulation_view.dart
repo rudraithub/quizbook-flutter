@@ -150,20 +150,20 @@ class CongratulationScreen extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.02,
               ),
-              InkWell(
-                onTap: () {
-                  // Handle the click event here.
-                  print('Text clicked!');
-                },
-                child:  Text(
-                  'Give Feedback',
-                  style: TextStyle(
-                    color: whiteColor,
-                    fontSize: screenHeight * 0.02,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              )
+              // InkWell(
+              //   onTap: () {
+              //     // Handle the click event here.
+              //     print('Text clicked!');
+              //   },
+              //   child:  Text(
+              //     'Give Feedback',
+              //     style: TextStyle(
+              //       color: whiteColor,
+              //       fontSize: screenHeight * 0.02,
+              //       decoration: TextDecoration.underline,
+              //     ),
+              //   ),
+              // )
             ]),
       ),
     );

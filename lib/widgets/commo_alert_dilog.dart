@@ -11,7 +11,7 @@ class DialogUtils {
       {VoidFunction? optionalFunction}) {
     showDialog(
         context: context,
-           barrierDismissible: false,
+          //  barrierDismissible: false,
         builder: (_) {
           return AlertDialog(
             
