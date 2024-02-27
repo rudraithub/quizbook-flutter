@@ -35,7 +35,7 @@ class _HistoryState extends State<History> {
       color: Colors.purple,
       strokeWidth: 2,
       displacement: 150,
-      onRefresh: ()async{
+      onRefresh: () async {
         setState(() {
           historyController.loadData(context);
         });
@@ -48,12 +48,12 @@ class _HistoryState extends State<History> {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              actions: const <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 11, top: 5),
-                  child: Text('Clear All'),
-                )
-              ],
+              // actions: const <Widget>[
+              //   Padding(
+              //     padding: EdgeInsets.only(right: 11, top: 5),
+              //     child: Text('Clear All'),
+              //   )
+              // ],
               centerTitle: true,
               backgroundColor: Colors.white,
               elevation: 2,
@@ -63,7 +63,24 @@ class _HistoryState extends State<History> {
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
-                : ListView.builder(
+                :historyController.historyModel.value.data.isEmpty ?  ListView.builder(
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: const Center(
+                        child: Text(
+                          "No Result Available",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    );
+                  },
+                ): 
+                
+                ListView.builder(
+
+
                     itemCount: historyController.historyModel.value.data.length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -71,9 +88,10 @@ class _HistoryState extends State<History> {
                               left: 10, right: 10, top: screenHeight * 0.025),
                           child: InkWell(
                             onTap: () {
-                             
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => HistoryDetail(chapterHistory :historyController.historyModel.value.data[index] ),
+                                builder: (context) => HistoryDetail(
+                                    chapterHistory: historyController
+                                        .historyModel.value.data[index]),
                               ));
                             },
                             child: Container(
@@ -95,7 +113,8 @@ class _HistoryState extends State<History> {
                                       left: 10, right: 10, top: 10),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                           child: Column(
@@ -113,7 +132,7 @@ class _HistoryState extends State<History> {
                                             height: screenHeight * 0.009,
                                           ),
                                           Text(
-                                            '${historyController.historyModel.value.data[index].subjectName} - Chapter ${historyController.historyModel.value.data[index].chapterId}. ${historyController.historyModel.value.data[index].chapterName}',
+                                            '${historyController.historyModel.value.data[index].subjectName} - Chapter : ${historyController.historyModel.value.data[index].chapterNo}. ${historyController.historyModel.value.data[index].chapterName}',
                                             style: TextStyle(
                                               fontSize: screenHeight * 0.02,
                                             ),
@@ -136,7 +155,12 @@ class _HistoryState extends State<History> {
                                               ),
                                               Center(
                                                 child: Text(
-                                                  formatTimestamp(historyController.historyModel.value.data[index].submitTime),
+                                                  formatTimestamp(
+                                                      historyController
+                                                          .historyModel
+                                                          .value
+                                                          .data[index]
+                                                          .submitTime),
                                                   style: TextStyle(
                                                     fontSize:
                                                         screenHeight * 0.017,
@@ -150,8 +174,8 @@ class _HistoryState extends State<History> {
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
-                                                color:
-                                                    purpleColor.withOpacity(0.2),
+                                                color: purpleColor
+                                                    .withOpacity(0.2),
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(10))),
@@ -200,9 +224,9 @@ class _HistoryState extends State<History> {
       ),
     );
   }
-  
+
   String formatTimestamp(DateTime submitTime) {
-     final now = DateTime.now();
+    final now = DateTime.now();
     final difference = now.difference(submitTime);
 
     if (difference.inMinutes < 1) {
@@ -216,6 +240,5 @@ class _HistoryState extends State<History> {
     } else {
       return DateFormat('yyyy-MM-dd').format(submitTime);
     }
-  
   }
 }

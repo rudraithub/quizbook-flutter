@@ -6,10 +6,18 @@ import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
 import 'package:rudra_it_hub/widgets/common_text_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   LoginController loginController = LoginController();
+
   final _key = GlobalKey<FormState>();
+
   // final OTPController _controller = Get.put(OTPController());
   final TextEditingController _mobileController = TextEditingController();
 
@@ -113,9 +121,10 @@ class LoginScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
+                  //  FocusScope.of(context).unfocus();
                   loginController.logInUser(context, _mobileController);
                   loginController.changeLoading(true, context);
-
+                 
                   loginController.isLoading.value
                       ? showDialog(
                           context: context,

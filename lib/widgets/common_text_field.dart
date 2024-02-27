@@ -22,12 +22,15 @@ class CommonTextFormField extends StatelessWidget {
   final bool initialValue;
   final bool autoFocus;
   final bool isOTPField;
+    final FocusNode? focusNode ;
+
 
   final List<TextInputFormatter> formatter;
   final bool isMobileNumber;
 
   const CommonTextFormField({
     super.key,
+     this.focusNode ,
     required this.controller,
     required this.errorMessage,
     required this.onTap,
@@ -58,12 +61,9 @@ class CommonTextFormField extends StatelessWidget {
     fontSize: 14,
     color: greyColor,
     fontWeight: FontWeight.w500,
+    
   );
-  // final TextStyle textStyle =const TextStyle(
-  //   fontSize: 14,
-  //   color: blackColor,
-  //   fontWeight: FontWeight.w500,
-  // );
+  
 
   final TextStyle mobileNumberStyle = const TextStyle(
     fontSize: 15,
@@ -83,7 +83,10 @@ class CommonTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // focusNode: focusNode,
+      focusNode: focusNode,
+      onChanged: (value){
+
+      },
       style:const TextStyle(
         color: Colors.black,
         fontSize: 15.1,

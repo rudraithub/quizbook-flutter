@@ -9,7 +9,6 @@ import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 
 
-import '../model/history_model_data.dart';
 import '../widgets/commo_alert_dilog.dart';
 
 class HistoryController extends GetxController {
@@ -39,7 +38,7 @@ class HistoryController extends GetxController {
       // print("inside try");
       var response = await getMethode(url, context, headers);
       if (response.statusCode == 200) {
-        historyModel.value = historyFromJson(response.body);
+        historyModel.value = historyModelFromJson(response.body);
         
 
       } 
@@ -65,7 +64,6 @@ class HistoryController extends GetxController {
         }
       isLoading(false);
     } finally {
-      // print('finally');
       isLoading(false);
     }
   }

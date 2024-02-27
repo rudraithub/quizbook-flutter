@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unused_local_variable, unused_element, non_constant_identifier_names, file_names
+// ignore_for_file: , unused_local_variable, unused_element, non_constant_identifier_names, file_names
 
 import 'dart:convert';
 import 'dart:io';
@@ -8,9 +8,10 @@ import 'package:get/get.dart';
 
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
-import 'package:rudra_it_hub/http_methods/http_all_method.dart';
 import 'package:rudra_it_hub/model/login_model_alpesh.dart';
+import 'package:rudra_it_hub/model/update_model.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/utils/preference_helper.dart';
 import 'package:rudra_it_hub/utils/prefrences.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
@@ -23,6 +24,7 @@ class SignUpController extends GetxController {
   final RxString selectedGender = 'Select Gender'.obs;
   final RxString selectedBirthDate = 'Select Date'.obs;
   final RxString selectedDesignation = 'Select Designation'.obs;
+
   RxList<String> genders = ["Select Gender", "Male", "Female", "Other"].obs;
   Rx<String> firstNameobx = ''.obs;
   Rx<String> lastNameobx = ''.obs;
@@ -37,67 +39,126 @@ class SignUpController extends GetxController {
   RxString selectedValue = ''.obs;
 
   RxBool isValid = false.obs;
+  RxBool isBirthValid = false.obs;
 
   void onItemSelected(String value) {
     selectedValue.value = value;
     isValid.value = value.isNotEmpty;
   }
+  // void isBirthDateValid(String value){
+  //   selectedBirthDate.value = value;
+  //   isBirthValid.value = value.isNotEmpty;
+  // }
 
   void clear() {
     firstNameobx.value = '';
+    emailobx.value = '';
     lastNameobx.value = '';
     selectedBirthDate.value = 'Select Date';
   }
 
   Future<bool> updateUser(
-      String firstName, String lastName, BuildContext context) async {
-    final Map<String, dynamic> requestBody = {
+      String firstName,
+      String lastName,
+      String email,
+      int genderid,
+      int profwshionId,
+      DateTime dob,
+      File? file,
+      BuildContext context) async {
+    String formattedDate =
+        "${dob.day.toString().padLeft(2, '0')}/${dob.month.toString().padLeft(2, '0')}/${dob.year.toString()}";
+    final Map<String, String> requestBody = {
       "firstName": firstName,
       "lastName": lastName,
+      "email": email,
+      "DOB": formattedDate,
+      "genderID": "$genderid",
+      "professionId": "$profwshionId"
     };
     final Map<String, String> headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
       'Authorization': userBearerToken!,
     };
+
     PhotoController photoController = PhotoController();
     var sharedPreferences = await SharedPreferences.getInstance();
     SharedPreferencesHelper sharedPreferencesHelper =
         SharedPreferencesHelper(sharedPreferences);
-    LoginModel mainUser = loginModelFromJson(
-        sharedPreferencesHelper.getString(Preferences.userFullDetails));
 
-        
-    final users = LoginModel(
-      status: userData!.status,
-      token: userBearerToken!,
-      message: userData!.message,
-      data: Data(
-        id: userData!.data.id,
-        firstName: firstName,
-        lastName: lastName,
-        email: userData!.data.email,
-        gender: userData!.data.gender,
-        dob: userData!.data.dob,
-        mobileNumber: userData!.data.mobileNumber,
-        profession: userData!.data.profession,
-        userProfile: userData!.data.userProfile,
-      ),
-    );
+    String gender = '';
+    String desi = '';
+    if (genderid == 1) {
+      gender = "Male";
+    } else if (genderid == 2) {
+      gender = "Female";
+    } else {
+      gender = "Others";
+    }
+    if (profwshionId == 1) {
+      desi = "Student";
+    } else if (profwshionId == 2) {
+      desi = "Teacher";
+    } else {
+      desi = "Admin";
+    }
 
-    final response = await postMethod(
-        '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
+    final request = http.MultipartRequest(
+        'POST', Uri.parse("$baseUrl$userProfileUpdateUrl"));
+    if (file != null) {
+      List<int> imageBytes = await file.readAsBytes();
+
+      String encodedFilePath = Uri.encodeFull(file.path);
+      var imagePart = await http.MultipartFile.fromPath(
+        'userProfile',
+        encodedFilePath,
+      );
+
+      request.files.add(imagePart);
+    }
+    request.headers.addAll(headers);
+    request.fields.addAll(requestBody);
+
+    final response = await request.send();
+    // final response = await postMethod(
+    //     '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
     try {
+      print("inside try");
       if (response.statusCode == 200) {
-        print('here');
+        print(gender);
+        var response3 = await response.stream.bytesToString();
+        var user3 = updateFromJson(response3);
+        print(user3.data.userProfile);
+        final users = LoginModel(
+          status: userData!.status,
+          token: userBearerToken!,
+          message: userData!.message,
+          data: Data(
+            id: userData!.data.id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            gender: [Gender(id: genderid, name: gender)],
+            dob: formattedDate,
+            mobileNumber: userData!.data.mobileNumber,
+            profession: [Gender(id: profwshionId, name: desi)],
+            userProfile: user3.data.userProfile,
+          ),
+        );
+        print("2nd ty");
+        userData = users;
         await sharedPreferencesHelper.putString(
             Preferences.userFullDetails, jsonEncode(users));
         firstNameobx.value = firstName;
         lastNameobx.value = lastName;
-
+        emailobx.value = email;
+        selectedBirthDate.value = formattedDate;
+        selectedDesignation.value = desi;
+        selectedGender.value = gender;
         if (context.mounted) {
           DialogUtils.showCustomDialog(context, "Success", "User Data Updated");
         }
-
+        print("3rd try");
         return true;
       } else if (response.statusCode == 404) {
         if (context.mounted) {
@@ -106,12 +167,13 @@ class SignUpController extends GetxController {
 
         return false;
       } else {
-        Map<String, dynamic> error = json.decode(response.body);
-        print(error['message']);
-
         if (context.mounted) {
-          Map<String, dynamic> error = json.decode(response.body);
-          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+          var response3 = await response.stream.bytesToString();
+          Map<String, dynamic> responseMap = json.decode(response3);
+          //  print();
+          print("else call form image" + responseMap['message']);
+          DialogUtils.showCustomDialog(
+              context, "Alert!!", responseMap['message']);
         }
         return false;
       }
@@ -166,22 +228,51 @@ class SignUpController extends GetxController {
       request.fields.addAll(requestBody);
 
       final response = await request.send();
-      const url = '$baseUrl$signupUrl';
 
-      
       if (response.statusCode == 200) {
         if (context.mounted) {
-          DialogUtils.showCustomDialog(
-              context, "Success", 'Registration Successfull');
+          Get.dialog(AlertDialog(
+            title: Text("Success", style: const TextStyle(fontSize: 25)),
+            content: Text(
+              "Registration successful",
+              style: const TextStyle(fontSize: 18),
+            ),
+            actions: <Widget>[
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    Get.back();
+                    Get.offAll(LoginScreen());
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: purpleColor.withOpacity(0.2),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15))),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.only(left: 7, right: 7, top: 2, bottom: 3),
+                      child: Text(
+                        'OK',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: purpleColor),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+            
+          )   ,     barrierDismissible: false,
+);
         }
-
-        Get.offAll(LoginScreen());
       } else {
         print("Here Elese Call ");
         if (context.mounted) {
           var response3 = await response.stream.bytesToString();
           Map<String, dynamic> responseMap = json.decode(response3);
-          //  print();
           DialogUtils.showCustomDialog(
               context, "Alert!!", responseMap['message']);
         }
@@ -205,6 +296,7 @@ class SignUpController extends GetxController {
 
   void changeBirthDate(String Date) {
     selectedBirthDate.value = Date;
+    isBirthValid.value = Date.isNotEmpty;
   }
 
   void changeDesignation(String Designation) {
@@ -212,7 +304,6 @@ class SignUpController extends GetxController {
       selectedDesignation.value = Designation;
       designations.remove('Select Designation');
     }
-
     void verifyOtp() {}
   }
 }

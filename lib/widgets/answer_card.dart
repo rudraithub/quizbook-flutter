@@ -25,7 +25,7 @@ class AnswerCard extends StatelessWidget {
     bool isWrongAnswer = !isCorrectAnswer && isSelected;
     return selectedAnswerIndex != null ? Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0), // Set border radius
+        borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(
             color: isCorrectAnswer ? Colors.green : isWrongAnswer ? Colors.red : Colors.white,
             width: 1.0), // Set border color and width
@@ -39,7 +39,7 @@ class AnswerCard extends StatelessWidget {
       ),
     )
 
-    // If no option is selected
+    
         : Card(
       color: Colors.white,
       child: ListTile(

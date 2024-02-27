@@ -1,4 +1,6 @@
-const baseUrl = 'http://192.168.1.13:3000/';
+const baseUrl = 'http://65.1.125.61:3000/';
+// const baseUrl = 'http://192.168.1.13:3000/';
+
 const loginUrl = 'users/login';
 const signupUrl = 'users/signup';
 const userVerifyUrl = 'user/varify';

@@ -47,7 +47,9 @@ class _StudyScreenState extends State<StudyScreen> {
           displacement: 180,
           onRefresh: () async {
             setState(() {
+              provider.clearModel();
               provider.fetchStudyModel(context);
+              setState(() {});
             });
           },
           child: Obx(
@@ -55,34 +57,63 @@ class _StudyScreenState extends State<StudyScreen> {
               if (provider.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               } else if (provider.stdList.value.data.isEmpty) {
-                return const Center(
-                  child: Text(
-                    "Currently No Quiz Available",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                );
-              } else {
-                bool anySubjectNotEmpty = provider.stdList.value.data.any((element) => element.subjects.isNotEmpty);
-                if (anySubjectNotEmpty) {
-                  return ListView.builder(
-                  itemCount: provider.stdList.value.data.length,
+                return ListView.builder(
+                  itemCount: 1,
                   itemBuilder: (context, index) {
-                    if (provider.stdList.value.data[index].subjects.isEmpty) {
-                      return null;
-                    }
-                    return StudyItem(
-                      model: provider.stdList.value.data[index],
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: const Center(
+                        child: Text(
+                          "Currently No Quiz Available",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                     );
                   },
                 );
-                }
-                else{
-                   return const Center(
-                  child: Text(
-                    "Currently No Quiz Available",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                );
+              } else {
+                bool anySubjectNotEmpty = provider.stdList.value.data
+                    .any((element) => element.subjects.isNotEmpty);
+                if (anySubjectNotEmpty) {
+                  return ListView.builder(
+                    itemCount: provider.stdList.value.data.length,
+                    itemBuilder: (context, index) {
+                      if (provider.stdList.value.data[index].subjects.isEmpty) {
+                        return ListView.builder(
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: const Center(
+                                child: Text(
+                                  "Currently No Quiz Available",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return StudyItem(
+                        model: provider.stdList.value.data[index],
+                      );
+                    },
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: const Center(
+                          child: Text(
+                            "Currently No Quiz Available",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 }
               }
             },
@@ -90,48 +121,3 @@ class _StudyScreenState extends State<StudyScreen> {
         ));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void loadData() async{
-//     final uri = Uri.parse('http://192.168.1.19:3000/std');
-//     try {
-//       print('inside try');
-//         http.Response response = await http.get(uri);
-//         final Map<String,dynamic> listData = json.decode(response.body);
-//         final List<StudyModel> mainList = [];
-//         print(response.statusCode);
-        
-//         for(final item in listData['data']){
-//           print(item['std']);
-//           List<Subject> subb = [];
-//           for (final item2 in item['subject']) {
-//             subb.add(Subject(imageUrl: item2['img'], subName: item2['subjectName'])) ;                       
-//             // print(item2['img']);
-//           }
-//           mainList.add(StudyModel(std: item['std'].toString(), sub: subb));
-          
-//         }
-//         setState(() {
-//         studyList = mainList;
-//         _isLoading = false;
-//       });
-//     } catch (e) {
-//       setState(() {
-//         _eror = e.toString();
-//         print(e.toString());
-//       });
-//     }
-//   }
