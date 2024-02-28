@@ -154,6 +154,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isProfile) {
+      
+    }
+
     print("Building Screen");
 
     return Obx(() {
