@@ -171,6 +171,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                       child: AnswerCard(
                                         currentIndex: index,
                                         option:
+
                                             "$letter: ${questionController.apiQuestion.value.data?[questionIndex].option?[index]}",
                                         isSelected:
                                             selectedAnswerIndex == index,

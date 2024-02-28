@@ -158,6 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       
     }
 
+
     print("Building Screen");
 
     return Obx(() {
