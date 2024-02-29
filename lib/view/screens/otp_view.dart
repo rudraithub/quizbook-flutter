@@ -27,6 +27,7 @@ class OTPScreen extends StatelessWidget {
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60.0),
         child: CommonAppBarScreen(
+          needPopUpButton: false,
           title: 'OTP Verification',
           backgroundColor: whiteColor, // Customize the color here
           centerTitle: true,

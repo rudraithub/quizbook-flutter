@@ -96,30 +96,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void _onFocusChange() {
-    if (!_focusNode.hasFocus) {
-      FocusManager.instance.primaryFocus?.unfocus();
-    }
-  }
+  // void _onFocusChange() {
+  //   if (!_focusNode.hasFocus) {
+  //     FocusManager.instance.primaryFocus?.unfocus();
+  //   }
+  // }
 
   @override
   void initState() {
     print("initcall");
     if (widget.isProfile) {
-      // Here  gg
       btnText = "Update";
       _firstNameController.text =
           widget.firstName.isEmpty ? '' : widget.firstName;
       _lastNameController.text = widget.lastName.isEmpty ? '' : widget.lastName;
-      // signUpCantroller.lastNameobx.value == ''
-      //     ? signUpCantroller.lastNameobx.value = widget.lastName
-      //     : null;
-      // signUpCantroller.firstNameobx.value == ''
-      //     ? signUpCantroller.firstNameobx.value = widget.firstName
-      //     : null;
-      // signUpCantroller.emailobx.value == ''
-      //     ? signUpCantroller.emailobx.value = widget.email
-      //     : null;
+     
       signUpCantroller.selectedBirthDate.value == 'Select Date'
           ? signUpCantroller.selectedBirthDate.value = widget.date
           : null;
@@ -154,10 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isProfile) {
-      
-    }
-
+    if (widget.isProfile) {}
 
     print("Building Screen");
 
@@ -208,7 +196,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           if (loadingProgress == null) {
                                             return child;
                                           } else {
-                                            return Center(
+                                            return const Center(
                                               child:
                                                   CircularProgressIndicator(),
                                             );
@@ -237,47 +225,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 backgroundImage: FileImage(
                                     photoController.selectedImage.value!),
                               )),
-                   
-
-                       CommonTextFormField(
-                        controller: _firstNameController,
-                        label: 'First Name',
-                        errorMessage: 'Enter Your First Name',
-                        inputType: TextInputType.text,
-                        formatter: [],
-                        length: 60,
-                        onTap: () {},
-                      ),
-                    
-                    // Obx(() {
-                    //   signUpCantroller.lastNameobx.value.isEmpty
-                    //       ? null
-                    //       : _lastNameController.text =
-                    //           signUpCantroller.lastNameobx.value;
-
-                    //   return 
-                      CommonTextFormField(
-                        controller: _lastNameController,
-                        label: 'Last Name',
-                        errorMessage: 'Enter Your Last Name',
-                        inputType: TextInputType.text,
-                        formatter: [],
-                        length: 60,
-                        onTap: () {},
-                      ),
-                    // }),
-                  
-                       CommonTextFormField(
-                        controller: _emailController,
-                        label: 'Email ID',
-                        errorMessage: 'Please enter valid Email Id',
-                        inputType: TextInputType.text,
-                        formatter: [],
-                        length: 60,
-                        onTap: () {},
-                        isEmailField: true,
-                      ),
-                    
+                    CommonTextFormField(
+                      controller: _firstNameController,
+                      label: 'First Name',
+                      errorMessage: 'Enter Your First Name',
+                      inputType: TextInputType.text,
+                      formatter: [],
+                      length: 60,
+                      onTap: () {},
+                    ),
+                    CommonTextFormField(
+                      controller: _lastNameController,
+                      label: 'Last Name',
+                      errorMessage: 'Enter Your Last Name',
+                      inputType: TextInputType.text,
+                      formatter: [],
+                      length: 60,
+                      onTap: () {},
+                    ),
+                    CommonTextFormField(
+                      controller: _emailController,
+                      label: 'Email ID',
+                      errorMessage: 'Please enter valid Email Id',
+                      inputType: TextInputType.text,
+                      formatter: [],
+                      length: 60,
+                      onTap: () {},
+                      isEmailField: true,
+                    ),
                     CommonTextFormField(
                       controller: _mobileController,
                       label: 'Mobile Number',
@@ -324,12 +299,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         value!;
                                   });
                                 },
-                                // validator: (value) {
-                                //   if (value == null || value.isEmpty) {
-                                //     return "Please select a gender";
-                                //   }
-                                //   return null;
-                                // },
                                 items: ['Male', 'Female', 'Others']
                                     .map<DropdownMenuItem<String>>(
                                       (String value) =>
@@ -347,20 +316,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
-                        // Obx(() {
-                        //   if (genderErrorMessage.value.isNotEmpty) {
-                        //     return Padding(
-                        //       padding: const EdgeInsets.only(top: 0),
-                        //       child: Text(
-                        //         genderErrorMessage.value,
-                        //         style: const TextStyle(
-                        //             color: redColor, fontSize: 13),
-                        //       ),
-                        //     );
-                        //   } else {
-                        //     return const SizedBox.shrink();
-                        //   }
-                        // }),
                         const SizedBox(
                           width: 5,
                         ),
@@ -373,9 +328,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         0.00475),
                                 child: InkWell(
                                   onTap: () {
-                                    // if (widget.isProfile) {
-                                    //   return;
-                                    // }
                                     Utility.showDatePickerDialog()
                                         .then((pickedDate) {
                                       if (pickedDate != null) {
@@ -393,7 +345,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       decoration: InputDecoration(
                                           labelText: 'BirthDate',
                                           errorText: dateErro,
-                                          labelStyle: TextStyle(
+                                          labelStyle: const TextStyle(
                                               color: greyColor,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500)),
@@ -456,12 +408,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               print("this is set State");
                             });
                           },
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty && desErrorMsg != null) {
-                          //     return "Please Select ";
-                          //   }
-                          //   return null;
-                          // },
                           items: ["Student", "Teacher", "Admin"]
                               .map<DropdownMenuItem<String>>(
                                 (String value) => DropdownMenuItem<String>(
@@ -477,30 +423,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    // SizedBox(
-                    //   child: desErrorMsg != null
-                    //       ? Padding(
-                    //           padding: const EdgeInsets.only(top: 8.0),
-                    //           child: Text(
-                    //             desErrorMsg!,
-                    //             style: const TextStyle(
-                    //                 color: redColor, fontSize: 13),
-                    //           ),
-                    //         )
-                    //       : const SizedBox.shrink(),
-                    // if (desErrorMsg != null) {
-                    //   return Padding(
-                    //     padding: const EdgeInsets.only(top: 8.0),
-                    //     child: Text(
-                    //       desErrorMsg!,
-                    //       style:
-                    //           const TextStyle(color: redColor, fontSize: 13),
-                    //     ),
-                    //   );
-                    // } else {
-                    //   return const SizedBox.shrink();
-                    // }
-                    // ),
+                    const SizedBox(height: 250,)
                   ],
                 ),
               ),
