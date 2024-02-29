@@ -157,7 +157,8 @@ class HistoryDetail extends StatelessWidget {
                   itemBuilder: (context, index) {
                     String letter = String.fromCharCode(65 + index);
 
-                    return HsAnswerCard(option: "$letter : ${options[0]}" ,isTrue: index == correctAnswerIndex,);
+                    return HsAnswerCard(option: "$letter : ${options[index]}" ,isTrue: index == correctAnswerIndex,);
+
                   },
                 ),
               ],

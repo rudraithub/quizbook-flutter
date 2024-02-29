@@ -4,14 +4,14 @@ import 'package:rudra_it_hub/utils/constants.dart';
 class AnswerCard extends StatelessWidget {
   const AnswerCard({
     super.key,
-    required this.question,
+    required this.option,
     required this.isSelected,
     required this.currentIndex,
     required this.correctAnswerIndex,
     required this.selectedAnswerIndex,
   });
 
-  final String question;
+  final String option;
   final bool isSelected;
   final int? correctAnswerIndex;
   final int? selectedAnswerIndex;
@@ -33,7 +33,7 @@ class AnswerCard extends StatelessWidget {
       color: isCorrectAnswer ? Colors.green[100] : isWrongAnswer ? Colors.red[100] : Colors.white,
       child: ListTile(
         title: Text(
-          question,
+          option,
           style:  TextStyle(fontSize: screenHeight * 0.025),
         ),
       ),
@@ -44,7 +44,7 @@ class AnswerCard extends StatelessWidget {
       color: Colors.white,
       child: ListTile(
         title: Text(
-          question,
+          option,
           style:  TextStyle(fontSize: screenHeight * 0.025),
         ),
         // onTap: (){
