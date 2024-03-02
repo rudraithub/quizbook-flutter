@@ -73,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 inputType: TextInputType.number,
                 formatter: [mobileLengthFormatter, mobileLengthFormatter],
                 onTap: () {},
+                autoFocus: true,
                 isMobileNumber: true,
                 // isReadOnly: false,
               ),

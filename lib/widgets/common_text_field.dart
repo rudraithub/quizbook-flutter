@@ -103,7 +103,8 @@ class CommonTextFormField extends StatelessWidget {
           disabledBorder: border,
           focusedErrorBorder: errorBorder,
           enabledBorder: border,
-          prefix: isMobileNumber
+          prefix:
+           isMobileNumber
               ? Text('+91', style: mobileNumberStyle)
               : const SizedBox.shrink(),
           suffix: isDropDown

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:rudra_it_hub/controller/signup_controller.dart';
 import 'package:rudra_it_hub/controller/upload_image_controller.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
@@ -57,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final TextEditingController _mobileController = TextEditingController();
 
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
 
   final PhotoController photoController = Get.put(PhotoController());
 
@@ -110,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _firstNameController.text =
           widget.firstName.isEmpty ? '' : widget.firstName;
       _lastNameController.text = widget.lastName.isEmpty ? '' : widget.lastName;
-     
+
       signUpCantroller.selectedBirthDate.value == 'Select Date'
           ? signUpCantroller.selectedBirthDate.value = widget.date
           : null;
@@ -145,9 +146,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isProfile) {}
+    if (widget.isProfile) {
+      signUpCantroller.selectedBirthDate.value == 'Select Date'
+          ? signUpCantroller.selectedBirthDate.value = widget.date
+          : null;
+    }
 
-    print("Building Screen");
 
     return Obx(() {
       var profile = photoController.selectedImage.value;
@@ -182,8 +186,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ? (widget.isProfile
                                 ? CircleAvatar(
                                     radius: 50,
-                                    // backgroundImage: NetworkImage(
-                                    //     userData!.data.userProfile),
                                     child: ClipOval(
                                       child: Image.network(
                                         userData!.data.userProfile,
@@ -232,6 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       inputType: TextInputType.text,
                       formatter: [],
                       length: 60,
+                      
                       onTap: () {},
                     ),
                     CommonTextFormField(
@@ -265,7 +268,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       isReadOnly: widget.isProfile,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Center(
@@ -320,59 +323,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           width: 5,
                         ),
                         Flexible(
-                          child: Center(
-                            child: SizedBox(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: MediaQuery.of(context).size.height *
-                                        0.00475),
-                                child: InkWell(
-                                  onTap: () {
-                                    Utility.showDatePickerDialog()
-                                        .then((pickedDate) {
-                                      if (pickedDate != null) {
-                                        signUpCantroller.changeBirthDate(
-                                            "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year.toString()}");
-                                        selectedDate = pickedDate;
-                                        setState(() {
-                                          dateErro = null;
-                                        });
-                                      }
-                                    });
-                                  },
-                                  child: Obx(
-                                    () => InputDecorator(
-                                      decoration: InputDecoration(
-                                          labelText: 'BirthDate',
-                                          errorText: dateErro,
-                                          labelStyle: const TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500)),
-                                      child: signUpCantroller
-                                                  .selectedBirthDate.value ==
-                                              "Select Date"
-                                          ? Text(
-                                              signUpCantroller
-                                                  .selectedBirthDate.value,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: greyColor,
-                                                  fontWeight: FontWeight.w500,
-                                                  overflow: TextOverflow.clip),
-                                            )
-                                          : Text(
-                                              signUpCantroller
-                                                  .selectedBirthDate.value,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: blackColor,
-                                                  fontWeight: FontWeight.w500,
-                                                  overflow: TextOverflow.clip),
-                                            ),
-                                    ),
+                          child: SizedBox(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      0.00475),
+                              child: InkWell(
+                                onTap: () {
+                                  Utility.showDatePickerDialog()
+                                      .then((pickedDate) {
+                                    if (pickedDate != null) {
+                                      signUpCantroller.changeBirthDate(
+                                          "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year.toString()}");
+                                      selectedDate = pickedDate;
+                                      setState(() {
+                                        dateErro = null;
+                                      });
+                                    }
+                                  });
+                                },
+                                child: Obx(
+                                  () => InputDecorator(
+                                    decoration: InputDecoration(
+                                        labelText: 'BirthDate',
+                                        errorText: dateErro,
+                                        labelStyle: const TextStyle(
+                                            color: greyColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500)),
+                                    child: signUpCantroller
+                                                .selectedBirthDate.value ==
+                                            "Select Date"
+                                        ? Text(
+                                            signUpCantroller
+                                                .selectedBirthDate.value,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.w500,
+                                                overflow: TextOverflow.clip),
+                                          )
+                                        : Text(
+                                            signUpCantroller
+                                                .selectedBirthDate.value,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: blackColor,
+                                                fontWeight: FontWeight.w500,
+                                                overflow: TextOverflow.clip),
+                                          ),
                                   ),
                                 ),
                               ),
@@ -423,7 +424,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 250,)
+                    const SizedBox(
+                      height: 250,
+                    )
                   ],
                 ),
               ),
@@ -480,7 +483,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _emailController.text,
                       genderId,
                       professionId,
-                      selectedDate,
+                      selectedDate != null
+                          ? selectedDate!
+                          : DateFormat("dd/MM/yyyy")
+                              .parse(signUpCantroller.selectedBirthDate.value),
                       photoController.selectedImage.value,
                       context);
                 } else {
@@ -494,7 +500,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _lastNameController.text,
                       _emailController.text,
                       genderId,
-                      selectedDate,
+                      selectedDate!,
                       _mobileController.text,
                       professionId,
                       photoController.selectedImage.value!,
