@@ -1,5 +1,7 @@
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
@@ -7,6 +9,15 @@ class SharedPreferencesHelper {
 
   SharedPreferencesHelper(this._prefs);
 
+
+  String getString(String key ,){
+    if (_prefs == null) return ''; 
+    return _prefs.getString(key) ?? '';
+  }
+
+Future<void> putString2(String key , String value)async{
+  _prefs!.setString(key, value);
+}
   // get bool
   bool getBool(String key, {bool defValue = false}) {
     if (_prefs == null) return defValue;
@@ -43,11 +54,11 @@ class SharedPreferencesHelper {
     return _prefs.setDouble(key, value);
   }
 
-  // get string
-  String getString(String key, {String defValue = ''}) {
-    if (_prefs == null) return defValue;
-    return _prefs.getString(key) ?? defValue;
-  }
+  // // get string
+  // String getString(String key, {String defValue = ''}) {
+  //   if (_prefs == null) return defValue;
+  //   return _prefs.getString(key) ?? defValue;
+  // }
 
   // put string
   Future<bool> putString(String key, String value) {

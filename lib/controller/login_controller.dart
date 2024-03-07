@@ -32,11 +32,11 @@ class LoginController extends GetxController {
       var header = <String, String>{};
       header['Content-Type'] = 'application/json';
 
-      final response = await postMethod('$baseUrl$userVerifyUrl', body, header ,context);
+      final response =
+          await postMethod('$baseUrl$userVerifyUrl', body, header, context);
 
       if (response.statusCode == 200) {
         final responseString = response;
-
 
         try {
           await FirebaseAuth.instance.verifyPhoneNumber(
@@ -44,8 +44,8 @@ class LoginController extends GetxController {
               verificationFailed: (FirebaseAuthException ex) {
                 changeLoading(false, context);
                 // commonSnackBar(context: context, msg: ex.toString());
-                DialogUtils.showCustomDialog(context, "Sorry", 'Something Went Wrong');
-
+                DialogUtils.showCustomDialog(
+                    context, "Sorry", 'Something Went Wrong');
               },
               codeSent: (String verificationId, int? resendToken) {
                 changeLoading(false, context);
@@ -69,18 +69,14 @@ class LoginController extends GetxController {
         }
       } else {
         Map<String, dynamic> error = json.decode(response.body);
-        // print(error['message'] + ' ssss');
 
         if (context.mounted) {
           changeLoading(false, context);
-          // commonSnackBar(context: context, msg: error['message']);
           DialogUtils.showCustomDialog(context, "Sorry", error['message']);
-
         }
       }
     } catch (e) {
       if (context.mounted) {
-        // commonSnackBar(context: context, msg: e.toString());
         DialogUtils.showCustomDialog(context, "Sorry", e.toString());
 
         changeLoading(false, context);
