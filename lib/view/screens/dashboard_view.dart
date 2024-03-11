@@ -39,7 +39,7 @@ class _AppbarBottomBarScreenState extends State<AppbarBottomBarScreen>
               return const StudyScreen();
             } else if (index == 1) {
               return const History();
-            } else
+            } else{
               return SignUpScreen(
                 firstName: userData?.data.firstName ?? '',
                 isProfile: true,
@@ -49,7 +49,7 @@ class _AppbarBottomBarScreenState extends State<AppbarBottomBarScreen>
                 gender: userData?.data.gender[0].name ?? "",
                 desi: userData?.data.profession[0].name ?? "",
                 date: userData?.data.dob ?? "",
-              );
+              );}
           }),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
