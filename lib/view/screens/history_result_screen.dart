@@ -36,7 +36,9 @@ class HistoryDetail extends StatelessWidget {
                     chapterHistory.questions[index]
                         .option[chapterHistory.questions[index].rightAnswer],
                     chapterHistory.questions[index].rightAnswer,
-                    screenHeight)
+                    screenHeight,
+                    chapterHistory.questions[index]
+                        .option[chapterHistory.questions[index].userAns])
               ],
             );
           } else {
@@ -52,7 +54,9 @@ class HistoryDetail extends StatelessWidget {
                     chapterHistory.questions[index]
                         .option[chapterHistory.questions[index].rightAnswer],
                     chapterHistory.questions[index].rightAnswer,
-                    screenHeight));
+                    screenHeight,
+                    chapterHistory.questions[index]
+                        .option[chapterHistory.questions[index].userAns]));
           }
         },
       ),
@@ -129,6 +133,7 @@ class HistoryDetail extends StatelessWidget {
     String correctAnswer,
     int correctAnswerIndex,
     double screenHeight,
+    String userAnswer,
   ) {
     return Card(
       elevation: 5,
@@ -169,7 +174,7 @@ class HistoryDetail extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "User Answer : $correctAnswer",
+                "User Answer : $userAnswer",
                 style: TextStyle(
                   color: Colors.red,
                   fontSize: screenHeight * 0.0220,
