@@ -1,5 +1,3 @@
-// ignore_for_file: curly_braces_in_flow_control_structures, file_names
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
@@ -9,17 +7,24 @@ import 'package:rudra_it_hub/view/screens/signup_view.dart';
 import 'package:rudra_it_hub/view/screens/std_screen.dart';
 import '../../controller/dashboard_controller.dart';
 
-class AppbarBottomBarScreen extends StatelessWidget {
+class AppbarBottomBarScreen extends StatefulWidget {
+  @override
+  _AppbarBottomBarScreenState createState() => _AppbarBottomBarScreenState();
+}
+
+class _AppbarBottomBarScreenState extends State<AppbarBottomBarScreen>
+    with AutomaticKeepAliveClientMixin {
+
   final AppbarBottomBarController _controller =
       Get.put(AppbarBottomBarController());
 
-          
+  @override
+  bool get wantKeepAlive => true;
 
-  AppbarBottomBarScreen({
-    super.key,
-  });
   @override
   Widget build(BuildContext context) {
+    super.build(context); // This is important.
+
     return Scaffold(
       body: PageView.builder(
           itemCount: 3,
@@ -34,7 +39,7 @@ class AppbarBottomBarScreen extends StatelessWidget {
               return const StudyScreen();
             } else if (index == 1) {
               return const History();
-            } else
+            } else{
               return SignUpScreen(
                 firstName: userData?.data.firstName ?? '',
                 isProfile: true,
@@ -44,16 +49,16 @@ class AppbarBottomBarScreen extends StatelessWidget {
                 gender: userData?.data.gender[0].name ?? "",
                 desi: userData?.data.profession[0].name ?? "",
                 date: userData?.data.dob ?? "",
-              );
+              );}
           }),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           showUnselectedLabels: true,
           unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.blue[800],
+          selectedItemColor: purpleColor,
           showSelectedLabels: true,
           iconSize: getScreenHeight(context) * 0.050,
-          currentIndex: _controller.currentIndex.value,
+          currentIndex: _controller.currentIndex.value ,
           onTap: _controller.onTabTapped,
           items: const [
             BottomNavigationBarItem(

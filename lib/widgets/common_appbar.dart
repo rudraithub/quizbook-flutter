@@ -33,10 +33,12 @@ class CommonAppBarScreen extends StatelessWidget {
   final bool isBackArrow;
   final bool automaticallyImplyLeading;
   final bool isProfile;
+  final bool needPopUpButton;
 
   const CommonAppBarScreen({
     super.key,
     required this.title,
+    this.needPopUpButton =true,
     required this.backgroundColor,
     this.centerTitle = true,
     this.isBackArrow = true,
@@ -59,7 +61,7 @@ class CommonAppBarScreen extends StatelessWidget {
       ),
       centerTitle: centerTitle,
       actions: [
-        InkWell(
+      needPopUpButton ? InkWell(
           onTap: () {
             print("hi");
           },
@@ -90,8 +92,8 @@ class CommonAppBarScreen extends StatelessWidget {
             },
             onSelected: (value) => print("Prashat"),
           ),
-        )
-      ],
+        ) : SizedBox.shrink()
+      ] ,
     );
   }
 }

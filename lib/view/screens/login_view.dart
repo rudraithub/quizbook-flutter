@@ -66,7 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: CommonTextFormField(
-                autoFocus: true,
                 hint: 'Enter Your Mobile Number',
                 controller: _mobileController,
                 label: 'Mobile Number',
@@ -74,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 inputType: TextInputType.number,
                 formatter: [mobileLengthFormatter, mobileLengthFormatter],
                 onTap: () {},
+                autoFocus: true,
                 isMobileNumber: true,
                 // isReadOnly: false,
               ),
@@ -121,10 +121,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+
                   //  FocusScope.of(context).unfocus();
                   loginController.logInUser(context, _mobileController);
                   loginController.changeLoading(true, context);
-                 
+
                   loginController.isLoading.value
                       ? showDialog(
                           context: context,

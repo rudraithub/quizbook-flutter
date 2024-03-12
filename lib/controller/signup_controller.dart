@@ -120,8 +120,7 @@ class SignUpController extends GetxController {
     request.fields.addAll(requestBody);
 
     final response = await request.send();
-    // final response = await postMethod(
-    //     '$baseUrl$userProfileUpdateUrl', requestBody, headers, context);
+
     try {
       print("inside try");
       if (response.statusCode == 200) {
@@ -212,7 +211,7 @@ class SignUpController extends GetxController {
     final Map<String, String> headers = {'Content-Type': 'multipart/form-data'};
 
     try {
-      List<int> imageBytes = await file.readAsBytes();
+      // List<int> imageBytes = await file.readAsBytes();
 
       // String fileName = file.path.split('/').last;
       String encodedFilePath = Uri.encodeFull(file.path);
@@ -231,42 +230,44 @@ class SignUpController extends GetxController {
 
       if (response.statusCode == 200) {
         if (context.mounted) {
-          Get.dialog(AlertDialog(
-            title: Text("Success", style: const TextStyle(fontSize: 25)),
-            content: Text(
-              "Registration successful",
-              style: const TextStyle(fontSize: 18),
-            ),
-            actions: <Widget>[
-              Center(
-                child: InkWell(
-                  onTap: () {
-                    Get.back();
-                    Get.offAll(LoginScreen());
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: purpleColor.withOpacity(0.2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15))),
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.only(left: 7, right: 7, top: 2, bottom: 3),
-                      child: Text(
-                        'OK',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: purpleColor),
+          Get.dialog(
+            AlertDialog(
+              title:
+                  const Text("Success", style: const TextStyle(fontSize: 25)),
+              content: const Text(
+                "Registration successful",
+                style: TextStyle(fontSize: 18),
+              ),
+              actions: <Widget>[
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                      Get.offAll(LoginScreen());
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: purpleColor.withOpacity(0.2),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15))),
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                            left: 7, right: 7, top: 2, bottom: 3),
+                        child: Text(
+                          'OK',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: purpleColor),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
-            
-          )   ,     barrierDismissible: false,
-);
+                )
+              ],
+            ),
+            barrierDismissible: false,
+          );
         }
       } else {
         print("Here Elese Call ");

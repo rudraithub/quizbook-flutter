@@ -35,9 +35,7 @@ class HistoryDetail extends StatelessWidget {
                     chapterHistory.questions[index].option,
                     chapterHistory.questions[index]
                         .option[chapterHistory.questions[index].rightAnswer],
-                        
                     chapterHistory.questions[index].rightAnswer,
-
                     screenHeight)
               ],
             );
@@ -157,8 +155,10 @@ class HistoryDetail extends StatelessWidget {
                   itemBuilder: (context, index) {
                     String letter = String.fromCharCode(65 + index);
 
-                    return HsAnswerCard(option: "$letter : ${options[index]}" ,isTrue: index == correctAnswerIndex,);
-
+                    return HsAnswerCard(
+                      option: "$letter : ${options[index]}",
+                      isTrue: index == correctAnswerIndex,
+                    );
                   },
                 ),
               ],

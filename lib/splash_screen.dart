@@ -25,20 +25,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
       Future.delayed(const Duration(seconds: 2), () {
-        // bool loginStatus = prefs.getBool(Preferences.userLogin) ?? false;
         bool loginStatus =
             SharedPreferencesHelper(prefs).getBool(Preferences.userLogin);
         if (loginStatus == true) {
-          print('true');
-           userData = loginModelFromJson(
-              SharedPreferencesHelper(prefs)
-                  .getString(Preferences.userFullDetails));
+          userData = loginModelFromJson(SharedPreferencesHelper(prefs)
+              .getString(Preferences.userFullDetails));
           userBearerToken = userData!.token;
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    AppbarBottomBarScreen(),
+                builder: (context) => AppbarBottomBarScreen(),
               ));
         } else {
           print('false');
