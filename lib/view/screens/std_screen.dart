@@ -74,32 +74,36 @@ class _StudyScreenState extends State<StudyScreen> {
               } else {
                 bool anySubjectNotEmpty = provider.stdList.value.data
                     .any((element) => element.subjects.isNotEmpty);
-                if (anySubjectNotEmpty) {                               
+                if (anySubjectNotEmpty) {
                   return ListView.builder(
                     itemCount: provider.stdList.value.data.length,
                     itemBuilder: (context, index) {
                       if (provider.stdList.value.data[index].subjects.isEmpty) {
+                        print('if');
                         return SizedBox(
-                          height: 800,
+                          height: 0,
                           child: ListView.builder(
                             itemCount: 1,
                             itemBuilder: (context, index) {
                               return SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.8,
-                                child: const Center(
-                                  child: Text(
-                                    "Currently No Quiz Available",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
+                                // height:
+                                //     MediaQuery.of(context).size.height * 0.8,
+                                // child: const Center(
+                                //   child: Text(
+                                //     "Currently No Quiz Available1",
+                                //     style: TextStyle(fontSize: 20),
+                                //   ),
+                                // ),
                               );
                             },
                           ),
                         );
+                      } else {
+                        print("else");
+                        return StudyItem(
+                          model: provider.stdList.value.data[index],
+                        );
                       }
-                      return StudyItem(
-                        model: provider.stdList.value.data[index],
-                      );
                     },
                   );
                 } else {
@@ -110,7 +114,7 @@ class _StudyScreenState extends State<StudyScreen> {
                         height: MediaQuery.of(context).size.height * 0.8,
                         child: const Center(
                           child: Text(
-                            "Currently No Quiz Available",
+                            "Currently No Quiz Available2",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),

@@ -27,6 +27,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int? selectedAnswerIndex;
   int questionIndex = 0;
   bool? isLastQuestion;
+  bool submiting = false;
   int score = 0;
   List<Map<String, dynamic>> resultData = [];
   QuestionController questionController = QuestionController();
@@ -99,7 +100,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                     MediaQuery.of(context).size.height * 0.8,
                                 child: const Center(
                                   child: Text(
-                                    "Question Not Availbale ",
+                                    "NO Question Availbale",
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ));
@@ -171,7 +172,6 @@ class _QuizScreenState extends State<QuizScreen> {
                                       child: AnswerCard(
                                         currentIndex: index,
                                         option:
-
                                             "$letter: ${questionController.apiQuestion.value.data?[questionIndex].option?[index]}",
                                         isSelected:
                                             selectedAnswerIndex == index,
@@ -196,13 +196,19 @@ class _QuizScreenState extends State<QuizScreen> {
               : isLastQuestion ?? false
                   ? CommonButton(
                       onPress: () async {
-                        if (selectedAnswerIndex != null) {
-                          questionController.resultDataSend(
-                              context: context,
-                              stdid: widget.stdId,
-                              subid: widget.subId,
-                              chapterid: widget.chapterId,
-                              questions: resultData);
+                        if (selectedAnswerIndex != null && !submiting) {
+                          setState(() {
+                            selectedAnswerIndex = null;
+                            submiting = true;
+                            questionController.resultDataSend(
+                                context: context,
+                                stdid: widget.stdId,
+                                subid: widget.subId,
+                                chapterid: widget.chapterId,
+                                questions: resultData);
+                          });
+                        } else if (submiting) {
+                          print('here');
                         } else {
                           DialogUtils.showCustomDialog(
                               context, "Empty Answer", "Please Select Option");

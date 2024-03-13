@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import '../utils/constants.dart';
@@ -31,19 +33,27 @@ class DialogUtils {
                     }
                   },
                   child: Container(
+                    height: 28,
+                    width: 50,
                     decoration: BoxDecoration(
                         color: purpleColor.withOpacity(0.2),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15))),
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.only(left: 7, right: 7, top: 2, bottom: 3),
-                      child: Text(
-                        'OK',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: purpleColor),
+                    child: Center(
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
+                        child: Text(
+                          
+                          'OK',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                      
+                            
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: purpleColor),
+                        ),
                       ),
                     ),
                   ),

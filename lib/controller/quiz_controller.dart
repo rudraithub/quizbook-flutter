@@ -124,18 +124,18 @@ class QuestionController extends GetxController {
       else if(response.statusCode == 403){
         isLoading.value = false;
 
-        if (context.mounted) {
-          json.decode(response.body);
-          DialogUtils.showCustomDialog(context, "Ops!!!", "No Question Available");
-        }
+        // if (context.mounted) {
+        //   json.decode(response.body);
+        //   DialogUtils.showCustomDialog(context, "Ops!!!", "No Question Available");
+        // }
       }
       else {
         isLoading.value = false;
 
-        if (context.mounted) {
-          Map<String, dynamic> error = json.decode(response.body);
-          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
-        }
+        // if (context.mounted) {
+        //   Map<String, dynamic> error = json.decode(response.body);
+        //   DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+        // }
       }
     } catch (e) {
       isLoading.value = false;
