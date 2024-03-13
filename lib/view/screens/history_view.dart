@@ -107,7 +107,8 @@ class _HistoryState extends State<History> {
                                           spreadRadius: 2,
                                           blurRadius: 3,
                                           offset: const Offset(0, 3))
-                                    ]),
+                                    ]
+                                    ),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       left: 10, right: 10, top: 10),

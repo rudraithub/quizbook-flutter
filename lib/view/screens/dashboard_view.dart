@@ -20,6 +20,8 @@ class _AppbarBottomBarScreenState extends State<AppbarBottomBarScreen>
 @override
   void initState() {
     _controller.pageController = PageController(initialPage: 0);
+    _controller.currentIndex.value =0;
+    print(_controller.currentIndex.value );
     super.initState();
   }
   @override

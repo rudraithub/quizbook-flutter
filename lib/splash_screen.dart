@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/instance_manager.dart';
-import 'package:rudra_it_hub/controller/dashboard_controller.dart';
 
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/utils/preference_helper.dart';
 import 'package:rudra_it_hub/utils/prefrences.dart';
 import 'package:rudra_it_hub/view/screens/dashboard_view.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
+import 'package:rudra_it_hub/view/screens/signup_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,9 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
           userData = loginModelFromJson(SharedPreferencesHelper(prefs)
               .getString(Preferences.userFullDetails));
           userBearerToken = userData!.token;
-      //     AppbarBottomBarController _controller2 =
-      // Get.put(AppbarBottomBarController());
-    // _controller2.onTabTapped(0);
+          //     AppbarBottomBarController _controller2 =
+          // Get.put(AppbarBottomBarController());
+          // _controller2.onTabTapped(0);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -48,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => LoginScreen(),
+                builder: (context) => Login(),
               ));
         }
       });
