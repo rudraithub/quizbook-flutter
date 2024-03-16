@@ -48,7 +48,6 @@ dependencies:
   loader_overlay: ^4.0.0
   dio: ^5.4.0
   path: ^1.8.3
-  firebase_app_check: ^0.2.1+18
   flutter_svg: ^2.0.10+1
   firebase_crashlytics: ^3.4.19
   firebase_analytics: ^10.8.10
