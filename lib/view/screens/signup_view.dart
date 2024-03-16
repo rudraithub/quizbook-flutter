@@ -72,11 +72,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final RxString genderErrorMessage = RxString('');
 
-  // final RxString desErrorMsg = RxString('');
   String? dateErro;
   String? desErrorMsg;
   String? genErrorMsg;
-  // final FocusNode _focusNode = FocusNode();
 
   String btnText = 'Next';
 
@@ -93,16 +91,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     desErrorMsg = null;
     photoController.clear();
     signUpCantroller.clear();
-    // _focusNode.dispose();
     super.dispose();
   }
 
-  // void _onFocusChange() {
-  //   if (!_focusNode.hasFocus) {
-  //     FocusManager.instance.primaryFocus?.unfocus();
-  //   }
-  // }
-
+ 
   @override
   void initState() {
     print("initcall");
@@ -529,14 +521,12 @@ class Dashe extends State<Dash> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     print("Prasha");
-    // super.build(context); // This is important.
 
     return Scaffold(
       body: PageView.builder(
           itemCount: 1,
           scrollDirection: Axis.horizontal,
           physics: const NeverScrollableScrollPhysics(),
-          // controller: _controller.pageController,
           onPageChanged: (index) {},
           itemBuilder: (_, index) {
               return SignUpScreen();

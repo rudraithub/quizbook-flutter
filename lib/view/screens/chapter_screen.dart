@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/chapter_controller.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
@@ -43,6 +44,8 @@ class _ChapterScreenState extends State<ChapterScreen> {
 
   @override
   Widget build(BuildContext context) {
+      var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = getScreenHeight(context);
     return RefreshIndicator(
       color: Colors.purple,
       strokeWidth: 2,
@@ -61,7 +64,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
             ),
           ),
           body: chProvider.isLoading.value
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : chProvider.chapterList.value.data.isEmpty
@@ -70,10 +73,21 @@ class _ChapterScreenState extends State<ChapterScreen> {
                       itemBuilder: (context, index) {
                         return SizedBox(
                             height: MediaQuery.of(context).size.height * 0.8,
-                            child: const Center(
-                              child: Text(" Currently no data available  ",
-                                  style: TextStyle(fontSize: 20)),
-                            ));
+                            child: 
+                            
+                             Center(
+                                  child: Column(
+                                    mainAxisAlignment:MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(noData, height: screenHeight * 0.191326531,width: screenHeight *0.191326531,),
+                                    const  Text(
+                                        "NO Chapter Availbale",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                            );
                       },
                     )
                   : ListView.builder(

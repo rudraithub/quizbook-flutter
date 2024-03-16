@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -39,8 +38,8 @@ class DialogUtils {
                         color: purpleColor.withOpacity(0.2),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15))),
-                    child: Center(
-                      child: const Padding(
+                    child:const Center(
+                      child:   Padding(
                         padding:
                             EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
                         child: Text(
