@@ -26,19 +26,19 @@ Future<Response> postMethod(String url, Map<String, dynamic> body,
     if (await checkInternetStatus() == false) {
       // print("Check ");
       if (context.mounted) {
-         DialogUtils.showCustomDialog(context, "Conection Lodt", 'Check Your Internet Connection And Try Again');
+         DialogUtils.showCustomDialog(context, "Conection Lost", 'Check Your Internet Connection And Try Again');
         // commonSnackBar(
         //     context: context,
-        //     msg: 'check your internet connection and try again');
+        //     msg: 'your internet connection and try again');
       }
-      throw ("Check Your Connection");
+      throw 'Check Your Internet Conection';
     } else {
       var response =
           await post(Uri.parse(url), headers: header, body: jsonEncode(body));
       return response;
     }
   } catch (e) {
-    rethrow;
+    throw "${e.toString()} common post method";
   }
 }
 
@@ -47,7 +47,7 @@ Future<Response> getMethode(
   try {
     if (await checkInternetStatus() == false) {
       if (context.mounted) {
-                  DialogUtils.showCustomDialog(context, "Conection Lodt", 'Check Your Internet Connection And Try Again');
+                  DialogUtils.showCustomDialog(context, "Conection Lost", 'Check Your Internet Connection And Try Again');
 
         // commonSnackBar(
         //     context: context,
@@ -57,11 +57,11 @@ Future<Response> getMethode(
       // const CommonAlertDialog(
       //   message: "Pleaseeee",
       // );
-      throw ("check");
+      throw ("Check Your Connection");
     }
     var response = await get(Uri.parse(url), headers: head);
     return response;
   } catch (e) {
-    throw ("Something Went Wrong");
+    throw ("$e");
   }
 }

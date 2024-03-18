@@ -174,11 +174,11 @@ class SignUpController extends GetxController {
           DialogUtils.showCustomDialog(
               context, "Alert!!", responseMap['message']);
         }
-        return false;
+        return false; 
       }
     } catch (e) {
       print(e.toString());
-      throw '';
+      throw "${e.toString()} Update User";
     }
   }
 
@@ -283,6 +283,8 @@ class SignUpController extends GetxController {
           context, "Ops!!!", "Please upload valid photo ");
     } catch (e) {
       print("Catch$e");
+      throw e.toString();
+
     } finally {
       print("Finally");
     }

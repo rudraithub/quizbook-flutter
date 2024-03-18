@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:rudra_it_hub/appUrl/all_url.dart';
 import 'package:rudra_it_hub/http_methods/http_all_method.dart';
@@ -18,6 +19,16 @@ import '../view/screens/dashboard_view.dart';
 import '../widgets/commo_alert_dilog.dart';
 
 class OTPController extends GetxController {
+  var isLoading = false.obs;
+  void changeLoading(bool loadingStatus, BuildContext context) {
+    if (isLoading.value) {
+      Navigator.of(context).pop();
+      isLoading.value = loadingStatus;
+    } else {
+      isLoading.value = loadingStatus;
+    }
+  }
+
   Future<void> verifyOTP(
       String verificationId,
       TextEditingController otpController,
@@ -31,24 +42,26 @@ class OTPController extends GetxController {
           .signInWithCredential(credential)
           .catchError((onError) async {
         // commonSnackBar(context: context, msg: 'Please enter correct otp');
+        changeLoading(false, context);
         DialogUtils.showCustomDialog(
             context, "Wrong OTP", 'Please enter correct otp');
       }).then((value) async {
+        changeLoading(false, context);
         LoginModel users = LoginModel(
             data: Data(
-                id: 0,
-                firstName: '',
-                lastName: '',
-                email: '',
-                gender: [],
-                dob: '',
-                mobileNumber: '',
-                profession: [],
-                userProfile: '',
-                ),
-                
+              id: 0,
+              firstName: '',
+              lastName: '',
+              email: '',
+              gender: [],
+              dob: '',
+              mobileNumber: '',
+              profession: [],
+              userProfile: '',
+            ),
             message: '',
-            status: 0, token: '');
+            status: 0,
+            token: '');
 
         final Map<String, dynamic> requestBody = {
           "mobileNumber": moNumber,
@@ -61,6 +74,7 @@ class OTPController extends GetxController {
 
         try {
           if (response.statusCode == 200) {
+            changeLoading(false, context);
             LoginModel users = loginModelFromJson(response.body);
             userData = users;
             userBearerToken = users.token;
@@ -68,10 +82,9 @@ class OTPController extends GetxController {
             var sharedPreferences = await SharedPreferences.getInstance();
             SharedPreferencesHelper sharedPreferencesHelper =
                 SharedPreferencesHelper(sharedPreferences);
-            
+
             sharedPreferencesHelper.putBool(Preferences.userLogin, true);
-            sharedPreferencesHelper.putString(
-                Preferences.token, users.token);
+            sharedPreferencesHelper.putString(Preferences.token, users.token);
             await sharedPreferencesHelper.putString(
                 Preferences.userFullDetails, jsonEncode(users));
 
@@ -85,6 +98,7 @@ class OTPController extends GetxController {
             }
           } else {
             // print('Here 3');
+            changeLoading(false, context);
 
             if (context.mounted) {
               // commonSnackBar(context: context, msg: "catch ${response.body}");
@@ -93,16 +107,20 @@ class OTPController extends GetxController {
             }
           }
         } catch (e) {
+          changeLoading(false, context);
           if (context.mounted) {
             // commonSnackBar(context: context, msg: "catch ${e.toString()}");
             DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
           }
+          throw e.toString();
         }
       });
     } catch (e) {
+      changeLoading(false, context);
       if (context.mounted) {
         DialogUtils.showCustomDialog(context, "Ops!!!", 'Something Went Wrong');
       }
+      throw e.toString();
     }
   }
 }

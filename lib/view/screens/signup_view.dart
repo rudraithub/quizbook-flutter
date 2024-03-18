@@ -72,11 +72,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final RxString genderErrorMessage = RxString('');
 
-  // final RxString desErrorMsg = RxString('');
   String? dateErro;
   String? desErrorMsg;
   String? genErrorMsg;
-  final FocusNode _focusNode = FocusNode();
 
   String btnText = 'Next';
 
@@ -93,16 +91,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     desErrorMsg = null;
     photoController.clear();
     signUpCantroller.clear();
-    _focusNode.dispose();
     super.dispose();
   }
 
-  // void _onFocusChange() {
-  //   if (!_focusNode.hasFocus) {
-  //     FocusManager.instance.primaryFocus?.unfocus();
-  //   }
-  // }
-
+ 
   @override
   void initState() {
     print("initcall");
@@ -152,11 +144,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           : null;
     }
 
-
     return Obx(() {
       var profile = photoController.selectedImage.value;
       return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CommonAppBarScreen(
@@ -174,6 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
                       height: 18,
@@ -234,7 +226,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       inputType: TextInputType.text,
                       formatter: [],
                       length: 60,
-                      
                       onTap: () {},
                     ),
                     CommonTextFormField(
@@ -424,9 +415,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 250,
-                    )
+
+                    // const SizedBox(
+                    //   height: 250,
+                    // )
                   ],
                 ),
               ),
@@ -459,7 +451,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               if (signUpCantroller.selectedDesignation.value ==
                   'Select Designation') {
                 setState(() {
-                  desErrorMsg = "Please Select Desi";
+                  desErrorMsg = "Please Select Designation";
                 });
               }
               if (signUpCantroller.selectedGender.value == 'Select Gender') {
@@ -472,10 +464,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   signUpCantroller.selectedDesignation.value !=
                       'Select Designation' &&
                   signUpCantroller.selectedBirthDate.value != 'Select Date' &&
+                  
                   signUpCantroller.selectedGender.value != 'Select Gender') {
                 print('else calll');
+                FocusScope.of(context).unfocus();
                 if (widget.isProfile) {
-                  FocusScope.of(context).unfocus();
+                  
                   FocusManager.instance.primaryFocus?.unfocus();
                   signUpCantroller.updateUser(
                       _firstNameController.text,
@@ -511,5 +505,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
             title: btnText),
       );
     });
+  }
+}
+
+class Dash extends StatefulWidget {
+  @override
+  Dashe createState() => Dashe();
+}
+
+class Dashe extends State<Dash> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    print("Prasha");
+
+    return Scaffold(
+      body: PageView.builder(
+          itemCount: 1,
+          scrollDirection: Axis.horizontal,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (index) {},
+          itemBuilder: (_, index) {
+              return SignUpScreen();
+          }),
+      
+      );
   }
 }

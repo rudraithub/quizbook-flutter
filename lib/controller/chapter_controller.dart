@@ -33,19 +33,21 @@ class ChapterController extends GetxController {
         isLoading(false);
         var jsonString = response.body;
         chapterList.value = chapterFromJson(jsonString);
-      } else {
+      } 
+      else {
         isLoading(false);
         if (context.mounted) {
           var responseData = json.decode(response.body);
-    String message = responseData['message'];
-          DialogUtils.showCustomDialog(context,"Ops!!!",message);
+    // String message = responseData['message'];
+    //       DialogUtils.showCustomDialog(context,"Ops!!!",message);
         }
       }
     }
     catch(e){
            chapterList.value = Chapter(status: 0, data: [], message: '');
-
       isLoading(false);
+      throw e.toString();
+
     }
      finally {
       isLoading(false);

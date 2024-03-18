@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/controller/quiz_controller.dart';
 import 'package:rudra_it_hub/widgets/answer_card.dart';
 import 'package:rudra_it_hub/widgets/common_button.dart';
 import '../../utils/constants.dart';
 import '../../widgets/commo_alert_dilog.dart';
+  bool submiting = false;
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
@@ -97,10 +99,16 @@ class _QuizScreenState extends State<QuizScreen> {
                             return SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.8,
-                                child: const Center(
-                                  child: Text(
-                                    "Question Not Availbale ",
-                                    style: TextStyle(fontSize: 20),
+                                child:  Center(
+                                  child: Column(
+                                    mainAxisAlignment:MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(noData, height: screenHeight * 0.191326531,width: screenHeight *0.191326531,),
+                                      Text(
+                                        "NO Question Availbale",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
                                   ),
                                 ));
                           },
@@ -171,7 +179,6 @@ class _QuizScreenState extends State<QuizScreen> {
                                       child: AnswerCard(
                                         currentIndex: index,
                                         option:
-
                                             "$letter: ${questionController.apiQuestion.value.data?[questionIndex].option?[index]}",
                                         isSelected:
                                             selectedAnswerIndex == index,
@@ -196,13 +203,19 @@ class _QuizScreenState extends State<QuizScreen> {
               : isLastQuestion ?? false
                   ? CommonButton(
                       onPress: () async {
-                        if (selectedAnswerIndex != null) {
-                          questionController.resultDataSend(
-                              context: context,
-                              stdid: widget.stdId,
-                              subid: widget.subId,
-                              chapterid: widget.chapterId,
-                              questions: resultData);
+                        if (selectedAnswerIndex != null && !submiting) {
+                          setState(() {
+                            // selectedAnswerIndex = null;
+                            submiting = true;
+                            questionController.resultDataSend(
+                                context: context,
+                                stdid: widget.stdId,
+                                subid: widget.subId,
+                                chapterid: widget.chapterId,
+                                questions: resultData);
+                          });
+                        } else if (submiting) {
+                          print('here');
                         } else {
                           DialogUtils.showCustomDialog(
                               context, "Empty Answer", "Please Select Option");

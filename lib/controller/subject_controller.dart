@@ -29,7 +29,12 @@ void clearModel(){
       } else {
         
       }
-    } finally {
+    } catch(e) {
+throw e.toString();
+    }
+    
+    finally {
+
       isLoading(false);
     }
   }

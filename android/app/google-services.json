@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1019940755554",
-    "project_id": "quiz-book-f4711",
-    "storage_bucket": "quiz-book-f4711.appspot.com"
+    "project_number": "409696356486",
+    "project_id": "quizbook-b6c9f",
+    "storage_bucket": "quizbook-b6c9f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1019940755554:android:8362a8d5cd186c6796193b",
+        "mobilesdk_app_id": "1:409696356486:android:5e4248bdcbf31e4d5c6907",
         "android_client_info": {
           "package_name": "com.example.rudra_it_hub"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB8Z-gVdAEE3_HHXbbYBAxdWluOYh0HZ5E"
+          "current_key": "AIzaSyAQxNiX4Nfcj-BT0I7L3Nbj86om7UqpjTI"
         }
       ],
       "services": {

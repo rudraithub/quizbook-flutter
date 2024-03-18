@@ -37,7 +37,7 @@ class StudyItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ધોરણ : ${model.std}",
+                      "Standard : ${model.std}",
                       style: TextStyle(
                           fontSize: screenHeight * 0.022,
                           fontWeight: FontWeight.bold),

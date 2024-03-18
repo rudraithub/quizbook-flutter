@@ -56,13 +56,16 @@ class HistoryController extends GetxController {
         }
       }
     } catch (e) {
+      
       isLoading.value =false;
       // print(e.toString());
-        if (context.mounted) {
-          DialogUtils.showCustomDialog(context, "Sorry", e.toString());
+        // if (context.mounted) {
+        //   DialogUtils.showCustomDialog(context, "Sorry", e.toString());
 
-        }
+        // }
       isLoading(false);
+      throw e.toString();
+
     } finally {
       isLoading(false);
     }

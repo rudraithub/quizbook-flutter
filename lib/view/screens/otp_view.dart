@@ -11,7 +11,7 @@ import '../../utils/constants.dart';
 class OTPScreen extends StatelessWidget {
   // ignore: unused_field
 
-  final _key = GlobalKey<FormState>();
+  final _key2 = GlobalKey<FormState>();
   OTPController otpController = OTPController();
 
   final TextEditingController _otpController = TextEditingController();
@@ -49,7 +49,7 @@ class OTPScreen extends StatelessWidget {
               Container(
                 width: 200,
                 child: Form(
-                  key: _key,
+                  key: _key2,
                   child: CommonTextFormField(
                     controller: _otpController, // Store text ,_ : private
                     errorMessage: 'Enter Valid OTP',
@@ -64,10 +64,28 @@ class OTPScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               CommonButton(
+                
                   onPress: () async {
+                    if (_key2.currentState!.validate()) {
+                      otpController.changeLoading(true, context);
+                                        FocusManager.instance.primaryFocus?.unfocus();
+
                     // FocusScope.of(context).unfocus();
+                    otpController.isLoading.value
+                        ? showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Center(
+                                  child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(purpleColor),
+                              ));
+                            })
+                        : null;
                     otpController.verifyOTP(
                         verificationId, _otpController, moNumber, context);
+                    }
+                    
                   },
                   title: "Verify OTP")
             ],

@@ -10,6 +10,7 @@ import 'package:rudra_it_hub/model/question2_model.dart';
 import 'package:rudra_it_hub/model/result.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/view/screens/congratulation_view.dart';
+import 'package:rudra_it_hub/view/screens/quiz_view_alpesh.dart';
 import 'package:rudra_it_hub/widgets/common_appbar.dart';
 
 import '../model/question_api_data.dart';
@@ -61,16 +62,18 @@ class QuestionController extends GetxController {
         "chapterid": chapterid,
         "questions": questions
       };
-      print('here');
+      print('result 1');
 
       // var encodedBody = jsonEncode(body);
 
       var response = await postMethod(url, body, headers, context);
-      print('here');
+      print('result 2');
       print(userBearerToken);
       var finalResult = resultFromJson(response.body);
 
       if (response.statusCode == 200) {
+                submiting = false;
+
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -81,11 +84,12 @@ class QuestionController extends GetxController {
             ),
           );
         }
-      } 
-      else if(response.statusCode == 404){
-        logOut(context , null);
-      }
-      else {
+      } else if (response.statusCode == 404) {
+        logOut(context, null);
+        submiting = false;
+      } else {
+        submiting = false;
+
         if (context.mounted) {
           Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
@@ -93,8 +97,11 @@ class QuestionController extends GetxController {
         print('object');
       }
     } catch (e) {
+      submiting = false;
+
       if (context.mounted) {}
       print(e.toString());
+      throw "${e.toString()} Quiz Cantroller Result Data Send";
     }
   }
 
@@ -120,30 +127,29 @@ class QuestionController extends GetxController {
         apiQuestion.value = questionApiDataFromJson(response.body);
         isLoading.value = false;
         print('inside try suc');
-      } 
-      else if(response.statusCode == 403){
+      } else if (response.statusCode == 403) {
         isLoading.value = false;
 
-        if (context.mounted) {
-          json.decode(response.body);
-          DialogUtils.showCustomDialog(context, "Ops!!!", "No Question Available");
-        }
-      }
-      else {
+        // if (context.mounted)  {
+        //   json.decode(response.body);
+        //   DialogUtils.showCustomDialog(context, "Ops!!!", "No Question Available");
+        // }
+      } else {
         isLoading.value = false;
 
-        if (context.mounted) {
-          Map<String, dynamic> error = json.decode(response.body);
-          DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
-        }
+        // if (context.mounted) {
+        //   Map<String, dynamic> error = json.decode(response.body);
+        //   DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
+        // }
       }
     } catch (e) {
-      isLoading.value = false;
-
       print("error msg ${e.toString()}");
-      if (context.mounted) {
-        DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
-      }
+
+      isLoading.value = false;
+      throw "${e.toString()} From Quiz Controller  ";
+      // if (context.mounted) {
+      //   DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
+      // }
     } finally {
       isLoading.value = false;
     }
