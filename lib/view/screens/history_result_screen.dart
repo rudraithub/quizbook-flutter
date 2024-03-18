@@ -117,7 +117,7 @@ class HistoryDetail extends StatelessWidget {
             Text(
               value,
               style:
-                  TextStyle(fontSize:  screenWidth * 0.036, color: Colors.black),
+                  TextStyle(fontSize: screenWidth * 0.036, color: Colors.black),
             ),
             SizedBox(height: screenWidth * 0.02),
           ],
@@ -156,36 +156,22 @@ class HistoryDetail extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 //  String letter = String.fromCharCode(65 + index);
- HsAnswerCard(
-                      option: "${String.fromCharCode(65 + 0)} : ${options[0]}",
-                      isTrue: 0 == correctAnswerIndex,
-                    ),
-                     HsAnswerCard(
-                      option: "${String.fromCharCode(65 + 1)} : ${options[1]}",
-                      isTrue: 1 == correctAnswerIndex,
-                    ),
-                    HsAnswerCard(
-                      option: "${String.fromCharCode(65 + 2)} : ${options[2]}",
-                      isTrue: 2 == correctAnswerIndex,
-                    ),
-                    HsAnswerCard(
-                      option: "${String.fromCharCode(65 + 3)} : ${options[3]}",
-                      isTrue: 3 == correctAnswerIndex,
-                    ),
-                   
-
-                // ListView.builder(
-                //   itemCount: options.length,
-                //   shrinkWrap: true,
-                //   itemBuilder: (context, index) {
-                //     String letter = String.fromCharCode(65 + index);
-
-                //     return HsAnswerCard(
-                //       option: "$letter : ${options[index]}",
-                //       isTrue: index == correctAnswerIndex,
-                //     );
-                //   },
-                // ),
+                HsAnswerCard(
+                  option: "${String.fromCharCode(65 + 0)} : ${options[0]}",
+                  isTrue: 0 == correctAnswerIndex,
+                ),
+                HsAnswerCard(
+                  option: "${String.fromCharCode(65 + 1)} : ${options[1]}",
+                  isTrue: 1 == correctAnswerIndex,
+                ),
+                HsAnswerCard(
+                  option: "${String.fromCharCode(65 + 2)} : ${options[2]}",
+                  isTrue: 2 == correctAnswerIndex,
+                ),
+                HsAnswerCard(
+                  option: "${String.fromCharCode(65 + 3)} : ${options[3]}",
+                  isTrue: 3 == correctAnswerIndex,
+                ),
               ],
             ),
           ),

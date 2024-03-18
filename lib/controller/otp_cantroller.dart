@@ -28,6 +28,7 @@ class OTPController extends GetxController {
       isLoading.value = loadingStatus;
     }
   }
+
   Future<void> verifyOTP(
       String verificationId,
       TextEditingController otpController,
@@ -41,26 +42,26 @@ class OTPController extends GetxController {
           .signInWithCredential(credential)
           .catchError((onError) async {
         // commonSnackBar(context: context, msg: 'Please enter correct otp');
-         changeLoading(false, context);
+        changeLoading(false, context);
         DialogUtils.showCustomDialog(
             context, "Wrong OTP", 'Please enter correct otp');
       }).then((value) async {
-         changeLoading(false, context);
+        changeLoading(false, context);
         LoginModel users = LoginModel(
             data: Data(
-                id: 0,
-                firstName: '',
-                lastName: '',
-                email: '',
-                gender: [],
-                dob: '',
-                mobileNumber: '',
-                profession: [],
-                userProfile: '',
-                ),
-                
+              id: 0,
+              firstName: '',
+              lastName: '',
+              email: '',
+              gender: [],
+              dob: '',
+              mobileNumber: '',
+              profession: [],
+              userProfile: '',
+            ),
             message: '',
-            status: 0, token: '');
+            status: 0,
+            token: '');
 
         final Map<String, dynamic> requestBody = {
           "mobileNumber": moNumber,
@@ -73,7 +74,7 @@ class OTPController extends GetxController {
 
         try {
           if (response.statusCode == 200) {
-             changeLoading(false, context);
+            changeLoading(false, context);
             LoginModel users = loginModelFromJson(response.body);
             userData = users;
             userBearerToken = users.token;
@@ -81,10 +82,9 @@ class OTPController extends GetxController {
             var sharedPreferences = await SharedPreferences.getInstance();
             SharedPreferencesHelper sharedPreferencesHelper =
                 SharedPreferencesHelper(sharedPreferences);
-            
+
             sharedPreferencesHelper.putBool(Preferences.userLogin, true);
-            sharedPreferencesHelper.putString(
-                Preferences.token, users.token);
+            sharedPreferencesHelper.putString(Preferences.token, users.token);
             await sharedPreferencesHelper.putString(
                 Preferences.userFullDetails, jsonEncode(users));
 
@@ -107,18 +107,20 @@ class OTPController extends GetxController {
             }
           }
         } catch (e) {
-           changeLoading(false, context);
+          changeLoading(false, context);
           if (context.mounted) {
             // commonSnackBar(context: context, msg: "catch ${e.toString()}");
             DialogUtils.showCustomDialog(context, "Ops!!!", e.toString());
           }
+          throw e.toString();
         }
       });
     } catch (e) {
-       changeLoading(false, context);
+      changeLoading(false, context);
       if (context.mounted) {
         DialogUtils.showCustomDialog(context, "Ops!!!", 'Something Went Wrong');
       }
+      throw e.toString();
     }
   }
 }

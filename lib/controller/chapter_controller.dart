@@ -46,6 +46,8 @@ class ChapterController extends GetxController {
     catch(e){
            chapterList.value = Chapter(status: 0, data: [], message: '');
       isLoading(false);
+      throw e.toString();
+
     }
      finally {
       isLoading(false);

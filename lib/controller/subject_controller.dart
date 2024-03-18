@@ -30,7 +30,7 @@ void clearModel(){
         
       }
     } catch(e) {
-throw "${e.toString()  } subject Cantroller";
+throw e.toString();
     }
     
     finally {

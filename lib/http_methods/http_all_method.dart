@@ -29,7 +29,7 @@ Future<Response> postMethod(String url, Map<String, dynamic> body,
          DialogUtils.showCustomDialog(context, "Conection Lost", 'Check Your Internet Connection And Try Again');
         // commonSnackBar(
         //     context: context,
-        //     msg: 'check your internet connection and try again');
+        //     msg: 'your internet connection and try again');
       }
       throw 'Check Your Internet Conection';
     } else {
@@ -57,11 +57,11 @@ Future<Response> getMethode(
       // const CommonAlertDialog(
       //   message: "Pleaseeee",
       // );
-      throw ("check");
+      throw ("Check Your Connection");
     }
     var response = await get(Uri.parse(url), headers: head);
     return response;
   } catch (e) {
-    throw ("Check Your Connection");
+    throw ("$e");
   }
 }

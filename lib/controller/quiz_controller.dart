@@ -62,16 +62,18 @@ class QuestionController extends GetxController {
         "chapterid": chapterid,
         "questions": questions
       };
-      print('here');
+      print('result 1');
 
       // var encodedBody = jsonEncode(body);
 
       var response = await postMethod(url, body, headers, context);
-      print('here');
+      print('result 2');
       print(userBearerToken);
       var finalResult = resultFromJson(response.body);
 
       if (response.statusCode == 200) {
+                submiting = false;
+
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -86,6 +88,8 @@ class QuestionController extends GetxController {
         logOut(context, null);
         submiting = false;
       } else {
+        submiting = false;
+
         if (context.mounted) {
           Map<String, dynamic> error = json.decode(response.body);
           DialogUtils.showCustomDialog(context, "Ops!!!", error['message']);
@@ -139,7 +143,7 @@ class QuestionController extends GetxController {
         // }
       }
     } catch (e) {
-            print("error msg ${e.toString()}");
+      print("error msg ${e.toString()}");
 
       isLoading.value = false;
       throw "${e.toString()} From Quiz Controller  ";

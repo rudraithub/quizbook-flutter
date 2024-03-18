@@ -56,6 +56,8 @@ class LoginController extends GetxController {
                 // commonSnackBar(context: context, msg: ex.toString());
                 DialogUtils.showCustomDialog(
                     context, "Sorry", 'Something Went Wrong');
+                    print(ex.toString());
+                    throw ex.toString();
               },
               codeSent: (String verificationId, int? resendToken) {
                 changeLoading(false, context);
@@ -91,6 +93,7 @@ class LoginController extends GetxController {
 
         changeLoading(false, context);
       }
+throw e.toString();
 
       // print('Prashant ' + e.toString());
     }
