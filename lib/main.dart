@@ -1,22 +1,23 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:rudra_it_hub/firebase_options.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
-import 'package:rudra_it_hub/view/screens/signup_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey:
-          "AIzaSyB8Z-gVdAEE3_HHXbbYBAxdWluOYh0HZ5E", // paste your api key here
-      appId:
-          "1:1019940755554:android:8362a8d5cd186c6796193b", //paste your app id here
-      messagingSenderId: "1019940755554", //paste your messagingSenderId here
-      projectId: "quiz-book-f4711", //paste your project id here
-    ),
+    options:   DefaultFirebaseOptions.currentPlatform,
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
 
   runApp(const MyApp());
 }

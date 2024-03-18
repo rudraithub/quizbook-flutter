@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rudra_it_hub/controller/dashboard_controller.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/history_view.dart';
 import 'package:rudra_it_hub/view/screens/signup_view.dart';
 import 'package:rudra_it_hub/view/screens/std_screen.dart';
-import '../../controller/dashboard_controller.dart';
 
 class AppbarBottomBarScreen extends StatefulWidget {
   @override
@@ -15,11 +15,18 @@ class AppbarBottomBarScreen extends StatefulWidget {
 class _AppbarBottomBarScreenState extends State<AppbarBottomBarScreen>
     with AutomaticKeepAliveClientMixin {
 
-  final AppbarBottomBarController _controller =
+   AppbarBottomBarController _controller =
       Get.put(AppbarBottomBarController());
-
+@override
+  void initState() {
+    _controller.pageController = PageController(initialPage: 0);
+    _controller.currentIndex.value =0;
+    print(_controller.currentIndex.value );
+    super.initState();
+  }
   @override
   bool get wantKeepAlive => true;
+  
 
   @override
   Widget build(BuildContext context) {

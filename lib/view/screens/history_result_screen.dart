@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rudra_it_hub/model/history_model_data.dart';
 import 'package:rudra_it_hub/model/quiz_model.dart';
+import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/widgets/common_card.dart';
 import '../../controller/history_controller.dart';
 
@@ -36,7 +37,9 @@ class HistoryDetail extends StatelessWidget {
                     chapterHistory.questions[index]
                         .option[chapterHistory.questions[index].rightAnswer],
                     chapterHistory.questions[index].rightAnswer,
-                    screenHeight)
+                    screenHeight,
+                    chapterHistory.questions[index]
+                        .option[chapterHistory.questions[index].userAns])
               ],
             );
           } else {
@@ -52,7 +55,9 @@ class HistoryDetail extends StatelessWidget {
                     chapterHistory.questions[index]
                         .option[chapterHistory.questions[index].rightAnswer],
                     chapterHistory.questions[index].rightAnswer,
-                    screenHeight));
+                    screenHeight,
+                    chapterHistory.questions[index]
+                        .option[chapterHistory.questions[index].userAns]));
           }
         },
       ),
@@ -65,7 +70,7 @@ class HistoryDetail extends StatelessWidget {
       margin: EdgeInsets.all(screenWidth * 0.01),
       child: Container(
         padding: EdgeInsets.all(
-            screenHeight * 0.02), // Adjusted based on screenHeight
+            screenHeight * 0.01), // Adjusted based on screenHeight
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10.0),
@@ -79,12 +84,12 @@ class HistoryDetail extends StatelessWidget {
                 screenWidth,
                 screenHeight),
             _buildResultCard(
-                'Right Ans',
+                'Right Answer',
                 chapterHistory.totalRightQuestions.toString(),
                 screenWidth,
                 screenHeight),
             _buildResultCard(
-                'Wrong Ans',
+                'Wrong Answer',
                 chapterHistory.totalWrongQuestions.toString(),
                 screenWidth,
                 screenHeight)
@@ -104,7 +109,7 @@ class HistoryDetail extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: screenHeight * 0.018,
+                fontSize: screenWidth * 0.036,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
@@ -112,9 +117,9 @@ class HistoryDetail extends StatelessWidget {
             Text(
               value,
               style:
-                  TextStyle(fontSize: screenHeight * 0.02, color: Colors.black),
+                  TextStyle(fontSize:  screenWidth * 0.036, color: Colors.black),
             ),
-            SizedBox(height: screenHeight * 0.02),
+            SizedBox(height: screenWidth * 0.02),
           ],
         ),
       ),
@@ -129,6 +134,7 @@ class HistoryDetail extends StatelessWidget {
     String correctAnswer,
     int correctAnswerIndex,
     double screenHeight,
+    String userAnswer,
   ) {
     return Card(
       elevation: 5,
@@ -149,18 +155,37 @@ class HistoryDetail extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
                 SizedBox(height: screenHeight * 0.01),
-                ListView.builder(
-                  itemCount: options.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    String letter = String.fromCharCode(65 + index);
+                //  String letter = String.fromCharCode(65 + index);
+ HsAnswerCard(
+                      option: "${String.fromCharCode(65 + 0)} : ${options[0]}",
+                      isTrue: 0 == correctAnswerIndex,
+                    ),
+                     HsAnswerCard(
+                      option: "${String.fromCharCode(65 + 1)} : ${options[1]}",
+                      isTrue: 1 == correctAnswerIndex,
+                    ),
+                    HsAnswerCard(
+                      option: "${String.fromCharCode(65 + 2)} : ${options[2]}",
+                      isTrue: 2 == correctAnswerIndex,
+                    ),
+                    HsAnswerCard(
+                      option: "${String.fromCharCode(65 + 3)} : ${options[3]}",
+                      isTrue: 3 == correctAnswerIndex,
+                    ),
+                   
 
-                    return HsAnswerCard(
-                      option: "$letter : ${options[index]}",
-                      isTrue: index == correctAnswerIndex,
-                    );
-                  },
-                ),
+                // ListView.builder(
+                //   itemCount: options.length,
+                //   shrinkWrap: true,
+                //   itemBuilder: (context, index) {
+                //     String letter = String.fromCharCode(65 + index);
+
+                //     return HsAnswerCard(
+                //       option: "$letter : ${options[index]}",
+                //       isTrue: index == correctAnswerIndex,
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),
@@ -169,9 +194,9 @@ class HistoryDetail extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "User Answer : $correctAnswer",
+                "User Answer : $userAnswer",
                 style: TextStyle(
-                  color: Colors.red,
+                  color: purpleColor,
                   fontSize: screenHeight * 0.0220,
                 ),
               ),

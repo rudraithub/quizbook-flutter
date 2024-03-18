@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rudra_it_hub/splash_screen.dart';
 import 'package:rudra_it_hub/utils/constants.dart';
 import 'package:rudra_it_hub/view/screens/login_view.dart';
 import 'package:rudra_it_hub/widgets/commo_alert_dilog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> logOut(BuildContext context, String? message) async {
-  void myOptionalFunction()async {
+  void myOptionalFunction() async {
     Get.offAll(LoginScreen());
     await clearSharedPreferences();
   }
@@ -17,7 +16,6 @@ Future<void> logOut(BuildContext context, String? message) async {
       message == null ? "Your account login in another divice" : message,
       optionalFunction: myOptionalFunction);
   print("LogOut Call");
-  
 }
 
 Future<void> clearSharedPreferences() async {
@@ -36,15 +34,15 @@ class CommonAppBarScreen extends StatelessWidget {
   final bool needPopUpButton;
 
   const CommonAppBarScreen({
-    super.key,
+    Key? key,
     required this.title,
-    this.needPopUpButton =true,
+    this.needPopUpButton = true,
     required this.backgroundColor,
     this.centerTitle = true,
     this.isBackArrow = true,
     this.automaticallyImplyLeading = false,
     this.isProfile = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,39 +59,32 @@ class CommonAppBarScreen extends StatelessWidget {
       ),
       centerTitle: centerTitle,
       actions: [
-      needPopUpButton ? InkWell(
-          onTap: () {
-            print("hi");
-          },
-          child: PopupMenuButton(
-            color: Colors.white,
-            itemBuilder: (context) {
-              if (isProfile) {
-                return <PopupMenuEntry<String>>[
-                  PopupMenuItem(
-                    textStyle: TextStyle(color: Colors.tealAccent),
-                    child: GestureDetector(
-                      onTap: () async {
-                        logOut(context, "You want to logout ? ");
-                      },
-                      child: Container(
-                        
-                        padding: EdgeInsets.all(12),
+        needPopUpButton
+            ? PopupMenuButton<String>(
+                color: Colors.white,
+                itemBuilder: (context) {
+                  if (isProfile) {
+                    return [
+                      PopupMenuItem<String>(
+                        value: "logout",
+                        textStyle: TextStyle(color: Colors.tealAccent),
                         child: Text(
                           'Log Out',
-                          style: TextStyle(color: blackColor,fontSize: 14),
+                          style: TextStyle(color: blackColor, fontSize: 16),
                         ),
                       ),
-                    ),
-                  ),
-                ];
-              }
-              return [];
-            },
-            onSelected: (value) => print("Prashat"),
-          ),
-        ) : SizedBox.shrink()
-      ] ,
+                    ];
+                  }
+                  return [];
+                },
+                onSelected: (String value) {
+                  if (value == 'logout') {
+                    logOut(context, "You want to logout ? ");
+                  }
+                },
+              )
+            : SizedBox.shrink()
+      ],
     );
   }
 }

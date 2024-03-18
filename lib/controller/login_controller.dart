@@ -39,9 +39,19 @@ class LoginController extends GetxController {
         final responseString = response;
 
         try {
+          final PhoneVerificationCompleted verificationCompleted = (AuthCredential phoneAuthCredential){
+            FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
+            
+          };
+
+
+        // FirebaseAuth auth =await FirebaseAuth.instance();
           await FirebaseAuth.instance.verifyPhoneNumber(
-              verificationCompleted: (PhoneAuthCredential credential) {},
-              verificationFailed: (FirebaseAuthException ex) {
+              verificationCompleted: verificationCompleted,
+              // (PhoneAuthCredential credential) {},
+              verificationFailed:
+               (FirebaseAuthException ex) 
+              {
                 changeLoading(false, context);
                 // commonSnackBar(context: context, msg: ex.toString());
                 DialogUtils.showCustomDialog(
