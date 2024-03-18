@@ -51,14 +51,14 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-    // signingConfigs {
-    //     release {
-    //         storeFile file('/home/rih005/Prashant/KeyStore/jsk/firstjsk.jks')
-    //         storePassword '123456'
-    //         keyPassword '123456'
-    //         keyAlias 'key0'
-    //     }
-    // }
+    signingConfigs {
+        release {
+            storeFile file('/home/rih005/Prashant/KeyStore/jsk/firstjsk.jks')
+            storePassword '123456'
+            keyPassword '123456'
+            keyAlias 'key0'
+        }
+    }
 
 
     buildTypes {
